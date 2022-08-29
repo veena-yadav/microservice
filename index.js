@@ -22,7 +22,8 @@ connectDB();
 
 
 app.use('/api/admin',require("./routes/adminRoutes"))
-app.use('/api/medicine',require("./routes/medicineRoutes"))
+//app.use('/api/medicine',require("./routes/medicineRoutes"))
+app.use('/api/medicine',require("./routes/routes.productDbAdmin"))
 
 const {errorHandler}=require("./middleware/error")
 
