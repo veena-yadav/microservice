@@ -1,7 +1,7 @@
 import React,{useState} from 'react'
 import axios from 'axios'
 import './registration.css'
-import {Link} from 'react-router-dom'
+import {Link, useNavigate} from 'react-router-dom'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 const RegistrationForm = () => {
@@ -18,6 +18,7 @@ const RegistrationForm = () => {
 ,sethealthCond
 ]=useState('')
 const [disabled , setDisabled]=useState(false)
+const Navigate=useNavigate()
 const RegisterNow=async(e)=>{
   e.preventDefault()
   console.log("button clicked")
@@ -28,7 +29,9 @@ const newData= await axios.post('http://localhost:5000/api/users/',newUser)
 } catch (error) {
 console.log(error.response.data.message)
 toast.error(error.response.data.message)
+return
 }
+Navigate("/viewmedicine")
 }
   return (<>
     <div className='mainDiv'>

@@ -4,9 +4,11 @@ import "./registration.css";
 import { Link } from 'react-router-dom'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import {useNavigate} from 'react-router-dom'
 const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const Navigate=useNavigate()
   const LoginNow = async (e) => {
     e.preventDefault();
     const newUser = {
@@ -23,6 +25,7 @@ const LoginForm = () => {
       return;
     }
     toast("login success")
+    Navigate("/viewmedicine")
   }
   return (
     <>
