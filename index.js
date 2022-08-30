@@ -30,6 +30,9 @@ const {errorHandler}=require("./middleware/error")
 app.use('/api/users',require("./routes/userRoutes"))
 app.use(errorHandler)
 
+
+// reorder medicine
+
 //METHOD : GET
 //TEST METHOD TO CHECK IF SERVER RESPONDS
 app.get('/',(req,res)=>{
