@@ -22,8 +22,10 @@ connectDB();
 
 
 app.use('/api/admin',require("./routes/adminRoutes"))
-app.use('/api/medicine',require("./routes/medicineRoutes"))
+//app.use('/api/medicine',require("./routes/medicineRoutes"))
+app.use('/api/medicine',require("./routes/routes.productDbAdmin"))
 
+app.use('/api/reorder',require("./routes/reorderRoutes"))
 const {errorHandler}=require("./middleware/error")
 
 app.use('/api/users',require("./routes/userRoutes"))
