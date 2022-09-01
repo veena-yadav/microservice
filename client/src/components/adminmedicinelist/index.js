@@ -1,5 +1,5 @@
 import React, { useState,useEffect } from 'react'
-import './medicinelist.css'
+import './adminmedicinelist.css'
 // import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import IconButton from '@mui/material/IconButton';
 import Modal from '@mui/material/Modal';
@@ -8,6 +8,12 @@ import axios from 'axios'
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+import Fab from '@mui/material/Fab';
+import AddIcon from '@mui/icons-material/Add';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+import Tooltip from '@mui/material/Tooltip';
+
 const style = {
   position: 'absolute',
   top: '50%',
@@ -19,9 +25,8 @@ const style = {
   boxShadow: 24,
   p: 4,
 };
-const MedicineList = () => {
-  const [medicines,setMedicines]=useState([]);
-  const [medicinesCart,setMedicineCart]=useState([]);
+const AdminMedicineList = () => {
+  const [medicines,setMedicines]=useState([])
   const [loading , setLoading]=useState(false);
   const [open, setOpen] = React.useState(false);
   const [selectedMedicine,setSelectedMedicine]=useState('')
@@ -31,7 +36,7 @@ const MedicineList = () => {
   const handleClose = () => setOpen(false);
   useEffect(() => {
     getMedicine()
-  }, [])
+  }, [medicines])
   const getMedicine=async()=>{
     setLoading(true)
     try {
@@ -42,8 +47,17 @@ const MedicineList = () => {
     }
     setLoading(false)
   }
+  const DeleteMedicine=async(medicineid)=>{
+  try {
+    const deletedMed= await axios.delete(`http://localhost:5000/api/medicine/deleteMedicine/${medicineid}`)
+    getMedicine()
+  } catch (error) {
+    console.log(error)
+  }
+  }
   return (
-    <div>
+    <div >
+     
       <Modal
         open={open}
         onClose={handleClose}
@@ -68,21 +82,20 @@ const MedicineList = () => {
           }}
           
           >+</span>
-         
-            <center>
-            <Button color="primary" variant="contained">Save</Button>
-            </center>
-        
         </Box>
       </Modal>
+      
     <div className='medicineTableDiv'>
     <table className='medicineTable'>
+      
     <thead>
       <tr>
         <th>  Name </th>
         <th>Price</th>
-        <th> Quantity</th>
-        <th> Action</th>
+        <th>Quantity</th>
+        <th>Minimum Threshhold</th>
+        <th> Edit</th>
+        <th>Delete</th>
       </tr>
     </thead>
     <tbody>
@@ -91,15 +104,23 @@ const MedicineList = () => {
           <tr key={Math.random()}>
           <th> {med.itemName} </th>
           <td>{med.price} </td>
-          <td> {med.quantity} </td>
-          <td> <IconButton color="primary" onClick={()=>{
-            handleOpen()
-            
-            setSelectedMedicine(med.itemName)
-          }} aria-label="add to shopping cart">
-        <AddShoppingCartIcon />
-      </IconButton></td>
-                 
+      <td>{med.quantity}</td>
+      <td>{med.minimumThresholdValue}</td>
+               <td><IconButton color="secondary" 
+               style={{
+                color:"#0064D2"
+               }}
+               
+               aria-label="edit item"> <EditIcon/></IconButton></td>  
+               <td><IconButton style={{
+                color:"#0064D2"
+               }} aria-label="delete item"
+               onMouseDown={(e)=>{
+                DeleteMedicine(med._id)
+               }}
+               
+               > <DeleteIcon /></IconButton></td>  
+              
         </tr>
         )
       })}
@@ -107,9 +128,18 @@ const MedicineList = () => {
     </tbody>
   </table>
   </div>
- 
+  <Tooltip title="Add Medicine" style={{backgroundColor:"red"}} placement="right">
+  <Fab color="primary"  aria-label="add" style={{
+    position:'fixed',
+    top:'80px',
+    right:'100px'
+
+  }}>
+        <AddIcon  />
+      </Fab>
+      </Tooltip>
   </div>
   )
 }
 
-export default MedicineList
+export default AdminMedicineList
