@@ -14,7 +14,7 @@ const controller = {
     //User.find({ username: regexp});
    var a=req.body.itemName
     const items = await Item.find({
-      itemName: { $regex:"^"+a},
+      itemName: { $regex:"^"+a,$options:'i'},
     });
 
     res.status(200).json(items);
