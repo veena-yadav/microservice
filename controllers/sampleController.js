@@ -26,6 +26,17 @@ const controller={
             quantity:req.body.quantity
           })
         res.status(200).json( addMedicine)
-      })
+      }),
+
+      //cancel reordering
+      deletereorderById:  asyncHandler(async (request, response) => {
+        const ID = request.params.id;
+        await addMed.findByIdAndDelete(ID)
+            .then(() => {
+                response.json("Medicine Deleted from Database that has been reordered");
+            })
+            .catch(err => response.status(400).json("Error: " + err));
+    }),
+
 }
 module.exports=controller;
