@@ -30,9 +30,13 @@ var MedicinDetails = {
   //belothreshold
   getMedicinebyvalue: function (req, res) {
     request(url2, function(err, response, body) {
-      producer(body)
-    //  console.log()
-      res.send(body)
+    // setInterval(() => {
+    //   producer(body)
+    //   //  console.log()
+        
+    // }, 6000); res.send(body)
+    producer(body)
+    //res.send(body)
   })
   },
 
