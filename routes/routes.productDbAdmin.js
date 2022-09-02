@@ -11,7 +11,7 @@ router.get("/",medicineDbController.getMedicinebyvalue)//below threshold
 
 //get document using unique ID from db
 router.get('/getMedicine/:id', medicineDbController.getById);
-
+router.get("/filter/:name",medicineDbController.filterByName)
 //add document into the database
 router.post('/addMedicine', medicineDbController.addMedicine);
 

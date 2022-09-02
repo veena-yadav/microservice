@@ -17,6 +17,15 @@ const controller={
           res.status(200).json(items)
           
         }), 
+        filterByName: asyncHandler(async (req, res) => {
+            //User.find({ username: regexp});
+           var a=req.params.name
+            const items = await Item.find({
+              itemName: { $regex:"^"+a,$options:'i'},
+            });
+        
+            res.status(200).json(items);
+          }),
       getById:  asyncHandler(async (request, response) => {
         await Item.findById(request.params.id)
             .then(items => response.json(items))
