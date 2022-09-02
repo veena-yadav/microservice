@@ -58,6 +58,9 @@
 .navbar a:hover{
     color: #117964;
 }
+.navbar a:active{
+    color: red !important;
+}
  
 @media (max-width: 768px){
     .navbar{
