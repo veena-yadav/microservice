@@ -23,6 +23,8 @@ router.delete('/deleteMedicine/:id', medicineDbController.deleteById);
 //update the already present document using the document ID
 router.patch('/updateMedicine/:id', medicineDbController.updateById);
 
+//delete from medicine and reorder collection
+router.delete('/delete/:itemName', medicineDbController.deleteMedicine);
 
 
 

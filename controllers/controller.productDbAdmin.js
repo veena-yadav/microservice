@@ -94,7 +94,29 @@ const controller = {
     await Item.findOneAndUpdate(filter,update,{new:true})
       .then(() => response.json("Updated Databse"))
       .catch((err) => response.status(400).json("not found: " + err));
-  })
+  }),
+
+
+
+
+  //delete from reorder_collection db and medicine db
+
+
+deleteMedicine:asyncHandler(async (request, response) => {
+  
+  await Medicine.deleteOne({itemName:request.params.itemName}),
+  Item.deleteOne({itemName:request.params.itemName})
+      .then(() => {
+     
+          response.json("Medicine Deleted from Database that has been reordered");
+      })
+      .catch(err => response.status(400).json("Error: " + err));
+}
+
+
+
+),
+
 };
 
 module.exports = controller;
