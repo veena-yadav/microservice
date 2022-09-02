@@ -79,12 +79,15 @@ const controller = {
   }),
 
   updateById: asyncHandler(async (request, response) => {
-    await Item.findByIdAndUpdate(request.params.id, {
-      $set: quantity - request.body,
-    })
-      .then(() => response.json("Updated Databse"))
-      .catch((err) => response.status(400).json("Error: " + err));
-  }),
-};
+
+    await Item.findByIdAndUpdate(request.params.id, request.body ,{new:true})
+
+        .then(() => response.json("Updated Databse"))
+
+        .catch(err => response.status(400).json("Error: " + err));
+
+})
+}
+
 
 module.exports = controller;
