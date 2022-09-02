@@ -37,11 +37,13 @@ const AdminForm = () => {
               <input
                 type="email"
                 placeholder="EMAIL ADDRESS"
+                data-testid= "usertest"
                 onChange={(e) => setEmail(e.target.value)}
               />
               <input
                 type="password"
                 placeholder="PASSWORD"
+                data-testid= "passwordtest"
                 onChange={(e) => setPassword(e.target.value)}
               />
               <div>
