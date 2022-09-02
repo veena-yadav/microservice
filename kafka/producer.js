@@ -25,6 +25,9 @@ console.log(message[0])
 producer.send({topic:'reorder2',messages:[{value:message,data:nodemailer.createTransport({
     service:'gmail',
     auth:{
+        // user:"telstrakafkanetworking2@gmail.com",
+
+        // pass:"yznqnswnzohcdisw",
         user:process.env.EID,
         pass:process.env.PASS,
         port:465,
