@@ -7,18 +7,18 @@
     justify-content: center;
     /* background-color: #0064D2; */
   }
-  
+
   table {
     width: 800px;
     margin-top: 80px;
-    /* border: 1px solid #343a40; */
+    border: 1px solid #343a40; 
     border-collapse: collapse;
     font-size: 18px;
   }
   
   th,
   td {
-    /* border: 1px solid #343a40; */
+     border: 1px solid #343a40; 
     padding: 16px 24px;
     text-align: left;
   }
@@ -36,7 +36,7 @@
   tbody tr:nth-child(odd) {
     background-color: #e9ecef;
   }
-  
+   
 .input-number {
   width: 80px;
   padding: 0 12px;

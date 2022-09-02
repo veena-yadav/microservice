@@ -10,10 +10,12 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
+import SearchIcon from '@mui/icons-material/Search';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import Tooltip from '@mui/material/Tooltip';
 import TextField from '@mui/material/TextField';
+
 const style = {
   position: 'absolute',
   top: '50%',
@@ -35,15 +37,17 @@ const AdminMedicineList = () => {
   const [selectedItemQuantity, setSelectedItemQuantity] = useState('')
   const [selectedItemThreshold, setSelectedItemThreshold] = useState('')
   const [selectedMedicineQuantity, setSelectedMedicineQuantity] = useState(1)
+  const [query,setQuery]=useState('')
   const [SelectedItemId, setSelectedItemId] = useState(0)
   const [operation, setOperation] = useState('Edit')
+  const [searchSelected,setSearchSelected]=useState(false)
   const handleOpen = () => {
     setOpen(true)
   };
   const handleClose = () => setOpen(false);
   useEffect(() => {
     getMedicine()
-  }, [medicines])
+  }, [])
   const getMedicine = async () => {
     setLoading(true)
     try {
@@ -62,6 +66,14 @@ const AdminMedicineList = () => {
       console.log(error)
     }
     getMedicine()
+  }
+  const findMedicine=async(val)=>{
+ const  searchboxmed= await axios.get(`http://localhost:5000/api/medicine/filter/${val}`)
+ 
+
+ console.log(searchboxmed.data)
+ const newAr=searchboxmed.data
+ setMedicines(medicines=>[...newAr])
   }
   const EditMed = async (id) => {
     try {
@@ -109,7 +121,7 @@ const AdminMedicineList = () => {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style}>
+        {!searchSelected ?  <Box sx={style}>
           <Typography id="modal-modal-title" variant="h6" component="h2">
             {operation} Medicine {selectedMedicine}
           </Typography>
@@ -151,6 +163,7 @@ const AdminMedicineList = () => {
             /><br /><br />
             <Button variant="contained" color="primary"
               onClick={(e) => {
+
                 if (operation === 'Edit') {
                   EditMed(SelectedItemId)
                 }
@@ -161,10 +174,23 @@ const AdminMedicineList = () => {
               }}
             >{operation}</Button>
           </center>
-        </Box>
+        </Box> :<Box sx={style}><center>
+        <TextField value={query}
+              label="Medicine Name"
+              variant="outlined"
+              onChange={(e) => {
+                setQuery(e.target.value)
+                findMedicine(e.target.value)
+
+              }}
+            />
+           <div style={{marginTop:"30px"}}></div>
+          </center></Box>}
+       
       </Modal>
 
       <div className='medicineTableDiv'>
+      
         <table className='medicineTable'>
 
           <thead>
@@ -196,6 +222,7 @@ const AdminMedicineList = () => {
                       setSelectedItemName(med.ItemName)
                       setSelectedItemId(med._id)
                       setOperation("Edit")
+                      setSearchSelected(false)
                       setOpen(true)
                       console.log("edit")
                     }}
@@ -216,7 +243,7 @@ const AdminMedicineList = () => {
           </tbody>
         </table>
       </div>
-      <Tooltip title="Add Medicine" style={{ backgroundColor: "red" }} placement="right">
+      <Tooltip title="Add Medicine" style={{ backgroundColor: "red" }} placement="left">
         <Fab color="primary" aria-label="add" style={{
           position: 'fixed',
           top: '80px',
@@ -226,10 +253,28 @@ const AdminMedicineList = () => {
           onClick={(e) => {
             console.log("Add btn click")
             setOperation("Add")
+            setSearchSelected(false)
+            setSelectedMedicine('')
             setOpen(true)
           }}
         >
           <AddIcon />
+        </Fab>
+      </Tooltip>
+      <Tooltip title="Search Medicine" style={{ backgroundColor: "red" }} placement="left">
+        <Fab color="primary" aria-label="Search Medicine" style={{
+          position: 'fixed',
+          top: '160px',
+          right: '100px'
+
+        }}
+          onClick={(e) => {
+            console.log("Search btn click")
+           setSearchSelected(true)
+           setOpen(true)
+          }}
+        >
+          <SearchIcon/>
         </Fab>
       </Tooltip>
     </div>
