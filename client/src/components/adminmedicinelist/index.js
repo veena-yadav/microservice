@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import './adminmedicinelist.css'
 // import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import IconButton from '@mui/material/IconButton';
@@ -13,7 +13,7 @@ import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import Tooltip from '@mui/material/Tooltip';
-
+import TextField from '@mui/material/TextField';
 const style = {
   position: 'absolute',
   top: '50%',
@@ -26,38 +26,83 @@ const style = {
   p: 4,
 };
 const AdminMedicineList = () => {
-  const [medicines,setMedicines]=useState([])
-  const [loading , setLoading]=useState(false);
+  const [medicines, setMedicines] = useState([])
+  const [loading, setLoading] = useState(false);
   const [open, setOpen] = React.useState(false);
-  const [selectedMedicine,setSelectedMedicine]=useState('')
-  const [selectedMedicineQuantity,setSelectedMedicineQuantity]=useState(1)
-  const handleOpen = () => {setOpen(true)
+  const [selectedMedicine, setSelectedMedicine] = useState('')
+  const [selectedItemName, setSelectedItemName] = useState('')
+  const [selectedItemPrice, setSelectedItemPrice] = useState('')
+  const [selectedItemQuantity, setSelectedItemQuantity] = useState('')
+  const [selectedItemThreshold, setSelectedItemThreshold] = useState('')
+  const [selectedMedicineQuantity, setSelectedMedicineQuantity] = useState(1)
+  const [SelectedItemId, setSelectedItemId] = useState(0)
+  const [operation, setOperation] = useState('Edit')
+  const handleOpen = () => {
+    setOpen(true)
   };
   const handleClose = () => setOpen(false);
   useEffect(() => {
     getMedicine()
   }, [medicines])
-  const getMedicine=async()=>{
+  const getMedicine = async () => {
     setLoading(true)
     try {
-      const data= await axios.get('http://localhost:5000/api/medicine/view')
+      const data = await axios.get('http://localhost:5000/api/medicine/view')
       setMedicines(data.data)
     } catch (error) {
-      console.log("error is "+error)
+      console.log("error is " + error)
     }
     setLoading(false)
   }
-  const DeleteMedicine=async(medicineid)=>{
-  try {
-    const deletedMed= await axios.delete(`http://localhost:5000/api/medicine/deleteMedicine/${medicineid}`)
+  const DeleteMedicine = async (medicineid) => {
+    try {
+      const deletedMed = await axios.delete(`http://localhost:5000/api/medicine/deleteMedicine/${medicineid}`)
+
+    } catch (error) {
+      console.log(error)
+    }
     getMedicine()
-  } catch (error) {
-    console.log(error)
   }
+  const EditMed = async (id) => {
+    try {
+      console.log(`ID TO BE UPDATED ${id}`)
+      const updatedMed = {
+        _id: id,
+        itemName: selectedItemName,
+        price: selectedItemPrice,
+        quantity: selectedItemQuantity,
+        minimumThresholdValue: selectedItemThreshold
+      }
+      console.log(updatedMed)
+      const med = await axios.patch(`http://localhost:5000/api/medicine/updateMedicine/${id}`, updatedMed)
+    }
+    catch (err) {
+      console.log(err)
+    }
+    getMedicine()
+    setOpen(false)
+  }
+  const AddMed = async () => {
+    const newMedicineObj = {
+
+      itemName: selectedItemName,
+      price: selectedItemPrice,
+      quantity: +selectedItemQuantity,
+      minimumThresholdValue: selectedItemThreshold
+    }
+
+    try {
+
+      const addedMed = await axios.post(`http://localhost:5000/api/medicine/addMedicine`, newMedicineObj)
+    } catch (error) {
+      console.log(error)
+    }
+    getMedicine()
+    setOpen(false)
   }
   return (
     <div >
-     
+
       <Modal
         open={open}
         onClose={handleClose}
@@ -66,79 +111,128 @@ const AdminMedicineList = () => {
       >
         <Box sx={style}>
           <Typography id="modal-modal-title" variant="h6" component="h2">
-            Add Medicine {selectedMedicine}
+            {operation} Medicine {selectedMedicine}
           </Typography>
-          <span className="input-number-decrement"
-          onClick={()=>{
-            if(selectedMedicineQuantity==0) return
-            setSelectedMedicineQuantity(selectedMedicineQuantity-1)
-          }}
-          >–</span><input className="input-number"
-            type="text"
-            value={selectedMedicineQuantity} min="0" max="12"/>
-          <span className="input-number-increment"
-           onClick={()=>{
-            setSelectedMedicineQuantity(selectedMedicineQuantity+1)
-          }}
-          
-          >+</span>
+          <center style={{ marginTop: "10px" }}>
+            <TextField value={selectedItemName}
+              label="Medicine Name"
+              variant="outlined"
+              onChange={(e) => {
+                setSelectedItemName(e.target.value)
+
+              }}
+            /><br /><br />
+            <TextField
+              label="Medicine Price"
+              variant="outlined"
+              value={selectedItemPrice}
+              onChange={(e) => {
+                setSelectedItemPrice(e.target.value)
+
+              }}
+            /><br /><br />
+            <TextField
+              label="Medicine Quantity"
+              variant="outlined"
+              value={selectedItemQuantity}
+              onChange={(e) => {
+                setSelectedItemQuantity(e.target.value)
+
+              }}
+            /><br /><br />
+            <TextField
+              label="Medicine Threshold"
+              variant="outlined"
+              value={selectedItemThreshold}
+              onChange={(e) => {
+                setSelectedItemThreshold(e.target.value)
+
+              }}
+            /><br /><br />
+            <Button variant="contained" color="primary"
+              onClick={(e) => {
+                if (operation === 'Edit') {
+                  EditMed(SelectedItemId)
+                }
+                else {
+                  AddMed()
+                }
+
+              }}
+            >{operation}</Button>
+          </center>
         </Box>
       </Modal>
-      
-    <div className='medicineTableDiv'>
-    <table className='medicineTable'>
-      
-    <thead>
-      <tr>
-        <th>  Name </th>
-        <th>Price</th>
-        <th>Quantity</th>
-        <th>Minimum Threshhold</th>
-        <th> Edit</th>
-        <th>Delete</th>
-      </tr>
-    </thead>
-    <tbody>
-      {medicines.map((med)=>{
-        return(
-          <tr key={Math.random()}>
-          <th> {med.itemName} </th>
-          <td>{med.price} </td>
-      <td>{med.quantity}</td>
-      <td>{med.minimumThresholdValue}</td>
-               <td><IconButton color="secondary" 
-               style={{
-                color:"#0064D2"
-               }}
-               
-               aria-label="edit item"> <EditIcon/></IconButton></td>  
-               <td><IconButton style={{
-                color:"#0064D2"
-               }} aria-label="delete item"
-               onMouseDown={(e)=>{
-                DeleteMedicine(med._id)
-               }}
-               
-               > <DeleteIcon /></IconButton></td>  
-              
-        </tr>
-        )
-      })}
-     
-    </tbody>
-  </table>
-  </div>
-  <Tooltip title="Add Medicine" style={{backgroundColor:"red"}} placement="right">
-  <Fab color="primary"  aria-label="add" style={{
-    position:'fixed',
-    top:'80px',
-    right:'100px'
 
-  }}>
-        <AddIcon  />
-      </Fab>
+      <div className='medicineTableDiv'>
+        <table className='medicineTable'>
+
+          <thead>
+            <tr>
+              <th>  Name </th>
+              <th>Price</th>
+              <th>Quantity</th>
+              <th>Minimum Threshhold</th>
+              <th> Edit</th>
+              <th>Delete</th>
+            </tr>
+          </thead>
+          <tbody>
+            {medicines.map((med) => {
+              return (
+                <tr key={Math.random()}>
+                  <th> {med.itemName} </th>
+                  <td>{med.price} </td>
+                  <td>{med.quantity}</td>
+                  <td>{med.minimumThresholdValue}</td>
+                  <td><IconButton color="secondary"
+                    style={{
+                      color: "#0064D2"
+                    }}
+
+                    aria-label="edit item"
+                    onMouseDown={(e) => {
+                      setSelectedMedicine(med.itemName)
+                      setSelectedItemName(med.ItemName)
+                      setSelectedItemId(med._id)
+                      setOperation("Edit")
+                      setOpen(true)
+                      console.log("edit")
+                    }}
+                  > <EditIcon /></IconButton></td>
+                  <td><IconButton style={{
+                    color: "#0064D2"
+                  }} aria-label="delete item"
+                    onMouseDown={(e) => {
+                      DeleteMedicine(med._id)
+                    }}
+
+                  > <DeleteIcon /></IconButton></td>
+
+                </tr>
+              )
+            })}
+
+          </tbody>
+        </table>
+      </div>
+      <Tooltip title="Add Medicine" style={{ backgroundColor: "red" }} placement="right">
+        <Fab color="primary" aria-label="add" style={{
+          position: 'fixed',
+          top: '80px',
+          right: '100px'
+
+        }}
+          onClick={(e) => {
+            console.log("Add btn click")
+            setOperation("Add")
+            setOpen(true)
+          }}
+        >
+          <AddIcon />
+        </Fab>
       </Tooltip>
-  </div>
+    </div>
   )
 }
 

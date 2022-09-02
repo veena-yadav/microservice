@@ -5,7 +5,7 @@ const Item = require('../models/model.productDb')
 const controller={
     //GET ALL MEDICINES
     getMedicine:  asyncHandler(async (req, res) => {
-      console.log(req.cookies.jwt)
+    //   console.log(req.cookies.jwt)
         const items = await Item.find()
     
         res.status(200).json(items)
@@ -72,7 +72,7 @@ const controller={
     }),
 
     updateById:  asyncHandler(async (request, response) => {
-        await Item.findByIdAndUpdate(request.params.id, { $set: quantity-request.body })
+        await Item.findByIdAndUpdate(request.params.id, request.body ,{new:true})
             .then(() => response.json("Updated Databse"))
             .catch(err => response.status(400).json("Error: " + err));
     })
