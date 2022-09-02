@@ -8,8 +8,8 @@ const request = require("request");
 
 const url = "http://localhost:5000/api/medicine/view";
 
-const loginurl="http://localhost:5000/api/admin/login";
-const url2="http://localhost:5000/api/medicine/";
+const loginurl = "http://localhost:5000/api/admin/login";
+const url2 = "http://localhost:5000/api/reorder/";
 const reorderurl = "http://localhost:5000/api/admin/reordermedicine"
 
 var MedicinDetails = {
@@ -33,7 +33,7 @@ var MedicinDetails = {
     request(url2, function(err, response, body) {
       producer(body)
     //  console.log()
-      res.send(body)
+      //res.send(body)
   })
   },
 
@@ -47,13 +47,22 @@ var MedicinDetails = {
       console.log(e);
     });
 
-    reorderMed: function(req, res) {
-      axios({ method: 'post', url: reorderurl, data: req.body}).then((e)=>{
-          console.log(e.data);
-          res.send("reorder medicine Added. ")
-      })
+    res.send("succcesssfull");
+  },
+  reorderMed: function(req, res) {
 
-  }
+    axios({ method: 'post', url: reorderurl, data: req.body}).then((e)=>{
+
+        console.log(e.data);
+
+        res.send("reorder medicine Added. ")
+
+    })
+
+
+
+},
+  getNotification: function (req, res) {
    
     var list = req.body;
 //console.log(list)
