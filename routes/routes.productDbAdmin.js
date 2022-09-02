@@ -6,6 +6,8 @@ const {protect}=require("../middleware/authMiddleware")
 
 const medicineDbController = require('../controllers/controller.productDbAdmin');
 
+router.patch('/update/:itemName',medicineDbController.updateMedicine)
+
 //get all medicines
 router.get("/view",medicineDbController.getMedicine)
 

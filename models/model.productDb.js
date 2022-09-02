@@ -23,4 +23,4 @@ const itemSchema = mongoose.Schema(
     timestamps: true,
   }
 )
-module.exports = mongoose.model('Medicine Collection', itemSchema)
+module.exports = mongoose.model('medicine collections', itemSchema)
