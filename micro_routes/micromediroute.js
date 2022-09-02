@@ -1,6 +1,5 @@
 
 const controller=require("../Microservices/serviceController")
-
 module.exports=function(app)
 {
     app.route("/getmedicines").get(controller.getMedicine);

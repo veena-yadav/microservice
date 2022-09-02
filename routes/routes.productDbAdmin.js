@@ -6,8 +6,8 @@ const {protect}=require("../middleware/authMiddleware")
 
 const medicineDbController = require('../controllers/controller.productDbAdmin');
 
-router.get("/view",medicineDbController.getMedicine)//get all data
-router.get("/",medicineDbController.getMedicinebyvalue)//below threshold
+//get all medicines
+router.get("/view",medicineDbController.getMedicine)
 
 //get document using unique ID from db
 router.get('/getMedicine/:id', medicineDbController.getById);
