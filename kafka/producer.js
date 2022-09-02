@@ -22,7 +22,7 @@ console.log(message[0])
     }
 
 
-producer.send({topic:'reorder',messages:[{value:message,data:nodemailer.createTransport({
+producer.send({topic:'reorder2',messages:[{value:message,data:nodemailer.createTransport({
     service:'gmail',
     auth:{
         user:process.env.EID,

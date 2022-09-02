@@ -5,8 +5,17 @@ const Item = require("../models/model.productDb");
 const controller = {
   //GET ALL MEDICINES
   getMedicine: asyncHandler(async (req, res) => {
-    console.log(req.cookies.jwt);
+    //console.log(req.cookies.jwt);
     const items = await Item.find();
+
+    res.status(200).json(items);
+  }),
+  filterByName: asyncHandler(async (req, res) => {
+    //User.find({ username: regexp});
+   var a=req.body.itemName
+    const items = await Item.find({
+      itemName: { $regex:"^"+a,$options:'i'},
+    });
 
     res.status(200).json(items);
   }),

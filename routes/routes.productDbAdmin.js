@@ -8,7 +8,7 @@ const medicineDbController = require('../controllers/controller.productDbAdmin')
 
 //get all medicines
 router.get("/view",medicineDbController.getMedicine)
-
+router.get("/filter",medicineDbController.filterByName)
 //get document using unique ID from db
 router.get('/getMedicine/:id', medicineDbController.getById);
 

@@ -7,15 +7,17 @@ const kafka = new Kafka({
 
 const consumer = kafka.consumer({ groupId: 'mygrp' })
 consumer.connect()
-consumer.subscribe({ topic: 'reorder', fromBeginning: true })
+consumer.subscribe({ topic: 'reorder2', fromBeginning: true })
 
 
-module.exports = function() {
-consumer.run({
+module.exports =  function() {
+  consumer.run({
     eachMessage: async({ topic, partition, message }) => {
         console.log(JSON.parse(message.value))
 
-        axios({ method: 'post', url: 'http://localhost:5050/getnotification', data: JSON.parse(message.value) }).then((e) => {
+        
+        axios({ method: 'post', url: 'http://localhost:5050/getnotification',
+         data: JSON.parse(message.value) }).then((e) => {
             console.log(e.data)
         })
     }
