@@ -1,32 +1,36 @@
 const asyncHandler = require('express-async-handler')
-const Medicine=require('../models/model.productDb')
+const Medicine = require('../models/model.productDb')
 
 const Item = require('../models/model.productDb')
-const controller={
+const controller = {
     //GET ALL MEDICINES
-    getMedicine:  asyncHandler(async (req, res) => {
-    //   console.log(req.cookies.jwt)
+    getMedicine: asyncHandler(async (req, res) => {
+        //   console.log(req.cookies.jwt)
         const items = await Item.find()
-    
+
         res.status(200).json(items)
-        
-      }),  getMedicinebyvalue:  asyncHandler(async (req, res) => {
-  
-       //   const items = await Item.find({quantity:{$lt:minimumThresholdValue}})
-       const items = await Item.find( { $expr: { $gt: [  "$minimumThresholdValue" ,"$quantity"] } } )
-          res.status(200).json(items)
-          
-        }), 
-        filterByName: asyncHandler(async (req, res) => {
-            //User.find({ username: regexp});
-           var a=req.params.name
-            const items = await Item.find({
-              itemName: { $regex:"^"+a,$options:'i'},
-            });
-        
-            res.status(200).json(items);
-          }),
-      getById:  asyncHandler(async (request, response) => {
+
+    }),
+
+    getMedicinebyvalue: asyncHandler(async (req, res) => {
+
+        //   const items = await Item.find({quantity:{$lt:minimumThresholdValue}})
+        const items = await Item.find({ $expr: { $gt: ["$minimumThresholdValue", "$quantity"] } })
+        res.status(200).json(items)
+
+    }),
+
+    filterByName: asyncHandler(async (req, res) => {
+        //User.find({ username: regexp});
+        var a = req.params.name
+        const items = await Item.find({
+            itemName: { $regex: "^" + a, $options: 'i' },
+        });
+
+        res.status(200).json(items);
+    }),
+
+    getById: asyncHandler(async (request, response) => {
         await Item.findById(request.params.id)
             .then(items => response.json(items))
             .catch(err => response.status(400).json('Error: ' + err));
@@ -71,7 +75,7 @@ const controller={
         });
     }),
 
-    deleteById:  asyncHandler(async (request, response) => {
+    deleteById: asyncHandler(async (request, response) => {
         const ID = request.params.id;
         await Item.findByIdAndDelete(ID)
             .then(() => {
@@ -80,11 +84,11 @@ const controller={
             .catch(err => response.status(400).json("Error: " + err));
     }),
 
-    updateById:  asyncHandler(async (request, response) => {
-        await Item.findByIdAndUpdate(request.params.id, request.body ,{new:true})
+    updateById: asyncHandler(async (request, response) => {
+        await Item.findByIdAndUpdate(request.params.id, request.body, { new: true })
             .then(() => response.json("Updated Databse"))
             .catch(err => response.status(400).json("Error: " + err));
     })
 }
 
-module.exports=controller;
+module.exports = controller;

@@ -30,15 +30,15 @@ var MedicinDetails = {
   },
   //belothreshold
   getMedicinebyvalue: function (req, res) {
-    request(url2, function(err, response, body) {
-    // setInterval(() => {
-    //   producer(body)
-    //   //  console.log()
-        
-    // }, 6000); res.send(body)
-    producer(body)
-    //res.send(body)
-  })
+    request(url2, function (err, response, body) {
+      // setInterval(() => {
+      //   producer(body)
+      //   //  console.log()
+
+      // }, 6000); res.send(body)
+      producer(body)
+      //res.send(body)
+    })
   },
 
   Login: function (req, res) {
@@ -53,25 +53,25 @@ var MedicinDetails = {
 
     res.send("succcesssfull");
   },
-  reorderMed: function(req, res) {
+  reorderMed: function (req, res) {
 
-    axios({ method: 'post', url: reorderurl, data: req.body}).then((e)=>{
+    axios({ method: 'post', url: reorderurl, data: req.body }).then((e) => {
 
-        console.log(e.data);
+      console.log(e.data);
 
-        res.send("reorder medicine Added. ")
+      res.send("reorder medicine Added. ")
 
     })
 
 
 
-},
+  },
   getNotification: function (req, res) {
-   
+
     var list = req.body;
-//console.log(list)
+    //console.log(list)
     for (let x of list) {
-        console.log(x)
+      console.log(x)
     }
     res.send("notification sent")
   },

@@ -10,16 +10,19 @@ consumer.connect()
 consumer.subscribe({ topic: 'reorder2', fromBeginning: true })
 
 
-module.exports =  function() {
-  consumer.run({
-    eachMessage: async({ topic, partition, message }) => {
-        console.log(JSON.parse(message.value))
+module.exports = function () {
+    consumer.run({
+        eachMessage: async ({ topic, partition, message }) => {
+            console.log(JSON.parse(message.value))
 
-        
-        axios({ method: 'post', url: 'http://localhost:5050/getnotification',
-         data: JSON.parse(message.value) }).then((e) => {
-            console.log(e.data)
-        })
-    }
 
-})}
+            axios({
+                method: 'post', url: 'http://localhost:5050/getnotification',
+                data: JSON.parse(message.value)
+            }).then((e) => {
+                console.log(e.data)
+            })
+        }
+
+    })
+}
