@@ -8,6 +8,7 @@ const medicineDbController = require('../controllers/reorderController');
 
 
 
+router.get("/view",medicineDbController.getReorder)
 
 router.get("/",medicineDbController.getMedicinebyvalue)//below threshold
 

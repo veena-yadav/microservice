@@ -5,6 +5,16 @@ const Medicine = require("../models/reorderModel");
 
 const controller = {
   
+getReorder:asyncHandler(async (req, res) => {
+
+   
+    const items = await Medicine.find();
+
+    res.status(200).json(items);
+
+
+}),
+  
   getMedicinebyvalue: asyncHandler(async (req, res) => {
     //   const items = await Item.find({quantity:{$lt:minimumThresholdValue}})
     const items = await Item.find({
