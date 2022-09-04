@@ -2,7 +2,7 @@ const axios = require('axios');
 const { response } = require('express');
 const expressAsyncHandler = require('express-async-handler');
 const Item = require('../models/model.productDb');
-const userDb = require('../models/model.user');
+const userDb = require('../models/userModel');
 
 
 const controller = {
@@ -19,21 +19,21 @@ const controller = {
                 }
                 else {
                     if (medicine.quantity == 0) {
-                        drivers.addToReorderBucket_UserDB(element, req.body.emailID);
+                        drivers.addToReorderBucket_UserDB(element, req.body.email);
                         medicine.quantity += element.quantity;
                     }
                     else {
                         if (element.quantity <= medicine.quantity) {
-                            drivers.addToOrderBucket_UserDB(element, req.body.emailID);
+                            drivers.addToOrderBucket_UserDB(element, req.body.email);
                             medicine.quantity -= element.quantity;
                             drivers.updateMedicineDB(medicine);
                         }
                         else if (element.quantity > medicine.quantity) {
                             element.quantity -= medicine.quantity;
                             let required = element.quantity;
-                            drivers.addToReorderBucket_UserDB(element, req.body.emailID);
+                            drivers.addToReorderBucket_UserDB(element, req.body.email);
                             element.quantity = medicine.quantity;
-                            drivers.addToOrderBucket_UserDB(element, req.body.emailID);
+                            drivers.addToOrderBucket_UserDB(element, req.body.email);
                             medicine.quantity -= element.quantity;
                             drivers.updateMedicineDB(medicine);
                         }
@@ -49,7 +49,7 @@ const controller = {
 const operationsOnOrders = {
     fetchOrdersByEmail: expressAsyncHandler(async (request, response) => {
         let queryUserDb = {
-            "emailID": { $regex: request.body.emailID }
+            "email": { $regex: request.body.email }
         }
         const result = await userDb.findOne(queryUserDb);
         if (result && result.order_bucket.length > 0) {
@@ -64,7 +64,7 @@ const operationsOnOrders = {
 
     fetchOrdersByEmailSortByPriceAsc: expressAsyncHandler(async (request, response) => {
         let queryUserDb = {
-            "emailID": { $regex: request.body.emailID }
+            "email": { $regex: request.body.email }
         }
         const result = await userDb.findOne(queryUserDb);
         if (result && result.order_bucket.length > 0) {
@@ -79,7 +79,7 @@ const operationsOnOrders = {
 
     fetchOrdersByEmailSortByPriceDesc: expressAsyncHandler(async (request, response) => {
         let queryUserDb = {
-            "emailID": { $regex: request.body.emailID }
+            "email": { $regex: request.body.email }
         }
         const result = await userDb.findOne(queryUserDb);
         if (result && result.order_bucket.length > 0) {
@@ -94,7 +94,7 @@ const operationsOnOrders = {
 
     fetchOrdersByEmailSortByQuantityAsc: expressAsyncHandler(async (request, response) => {
         let queryUserDb = {
-            "emailID": { $regex: request.body.emailID }
+            "email": { $regex: request.body.email }
         }
         const result = await userDb.findOne(queryUserDb);
         if (result && result.order_bucket.length > 0) {
@@ -109,7 +109,7 @@ const operationsOnOrders = {
 
     fetchOrdersByEmailSortByQuantityDesc: expressAsyncHandler(async (request, response) => {
         let queryUserDb = {
-            "emailID": { $regex: request.body.emailID }
+            "email": { $regex: request.body.email }
         }
         const result = await userDb.findOne(queryUserDb);
         if (result && result.order_bucket.length > 0) {
@@ -124,7 +124,7 @@ const operationsOnOrders = {
 
     deleteAnOrder: expressAsyncHandler(async (request, response) => {
         let queryUserDb = {
-            "emailID": { $regex: request.body.emailID }
+            "email": { $regex: request.body.email }
         };
         await userDb.findOneAndUpdate(queryUserDb, { $pull: { "order_bucket": { "itemName": request.body.itemName } } })
             .then(() => response.json("deleted"))
@@ -135,7 +135,7 @@ const operationsOnOrders = {
 const operationsOnReorders = {
     fetchReordersByEmail: expressAsyncHandler(async (request, response) => {
         let queryUserDb = {
-            "emailID": { $regex: request.body.emailID }
+            "email": { $regex: request.body.email }
         }
         const result = await userDb.findOne(queryUserDb);
         if (result && result.reorder_bucket.length > 0) {
@@ -150,7 +150,7 @@ const operationsOnReorders = {
 
     fetchReordersByEmailSortByPriceAsc: expressAsyncHandler(async (request, response) => {
         let queryUserDb = {
-            "emailID": { $regex: request.body.emailID }
+            "email": { $regex: request.body.email }
         }
         const result = await userDb.findOne(queryUserDb);
         if (result && result.order_bucket.length > 0) {
@@ -165,7 +165,7 @@ const operationsOnReorders = {
 
     fetchReordersByEmailSortByPriceDesc: expressAsyncHandler(async (request, response) => {
         let queryUserDb = {
-            "emailID": { $regex: request.body.emailID }
+            "email": { $regex: request.body.email }
         }
         const result = await userDb.findOne(queryUserDb);
         if (result && result.order_bucket.length > 0) {
@@ -180,7 +180,7 @@ const operationsOnReorders = {
 
     fetchReordersByEmailSortByQuantityAsc: expressAsyncHandler(async (request, response) => {
         let queryUserDb = {
-            "emailID": { $regex: request.body.emailID }
+            "email": { $regex: request.body.email }
         }
         const result = await userDb.findOne(queryUserDb);
         if (result && result.order_bucket.length > 0) {
@@ -195,7 +195,7 @@ const operationsOnReorders = {
 
     fetchReordersByEmailSortByQuantityDesc: expressAsyncHandler(async (request, response) => {
         let queryUserDb = {
-            "emailID": { $regex: request.body.emailID }
+            "email": { $regex: request.body.email }
         }
         const result = await userDb.findOne(queryUserDb);
         if (result && result.order_bucket.length > 0) {
@@ -210,7 +210,7 @@ const operationsOnReorders = {
 
     deleteAnReorder: expressAsyncHandler(async (request, response) => {
         let queryUserDb = {
-            "emailID": { $regex: request.body.emailID }
+            "email": { $regex: request.body.email }
         };
         await userDb.findOneAndUpdate(queryUserDb, { $pull: { "reorder_bucket": { "itemName": request.body.itemName } } })
             .then(() => response.json("deleted"))
@@ -219,9 +219,9 @@ const operationsOnReorders = {
 }
 
 const drivers = {
-    addToReorderBucket_UserDB: expressAsyncHandler(async (order, emailID) => {
+    addToReorderBucket_UserDB: expressAsyncHandler(async (order, email) => {
         let queryUserDb = {
-            "emailID": { $regex: emailID },
+            "email": { $regex: email },
             "reorder_bucket.itemName": { $regex: order.itemName }
         };
         const reorderExist = await userDb.findOne(queryUserDb);
@@ -234,7 +234,7 @@ const drivers = {
                 .catch(err => { console.log("Error : " + err) })
         }
         else {
-            let userExist = await userDb.findOne({ "emailID": { $regex: emailID } });
+            let userExist = await userDb.findOne({ "email": { $regex: email } });
             await userDb.findByIdAndUpdate(userExist._id, { $push: { reorder_bucket: order } }, { new: true })
                 .then(() => {
                     console.log("Successfully added in the reorder bucket");
@@ -243,9 +243,9 @@ const drivers = {
         }
     }),
 
-    addToOrderBucket_UserDB: expressAsyncHandler(async (order, emailID) => {
+    addToOrderBucket_UserDB: expressAsyncHandler(async (order, email) => {
         let queryUserDb = {
-            "emailID": { $regex: emailID },
+            "email": { $regex: email },
             "order_bucket.itemName": { $regex: order.itemName }
         };
         const orderExist = await userDb.findOne(queryUserDb);
@@ -258,7 +258,7 @@ const drivers = {
                 .catch(err => { console.log("Error : " + err) })
         }
         else {
-            let userExist = await userDb.findOne({ "emailID": { $regex: emailID } });
+            let userExist = await userDb.findOne({ "email": { $regex: email } });
             await userDb.findByIdAndUpdate(userExist._id, { $push: { order_bucket: order } }, { new: true })
                 .then(() => {
                     console.log("Successfully added in the reorder bucket");

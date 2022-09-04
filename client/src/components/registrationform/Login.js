@@ -11,10 +11,11 @@ const LoginForm = () => {
   const Navigate=useNavigate()
   const LoginNow = async (e) => {
     e.preventDefault();
-    const newUser = {
+    let newUser = {
       email,
       password
     }
+    
     try {
       const newData = await axios.post(
         "http://localhost:5000/api/users/login",
@@ -25,6 +26,8 @@ const LoginForm = () => {
       return;
     }
     toast("login success")
+    localStorage.setItem('user',newUser.email)
+    
     Navigate("/viewmedicine")
   }
   return (
