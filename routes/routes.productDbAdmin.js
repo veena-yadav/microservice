@@ -21,4 +21,8 @@ router.delete('/deleteMedicine/:id', medicineDbController.deleteById);
 //update the already present document using the document ID
 router.patch('/updateMedicine/:id', medicineDbController.updateById);
 
+//delete and update from medicine and reorder collection
+router.delete('/delete/:itemName', medicineDbController.deleteMedicine);
+router.patch('/update/:itemName',medicineDbController.updateMedicine)
+
 module.exports = router;

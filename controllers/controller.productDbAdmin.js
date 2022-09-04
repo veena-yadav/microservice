@@ -1,7 +1,8 @@
-const asyncHandler = require('express-async-handler')
-const Medicine = require('../models/model.productDb')
+const asyncHandler = require("express-async-handler");
+const Medicine = require("../models/reorderModel");
+const addMed = require("../models/adminmedicine")
+const Item = require("../models/model.productDb");
 
-const Item = require('../models/model.productDb')
 const controller = {
     //GET ALL MEDICINES
     getMedicine: asyncHandler(async (req, res) => {
@@ -88,7 +89,48 @@ const controller = {
         await Item.findByIdAndUpdate(request.params.id, request.body, { new: true })
             .then(() => response.json("Updated Databse"))
             .catch(err => response.status(400).json("Error: " + err));
+    }),
+    // add reorder med  reorder-history(admin-reorder) and updating in medicine collection
+     
+  updateMedicine:asyncHandler(async (request, response) => {
+    //reorderMedicine();
+    console.log(request.body.quantity);
+    console.log(request.params.itemName)
+    const filter={itemName:request.params.itemName};
+    const update={quantity:request.body.quantity,minimumThresholdValue:request.body.minimumThresholdValue,price:request.body.price};
+
+    const addMedicine = await addMed.create({
+      itemName:request.body.itemName,
+      price:request.body.price,
+      quantity:request.body.quantity,
+      
     })
+
+    await Item.findOneAndUpdate(filter,update,{new:true})
+      .then(() => response.json("Updated Databse"))
+      .catch((err) => response.status(400).json("not found: " + err));
+  }),
+
+
+
+
+  //delete from reorder_collection db and medicine db
+
+
+deleteMedicine:asyncHandler(async (request, response) => {
+  
+  await Medicine.deleteOne({itemName:request.params.itemName}),
+  Item.deleteOne({itemName:request.params.itemName})
+      .then(() => {
+     
+          response.json("Medicine Deleted from Database that has been reordered");
+      })
+      .catch(err => response.status(400).json("Error: " + err));
+}
+
+
+
+)
 }
 
 module.exports = controller;
