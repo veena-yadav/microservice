@@ -21,3 +21,6 @@ operations on reorder section
 ***/cancelAnReorder***
 
 `///add your apis here///`
+
+get history of reorder by 
+http://localhost:5000/api/admin/getreorderedmedicine

@@ -11,6 +11,8 @@ import Orders from './components/orders';
 import React,{useEffect, useState} from 'react'
 import AdminReorders from './components/adminReorders';
 import SampleComp from './components/samplecomp';
+import AdminReorderedHistory from './components/reorderedMedicine.js';
+
 
 function App() {
   const [usr,setUsr]=useState('')
@@ -32,12 +34,13 @@ function App() {
          <Route path="/adminviewmedicine" element={<AdminMedicineList/>}/>
          <Route path="/adminReorders" element={<AdminReorders/>}/>
          <Route path="/payment" element={<Payment/>}/>
-        
+         <Route path="/getreorderedmedicine" element={<AdminReorderedHistory/>}/>
         <Route path='*' element={<Errorpage/>} />
       </Routes>
     </Router>
     </>
   );
 }
+
 
 export default App;

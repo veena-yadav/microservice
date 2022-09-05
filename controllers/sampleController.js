@@ -39,6 +39,11 @@ const controller = {
             })
             .catch(err => response.status(400).json("Error: " + err));
     }),
+    getreorderMed: asyncHandler(async (req, res) => {
+        const addMedicine = await addMed.find()
+
+        res.status(200).json(addMedicine)
+    }),
 
 }
 module.exports = controller;
