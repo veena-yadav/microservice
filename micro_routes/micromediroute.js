@@ -5,6 +5,7 @@ module.exports = function (app) {
     app.route("/belowthreshold").get(controller.getMedicinebyvalue);
     app.route("/login").post(controller.Login);
     app.route("/getnotification").post(controller.getNotification);
-
+    app.route("/order").post(controller.order);
     app.route("/reordermedicines").post(controller.reorderMed);
+
 }

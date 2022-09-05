@@ -40,6 +40,13 @@ var MedicinDetails = {
       res.send(body)
     })
   },
+  order: function (req, res) {
+    request(url2, function (err, response, body) {
+      
+      producer(body)
+      res.send(body)
+    })
+  },
 
   Login: function (req, res) {
     axios({

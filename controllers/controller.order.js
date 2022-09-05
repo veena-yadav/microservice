@@ -3,6 +3,7 @@ const { response } = require('express');
 const expressAsyncHandler = require('express-async-handler');
 const Item = require('../models/model.productDb');
 const userDb = require('../models/userModel');
+const Medicine = require("../models/reorderModel");
 const medicineDbController = require('../controllers/reorderController');
 
 const controller = {
@@ -20,15 +21,45 @@ const controller = {
                 else {
                     if (medicine.quantity == 0) {
                         drivers.addToReorderBucket_UserDB(element, req.body.email);
-                        medicine.quantity += element.quantity;
+                      //  medicine.quantity += element.quantity;
                       //  medicineDbController.getMedicinebyvalue()
+                      const itemName =medicine.itemName;
+                      const price =medicine.price;
+                      let quantity = element.quantity;
+                      const minimumThresholdValue = medicine.minimumThresholdValue;
+                      let query = {
+                          itemName: { $regex: itemName },
+                      };
+                      Medicine.findOne(query, async (err, result) => {
+                          if (err) {
+                              response.json("Error: " + err);
+                          }
+                          else if (result == null) {
+                              const newMedicine = new Medicine({
+                                  itemName,
+                                  price,
+                                  quantity,
+                                  minimumThresholdValue,
+                              });
+                              await newMedicine
+                                  .save()
+                                  .then(() =>
+                                      res.json(
+                                          "not found"
+                                      )
+                                  )
+                                  .catch((err) => res.status(400).json("Error: " + err));
+                          }
+                      });
 
-                    }
-                    else {
+
+
+                    }  else if(medicine.quantity<=medicine.minimumThresholdValue) {
+                        
                         if (element.quantity <= medicine.quantity) {
                             drivers.addToOrderBucket_UserDB(element, req.body.email);
-                            medicine.quantity -= element.quantity;
-                            drivers.updateMedicineDB(medicine);
+                          //  medicine.quantity -= element.quantity;
+                            //drivers.updateMedicineDB(medicine);
                         }
                         else if (element.quantity > medicine.quantity) {
                             element.quantity -= medicine.quantity;
@@ -36,8 +67,59 @@ const controller = {
                             drivers.addToReorderBucket_UserDB(element, req.body.email);
                             element.quantity = medicine.quantity;
                             drivers.addToOrderBucket_UserDB(element, req.body.email);
-                            medicine.quantity -= element.quantity;
-                            drivers.updateMedicineDB(medicine);
+                          //  medicine.quantity -= element.quantity;
+                            ////drivers.updateMedicineDB(medicine);
+                        }
+
+
+                        const itemName =medicine.itemName;
+                        const price =medicine.price;
+                        let quantity =element.quantity;
+                        const minimumThresholdValue = medicine.minimumThresholdValue;
+                        let query = {
+                            itemName: { $regex: itemName },
+                        };
+                        Medicine.findOne(query, async (err, result) => {
+                            if (err) {
+                                response.json("Error: " + err);
+                            }
+                            else if (result == null) {
+                                const newMedicine = new Medicine({
+                                    itemName,
+                                    price,
+                                    quantity,
+                                    minimumThresholdValue,
+                                });
+                                await newMedicine
+                                    .save()
+                                    .then(() =>
+                                        res.json(
+                                            "not found"
+                                        )
+                                    )
+                                    .catch((err) => res.status(400).json("Error: " + err));
+                            }
+                        });
+
+
+
+
+
+                    }
+                    else {
+                        if (element.quantity <= medicine.quantity) {
+                            drivers.addToOrderBucket_UserDB(element, req.body.email);
+                          //  medicine.quantity -= element.quantity;
+                            //drivers.updateMedicineDB(medicine);
+                        }
+                        else if (element.quantity > medicine.quantity) {
+                            element.quantity -= medicine.quantity;
+                            let required = element.quantity;
+                            drivers.addToReorderBucket_UserDB(element, req.body.email);
+                            element.quantity = medicine.quantity;
+                            drivers.addToOrderBucket_UserDB(element, req.body.email);
+                          //  medicine.quantity -= element.quantity;
+                            ////drivers.updateMedicineDB(medicine);
                         }
                     }
                 }
