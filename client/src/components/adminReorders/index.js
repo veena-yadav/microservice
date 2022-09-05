@@ -21,7 +21,7 @@ import axios from 'axios'
 //   boxShadow: 24,
 //   p: 4,
 // };
-const Orders = () => {
+const AdminReorders = () => {
   const [medicines,setMedicines]=useState([]);
  
   
@@ -46,16 +46,15 @@ const Orders = () => {
 
   useEffect(() => {
     getMedicine()
-  }, [medicines])
+  }, [])
   const getMedicine=async()=>{
     // setLoading(true)
     try {
-      const data= await axios.post('http://localhost:5000/user/getOrdersByEmail',{
-        email: localStorage.getItem('user')
-      })
+      const data= await axios.get('http://localhost:5050/belowthreshold')
+      console.log(data)
       setMedicines(data.data)
     } catch (error) {
-      console.log("error is "+error)
+      console.log("error in reorder "+error)
     }
     // setLoading(false)
   }
@@ -93,4 +92,4 @@ const Orders = () => {
   )
 }
 
-export default Orders
+export default AdminReorders

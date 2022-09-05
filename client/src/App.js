@@ -9,6 +9,7 @@ import AdminForm from './components/adminlogin';
 import AdminMedicineList from './components/adminmedicinelist';
 import Orders from './components/orders';
 import React,{useEffect, useState} from 'react'
+import AdminReorders from './components/adminReorders';
 
 function App() {
   const [usr,setUsr]=useState('')
@@ -27,6 +28,8 @@ function App() {
         <Route path='/orders'  element={<Orders/>}/>
         <Route path='/adminlogin'  element={<AdminForm/>}/>
          <Route path="/adminviewmedicine" element={<AdminMedicineList/>}/>
+         <Route path="/adminReorders" element={<AdminReorders/>}/>
+         <Route path="/payment" element={<Payment/>}/>
         <Route path='*' element={<Errorpage/>} />
       </Routes>
     </Router>

@@ -37,7 +37,7 @@ var MedicinDetails = {
 
       // }, 6000); res.send(body)
       producer(body)
-      //res.send(body)
+      res.send(body)
     })
   },
 

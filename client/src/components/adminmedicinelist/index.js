@@ -15,6 +15,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import Tooltip from '@mui/material/Tooltip';
 import TextField from '@mui/material/TextField';
+import PointOfSaleIcon from '@mui/icons-material/PointOfSale';
+import {useNavigate} from 'react-router-dom'
 
 const style = {
   position: 'absolute',
@@ -41,6 +43,7 @@ const AdminMedicineList = () => {
   const [SelectedItemId, setSelectedItemId] = useState(0)
   const [operation, setOperation] = useState('Edit')
   const [searchSelected,setSearchSelected]=useState(false)
+  const navigate=useNavigate()
   const handleOpen = () => {
     setOpen(true)
   };
@@ -275,6 +278,20 @@ const AdminMedicineList = () => {
           }}
         >
           <SearchIcon/>
+        </Fab>
+      </Tooltip>
+      <Tooltip title="Reorder Medicine" style={{ backgroundColor: "red" }} placement="left">
+        <Fab color="primary" aria-label="Reorder Medicine" style={{
+          position: 'fixed',
+          top: '160px',
+          right: '100px'
+         
+        }}
+         onClick={()=>{
+          navigate('/adminReorders')
+         }}
+        >
+          <PointOfSaleIcon/>
         </Fab>
       </Tooltip>
     </div>
