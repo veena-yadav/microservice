@@ -9,11 +9,11 @@ const kafka = new Kafka({
 const producer = kafka.producer()
 producer.connect()
 module.exports = function (message) {
-    console.log(message[0])
+    // console.log(message[0])
 
     const msg = {
         from: "telstrakafkanetworking2@gmail.com",
-        to: "deshmukhmanasi9@gmail.com",
+        to: "kamatsayush@gmail.com",
         subject: "Reordering.....",
         text: "Reorder Below medicines ",
         html: "<b>" + message + "</b>",
@@ -25,11 +25,19 @@ module.exports = function (message) {
             value: message, data: nodemailer.createTransport({
                 service: 'gmail',
                 auth: {
+<<<<<<< HEAD
                      user:"telstrakafkanetworking2@gmail.com",
                      pass:"yznqnswnzohcdisw",
 
                   //  user: process.env.EID,
                     //pass: process.env.PASS,
+=======
+                    user:"telstrakafkanetworking2@gmail.com",
+                    pass:"yznqnswnzohcdisw",
+
+                    // user: process.env.EID,
+                    // pass: process.env.PASS,
+>>>>>>> 80e16d01cfe9e6692285f40e24f459b7007325fc
                     port: 465,
                     host: "smtp.gmail.com"
                 }
