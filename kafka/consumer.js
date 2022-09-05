@@ -7,7 +7,7 @@ const kafka = new Kafka({
 
 const consumer = kafka.consumer({ groupId: 'mygrp' })
 consumer.connect()
-consumer.subscribe({ topic: 'reorder2', fromBeginning: true })
+consumer.subscribe({ topic: 'reorder', fromBeginning: true })
 
 
 module.exports = function () {

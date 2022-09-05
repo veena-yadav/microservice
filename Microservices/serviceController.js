@@ -9,8 +9,12 @@ const request = require("request");
 const url = "http://localhost:5000/api/medicine/view";
 
 const loginurl = "http://localhost:5000/api/admin/login";
-const url2 = "http://localhost:5000/api/reorder/";
+const url2 = "http://localhost:5000/user/placeOrder";
+const url3 = "http://localhost:5000/api/reorder";
 const reorderurl = "http://localhost:5000/api/admin/reordermedicine"
+
+
+
 
 var MedicinDetails = {
   getMedicine: function (req, res) {
@@ -29,24 +33,44 @@ var MedicinDetails = {
       });
   },
   //belothreshold
-  getMedicinebyvalue: function (req, res) {
-    request(url2, function (err, response, body) {
-      // setInterval(() => {
-      //   producer(body)
-      //   //  console.log()
+   getMedicinebyvalue: function (req, res) {
+   request(url3, function (err, response, body) {
+ //setInterval(() => {
+  //       producer(body)
+       //   //  console.log()
 
-      // }, 6000); res.send(body)
-      producer(body)
+       // }, 6000); res.send(body)
+     //  producer(body)
       res.send(body)
-    })
+     })
   },
-  order: function (req, res) {
-    request(url2, function (err, response, body) {
-      
-      producer(body)
-      res.send(body)
-    })
-  },
+  // order: function (req, res) {
+  //   axios({
+  //     method: "post",
+  //     url: url2,
+  //     data: req.body,
+  //     withCredentials: true,
+  //   }).then((e) => {
+  //     producer(req.body.order)
+  //     res.send("succcesssfull");
+  //   });
+  
+  // },
+
+  order:function (req, res) {
+    request.post({
+
+url:url2,
+json:true,
+body:req.body
+
+
+    }, function (err, response, body) {
+      producer(JSON.stringify(body))
+       console.log(body)
+       res.send(body)
+      })
+   },
 
   Login: function (req, res) {
     axios({

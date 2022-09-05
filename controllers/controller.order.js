@@ -8,6 +8,13 @@ const medicineDbController = require('../controllers/reorderController');
 
 const controller = {
     PlaceOrder: expressAsyncHandler(async (req, res) => {
+
+
+        const items = await Item.find({
+            $expr: { $gt: ["$minimumThresholdValue", "$quantity"] },
+        });
+
+        console.log(items)
         req.body.orders.forEach(element => {
             let query = {
                 "itemName": { $regex: element.itemName }
@@ -15,14 +22,18 @@ const controller = {
 
             //finding medicine name in the medcicine database
             Item.findOne(query, expressAsyncHandler(async (err, medicine) => {
+                console.log(medicine)
+        
                 if (err) {
                     res.json("Error: " + err);
                 }
                 else {
                     if (medicine.quantity == 0) {
-                        drivers.addToReorderBucket_UserDB(element, req.body.email);
+                        await drivers.addToReorderBucket_UserDB(element, req.body.email);
                       //  medicine.quantity += element.quantity;
                       //  medicineDbController.getMedicinebyvalue()
+                      console.log(medicine) 
+                     
                       const itemName =medicine.itemName;
                       const price =medicine.price;
                       let quantity = element.quantity;
@@ -57,18 +68,18 @@ const controller = {
                     }  else if(medicine.quantity<=medicine.minimumThresholdValue) {
                         
                         if (element.quantity <= medicine.quantity) {
-                            drivers.addToOrderBucket_UserDB(element, req.body.email);
+                            await drivers.addToOrderBucket_UserDB(element, req.body.email);
                           //  medicine.quantity -= element.quantity;
-                            //drivers.updateMedicineDB(medicine);
+                            //await drivers.updateMedicineDB(medicine);
                         }
                         else if (element.quantity > medicine.quantity) {
                             element.quantity -= medicine.quantity;
                             let required = element.quantity;
-                            drivers.addToReorderBucket_UserDB(element, req.body.email);
+                            await drivers.addToReorderBucket_UserDB(element, req.body.email);
                             element.quantity = medicine.quantity;
-                            drivers.addToOrderBucket_UserDB(element, req.body.email);
+                            await drivers.addToOrderBucket_UserDB(element, req.body.email);
                           //  medicine.quantity -= element.quantity;
-                            ////drivers.updateMedicineDB(medicine);
+                            ////await drivers.updateMedicineDB(medicine);
                         }
 
 
@@ -108,24 +119,25 @@ const controller = {
                     }
                     else {
                         if (element.quantity <= medicine.quantity) {
-                            drivers.addToOrderBucket_UserDB(element, req.body.email);
+                            await drivers.addToOrderBucket_UserDB(element, req.body.email);
                           //  medicine.quantity -= element.quantity;
-                            //drivers.updateMedicineDB(medicine);
+                            //await drivers.updateMedicineDB(medicine);
                         }
                         else if (element.quantity > medicine.quantity) {
                             element.quantity -= medicine.quantity;
                             let required = element.quantity;
-                            drivers.addToReorderBucket_UserDB(element, req.body.email);
+                            await drivers.addToReorderBucket_UserDB(element, req.body.email);
                             element.quantity = medicine.quantity;
-                            drivers.addToOrderBucket_UserDB(element, req.body.email);
+                            await drivers.addToOrderBucket_UserDB(element, req.body.email);
                           //  medicine.quantity -= element.quantity;
-                            ////drivers.updateMedicineDB(medicine);
+                            ////await drivers.updateMedicineDB(medicine);
                         }
                     }
                 }
             }))
         });
-        res.json("Operation Successful");
+        res.send(items)
+       // res.end()
     }),
 
 }
