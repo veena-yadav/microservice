@@ -11,6 +11,8 @@ import Typography from '@mui/material/Typography';
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
 import {useNavigate} from 'react-router-dom'
+import SearchIcon from '@mui/icons-material/Search';
+import Tooltip from '@mui/material/Tooltip';
 const style = {
   position: 'absolute',
   top: '50%',
@@ -28,6 +30,7 @@ const MedicineList = () => {
   const [medicinesCart,setMedicineCart]=useState(new Map());
   const [loading , setLoading]=useState(false);
   const [open, setOpen] = React.useState(false);
+  const [searchModalOpen,setSearchModalOpen]=useState(false)
   const [selectedMedicine,setSelectedMedicine]=useState('')
   const [selectedMedicineQuantity,setSelectedMedicineQuantity]=useState(0)
   const [selectedMedicinePrice,setSelectedMedicinePrice]=useState(0);
@@ -48,6 +51,13 @@ const MedicineList = () => {
 
   }
   const handleOpen = () => {setOpen(true)
+
+  };
+  const handleSearchModalOpen = () => {setSearchModalOpen(true)
+
+  };
+  const handleSearchModalClose = () => {setSearchModalOpen(false)
+
   };
   const handleClose = () => setOpen(false);
   useEffect(() => {
@@ -65,6 +75,11 @@ const MedicineList = () => {
   }
   return (
     <div>
+      <h1 style={{
+        paddingTop:"80px",
+        textAlign:"center"
+       
+      }}>Available Medicine</h1>
       <Modal
         open={open}
         onClose={handleClose}
@@ -107,7 +122,9 @@ const MedicineList = () => {
         
         </Box>
       </Modal>
-    <div className='medicineTableDiv'>
+    <div className='medicineTableDiv' style={{
+        marginTop:"-60px"
+      }}>
     <table className='medicineTable'>
     <thead>
       <tr>
@@ -161,6 +178,19 @@ const MedicineList = () => {
         >
           <AddShoppingCartIcon />
         </Fab>
+        <Tooltip title="Search Medicine">
+<Fab color="primary" aria-label="search"
+ style={{
+  position: 'fixed',
+  top: '160px',
+  right: '100px'
+
+}}
+>
+  <SearchIcon/>
+</Fab>
+
+        </Tooltip>
   </div>
   )
 }
