@@ -117,7 +117,10 @@ const AdminMedicineList = () => {
   }
   return (
     <div >
-
+      <h1 style={{
+        paddingTop:"80px",
+        textAlign:"center"
+      }}>View Medicine</h1>
       <Modal
         open={open}
         onClose={handleClose}
@@ -192,7 +195,9 @@ const AdminMedicineList = () => {
        
       </Modal>
 
-      <div className='medicineTableDiv'>
+      <div className='medicineTableDiv' style={{
+        marginTop:"-60px"
+      }}>
       
         <table className='medicineTable'>
 
@@ -267,7 +272,7 @@ const AdminMedicineList = () => {
       <Tooltip title="Search Medicine" style={{ backgroundColor: "red" }} placement="left">
         <Fab color="primary" aria-label="Search Medicine" style={{
           position: 'fixed',
-          top: '160px',
+          top: '240px',
           right: '100px'
 
         }}

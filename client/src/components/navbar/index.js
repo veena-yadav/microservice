@@ -8,6 +8,7 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import Tooltip from '@mui/material/Tooltip';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import { Badge } from '@mui/material';
 const Navbar = ({usr}) => {
   const [user,setUser]=useState('')
   const location = useLocation();
@@ -59,7 +60,8 @@ window.addEventListener('storage',()=>{
     color="primary" aria-label="add to shopping cart"
     
     onClick={handleClick}
-    >
+    > <Badge badgeContent={4} color="error"></Badge>
+    
         <NotificationsIcon/>
 
       </IconButton></Tooltip></li>}
@@ -79,7 +81,7 @@ window.addEventListener('storage',()=>{
           'aria-labelledby': 'basic-button',
         }}
       >
-        <MenuItem onClick={handleClose}> <a href="mailto:kamatsayush@gmail.com"> Check Mail</a></MenuItem>
+        <MenuItem onClick={handleClose}><a href="https://mail.google.com/mail" target="_sayush">Check Mail</a> </MenuItem>
        
       </Menu>
 </div>

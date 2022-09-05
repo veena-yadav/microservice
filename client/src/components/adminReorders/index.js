@@ -1,10 +1,13 @@
 import React, { useState,useEffect } from 'react'
 import '../medicinelist/medicinelist.css'
 // import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-// import IconButton from '@mui/material/IconButton';
+ import IconButton from '@mui/material/IconButton';
 // import Modal from '@mui/material/Modal';
 // import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import axios from 'axios'
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import CancelIcon from '@mui/icons-material/Cancel';
+
 // import Box from '@mui/material/Box';
 // import Button from '@mui/material/Button';
 // import Typography from '@mui/material/Typography';
@@ -58,6 +61,20 @@ const AdminReorders = () => {
     }
     // setLoading(false)
   }
+  const RejectMedicine=async(medicineName)=>{
+    console.log(medicineName)
+    try{
+      const delMedi=await axios.delete(`http://localhost:5000/api/medicine/delete/${medicineName}`)
+       
+    
+    }
+    catch(err)
+    {
+      console.log(err)
+    }
+    getMedicine()
+  }
+ 
   return (
     <div>
      
@@ -68,6 +85,9 @@ const AdminReorders = () => {
         <th>  Name </th>
         <th>Price</th>
         <th> Quantity</th>
+        <th>Total Price</th>
+        <th>Accept</th>
+        <th>Reject</th>
        
       </tr>
     </thead>
@@ -78,8 +98,11 @@ const AdminReorders = () => {
           <th> {med.itemName} </th>
           <td>{med.price} </td>
           <td> {med.quantity} </td>
-        
-                 
+          <td>{med.price*med.quantity}</td>
+         <td><IconButton><CheckCircleIcon color="success"/></IconButton></td>
+         <td><IconButton onClick={()=>{
+          RejectMedicine(med.itemName)
+         }}><CancelIcon color="secondary"/></IconButton></td>      
         </tr>
         )
       })}
