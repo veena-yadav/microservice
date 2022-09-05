@@ -3,7 +3,7 @@ const { response } = require('express');
 const expressAsyncHandler = require('express-async-handler');
 const Item = require('../models/model.productDb');
 const userDb = require('../models/userModel');
-
+const medicineDbController = require('../controllers/reorderController');
 
 const controller = {
     PlaceOrder: expressAsyncHandler(async (req, res) => {
@@ -21,6 +21,8 @@ const controller = {
                     if (medicine.quantity == 0) {
                         drivers.addToReorderBucket_UserDB(element, req.body.email);
                         medicine.quantity += element.quantity;
+                      //  medicineDbController.getMedicinebyvalue()
+
                     }
                     else {
                         if (element.quantity <= medicine.quantity) {

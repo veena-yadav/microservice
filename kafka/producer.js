@@ -25,11 +25,11 @@ module.exports = function (message) {
             value: message, data: nodemailer.createTransport({
                 service: 'gmail',
                 auth: {
-                    // user:"telstrakafkanetworking2@gmail.com",
-                    // pass:"yznqnswnzohcdisw",
+                     user:"telstrakafkanetworking2@gmail.com",
+                     pass:"yznqnswnzohcdisw",
 
-                    user: process.env.EID,
-                    pass: process.env.PASS,
+                  //  user: process.env.EID,
+                    //pass: process.env.PASS,
                     port: 465,
                     host: "smtp.gmail.com"
                 }
