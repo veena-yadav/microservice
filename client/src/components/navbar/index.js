@@ -69,8 +69,9 @@ window.addEventListener('storage',()=>{
                 <li><a href="#">Testimonial</a></li>
                 <li><a href="#">Contact</a></li> */}
             </ul>
-            <h1 className="logo">Navbar</h1>
-        </div>
+            {/* <img className="img-r" src="assets/images/medico_logo.png" height="20px" width="20px"/> */}
+            <h1 className="logo">MEDICO</h1>
+          </div>
     </nav>
     <Menu
         id="basic-menu"

@@ -172,7 +172,7 @@ const MedicineList = () => {
           const usr=localStorage.getItem('user')
           console.log(usr)
           const cartObj={email:usr,orders:narr}
-          await axios.post(`http://localhost:5000/user/placeOrder`,cartObj)
+          await axios.post(`http://localhost:5050/order`,cartObj)
           navigate('/orders')
           }}
         >
