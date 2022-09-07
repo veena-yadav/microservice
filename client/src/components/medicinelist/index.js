@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from 'react'
+import React, { useState,useEffect,useContext } from 'react'
 import './medicinelist.css'
 // import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import IconButton from '@mui/material/IconButton';
@@ -13,6 +13,7 @@ import AddIcon from '@mui/icons-material/Add';
 import {useNavigate} from 'react-router-dom'
 import SearchIcon from '@mui/icons-material/Search';
 import Tooltip from '@mui/material/Tooltip';
+import { UserContext } from '../../contextapi/usercontext';
 const style = {
   position: 'absolute',
   top: '50%',
@@ -25,7 +26,7 @@ const style = {
   p: 4,
 };
 const MedicineList = () => {
-
+  const { user } = useContext(UserContext);
   const [medicines,setMedicines]=useState([]);
   const [medicinesCart,setMedicineCart]=useState(new Map());
   const [loading , setLoading]=useState(false);
@@ -169,11 +170,11 @@ const MedicineList = () => {
           var narr=[]
           arrx.map((i)=>narr.push(i.value))
           console.log(narr)
-          const usr=localStorage.getItem('user')
-          console.log(usr)
-          const cartObj={email:usr,orders:narr}
+          // const usr=localStorage.getItem('user')
+          // console.log(usr)
+          const cartObj={email:user.email,orders:narr}
           await axios.post(`http://localhost:5050/order`,cartObj)
-          navigate('/orders')
+          navigate('/orders') 
           }}
         >
           <AddShoppingCartIcon />

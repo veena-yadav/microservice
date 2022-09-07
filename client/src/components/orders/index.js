@@ -1,10 +1,12 @@
-import React, { useState,useEffect } from 'react'
+import React, { useState,useEffect ,useContext } from 'react'
 import '../medicinelist/medicinelist.css'
 // import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 // import IconButton from '@mui/material/IconButton';
 // import Modal from '@mui/material/Modal';
 // import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import axios from 'axios'
+import { UserContext } from '../../contextapi/usercontext'
+
 // import Box from '@mui/material/Box';
 // import Button from '@mui/material/Button';
 // import Typography from '@mui/material/Typography';
@@ -24,7 +26,7 @@ import axios from 'axios'
 const Orders = () => {
   const [medicines,setMedicines]=useState([]);
  
-  
+  const {auth, admin , user}=useContext(UserContext);  
 
 
   
@@ -51,7 +53,7 @@ const Orders = () => {
     // setLoading(true)
     try {
       const data= await axios.post('http://localhost:5000/user/getOrdersByEmail',{
-        email: localStorage.getItem('user')
+        email: user.email
       })
       setMedicines(data.data)
     } catch (error) {

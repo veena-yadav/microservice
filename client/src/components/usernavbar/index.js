@@ -12,8 +12,8 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import { UserContext } from '../../contextapi/usercontext';
 import { useNavigate } from 'react-router-dom';
 // import { Badge } from '@mui/material';
-const Navbar = ({usr}) => {
-  const [user,setUser]=useState('')
+const Navbar = () => {
+  
   const location = useLocation();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -25,13 +25,9 @@ const Navbar = ({usr}) => {
   };
 useEffect(()=>{
   console.log(location.pathname)
-window.addEventListener('storage',()=>{
-  setUser(localStorage.getItem('user'))
-
-})
 
 },[])
-const { setAuth } = useContext(UserContext);
+const { setAuth ,user } = useContext(UserContext);
 const navigate = useNavigate();
 
 const logout = async () => {
@@ -69,7 +65,7 @@ const logout = async () => {
         <LogoutIcon onClick={logout}/>
       </IconButton></li>
       <li>
-        <Tooltip title={usr}><IconButton color="primary" aria-label="add to shopping cart">
+        <Tooltip title={user.email}><IconButton color="primary" aria-label="add to shopping cart">
         <AccountCircleIcon />
 
       </IconButton></Tooltip></li>
