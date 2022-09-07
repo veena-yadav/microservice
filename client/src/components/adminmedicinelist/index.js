@@ -17,6 +17,8 @@ import Tooltip from '@mui/material/Tooltip';
 import TextField from '@mui/material/TextField';
 import PointOfSaleIcon from '@mui/icons-material/PointOfSale';
 import {useNavigate} from 'react-router-dom'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const style = {
   position: 'absolute',
@@ -68,6 +70,7 @@ const AdminMedicineList = () => {
     } catch (error) {
       console.log(error)
     }
+    toast("Medicine Deleted")
     getMedicine()
   }
   const findMedicine=async(val)=>{
@@ -94,6 +97,7 @@ const AdminMedicineList = () => {
     catch (err) {
       console.log(err)
     }
+    toast("Medicine Updated")
     getMedicine()
     setOpen(false)
   }
@@ -112,10 +116,12 @@ const AdminMedicineList = () => {
     } catch (error) {
       console.log(error)
     }
+    toast("New medicine added")
     getMedicine()
     setOpen(false)
   }
   return (
+    <>
     <div >
       <h1 style={{
         paddingTop:"80px",
@@ -300,6 +306,8 @@ const AdminMedicineList = () => {
         </Fab>
       </Tooltip>
     </div>
+    <ToastContainer/>
+    </>
   )
 }
 
