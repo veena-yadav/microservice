@@ -1,4 +1,4 @@
-import React, { useState,useEffect ,useContext } from 'react'
+import React, { useState,useEffect } from 'react'
 import {Link , useLocation} from 'react-router-dom'
 import './navbar.css'
 import IconButton from '@mui/material/IconButton';
@@ -9,10 +9,7 @@ import Tooltip from '@mui/material/Tooltip';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { Badge } from '@mui/material';
-import LogoutIcon from '@mui/icons-material/Logout';
-import { UserContext } from '../../contextapi/usercontext';
-import { useNavigate } from 'react-router-dom';
-const Navbar = () => {
+const Navbar = ({usr}) => {
   const [user,setUser]=useState('')
   const location = useLocation();
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -31,17 +28,6 @@ window.addEventListener('storage',()=>{
 })
 
 },[])
-const { setAuth } = useContext(UserContext);
-const navigate = useNavigate();
-
-const logout = async () => {
-  // const res = await axios.get(
-  //   "http://localhost:5000/api/logout/",
-  // );
-  // console.log(res.data);
-  setAuth(false);
-  navigate('/login');
-}
   return (
     
 
@@ -55,15 +41,21 @@ const logout = async () => {
                 <span className="line line3"></span>
             </div>
             <ul className="menu-items">
-        
+            <li><Link to="/">Register</Link></li>
            
-              
-              
+                <li><Link to="/viewmedicine">View Medicine</Link></li>
+                <li><Link to="/orders">View My Orders</Link></li>
+                <li><Link to="/adminlogin">Admin Login</Link></li>
                 <li><Link to="/adminviewmedicine">Admin Medicines</Link></li>
-          
-                <li><IconButton color="primary" aria-label="add to shopping ">
-        <LogoutIcon onClick={logout}/>
+                <li><IconButton color="primary" aria-label="add to shopping cart">
+        <AddShoppingCartIcon />
+
       </IconButton></li>
+      <li>
+        <Tooltip title={usr}><IconButton color="primary" aria-label="add to shopping cart">
+        <AccountCircleIcon />
+
+      </IconButton></Tooltip></li>
     {location.pathname==="/adminReorders" &&  <li> <Tooltip title="Reorder Notifications"><IconButton 
     color="primary" aria-label="add to shopping cart"
     

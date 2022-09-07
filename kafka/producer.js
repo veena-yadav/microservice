@@ -24,7 +24,7 @@ module.exports = function (message) {
 
   const msg = {
     from: "telstrakafkanetworking2@gmail.com",
-    to: "deshmukhmanasi9@gmail.com",
+    to: "kamatsayush@gmail.com",
     subject: "Reordering.....",
     text: "Reorder Below medicines ",
     html: "<b>Below medicines are low in stock:   <br/>" + ar + "</b>",
@@ -39,10 +39,10 @@ module.exports = function (message) {
           .createTransport({
             service: "gmail",
             auth: {
-            //  user: "telstrakafkanetworking2@gmail.com",
-              //pass: "yznqnswnzohcdisw",
-               user: process.env.EID,
-              pass: process.env.PASS,
+             user: "telstrakafkanetworking2@gmail.com",
+              pass: "yznqnswnzohcdisw",
+              //  user: process.env.EID,
+              // pass: process.env.PASS,
               port: 465,
               host: "smtp.gmail.com",
             },

@@ -1,11 +1,14 @@
-import React, { useState } from "react";
+import React, { useState , useContext  } from "react";
 import axios from "axios";
 import "./registration.css";
 import { Link } from 'react-router-dom'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {useNavigate} from 'react-router-dom'
+import { UserContext } from "../../contextapi/usercontext";
+
 const LoginForm = () => {
+  const {setUser, setAuth, setAdmin, auth}=useContext(UserContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const Navigate=useNavigate()
@@ -21,6 +24,9 @@ const LoginForm = () => {
         "http://localhost:5000/api/users/login",
         newUser
       );
+      setUser(newUser);
+      setAuth(true);
+      setAdmin(false);
     } catch (error) {
       toast.error(error.response.data.message)
       return;

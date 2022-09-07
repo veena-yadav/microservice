@@ -1,14 +1,17 @@
-import React, { useState } from "react";
+import React, { useState , useContext } from "react";
 import axios from "axios";
 import "./adminlogin.css";
 import { Link } from 'react-router-dom'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {useNavigate} from 'react-router-dom'
+import { UserContext } from "../../contextapi/usercontext";
 const AdminForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const Navigate=useNavigate()
+  
+  const {setUser,setAdmin, setAuth}=useContext(UserContext)
   const LoginNow = async (e) => {
     e.preventDefault();
     const newAdmin = {
@@ -20,6 +23,9 @@ const AdminForm = () => {
         "http://localhost:5000/api/admin/login",
         newAdmin
       );
+      setUser(newAdmin);
+      setAuth(true);
+      setAdmin(true);
     } catch (error) {
       toast.error(error.response.data.message)
       return;
