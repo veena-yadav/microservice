@@ -9,6 +9,12 @@ const controller = {
 
         res.status(200).json(items)
     }),
+    //reordered admin medicine get 
+    getReorderedmed:asyncHandler(async (req, res) => {
+        const items = await addMed.find()
+
+        res.status(200).json(items)
+    }),
 
     //ADDING ITEM
     addSample: asyncHandler(async (req, res) => {

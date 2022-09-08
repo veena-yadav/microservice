@@ -47,6 +47,7 @@ window.addEventListener('storage',()=>{
                 <li><Link to="/orders">View My Orders</Link></li>
                 <li><Link to="/adminlogin">Admin Login</Link></li>
                 <li><Link to="/adminviewmedicine">Admin Medicines</Link></li>
+                <li><Link to="/getreorderedmedicine">Admin reorders Medicines</Link></li>
                 <li><IconButton color="primary" aria-label="add to shopping cart">
         <AddShoppingCartIcon />
 

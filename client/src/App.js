@@ -15,6 +15,7 @@ import { UserContext } from './contextapi/usercontext';
 import PrivateRoute from './privateroutes/privateroutes';
 import UserNavbar from './components/usernavbar';
 import LoginNavbar from './components/loginnavbar';
+import AdminReorderedHistory from './components/reorderedmedicine/index.js'
 function App() {
   const [usr,setUsr]=useState('')
   const {auth, admin , user}=useContext(UserContext);
@@ -37,7 +38,7 @@ function App() {
          <Route path="/adminviewmedicine" element={<PrivateRoute><AdminMedicineList/></PrivateRoute>}/>
          <Route path="/adminReorders" element={<PrivateRoute><AdminReorders/></PrivateRoute>}/>
          <Route path="/payment" element={<PrivateRoute><Payment/></PrivateRoute>}/>
-        
+         <Route path="/getreorderedmedicine" element={<AdminReorderedHistory/>}/>
         <Route path='*' element={<Errorpage/>} />
       </Routes>
     </Router>
