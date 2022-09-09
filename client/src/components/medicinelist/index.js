@@ -14,6 +14,8 @@ import {useNavigate} from 'react-router-dom'
 import SearchIcon from '@mui/icons-material/Search';
 import Tooltip from '@mui/material/Tooltip';
 import { UserContext } from '../../contextapi/usercontext';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 const style = {
   position: 'absolute',
   top: '50%',
@@ -35,16 +37,21 @@ const MedicineList = () => {
   const [selectedMedicine,setSelectedMedicine]=useState('')
   const [selectedMedicineQuantity,setSelectedMedicineQuantity]=useState(0)
   const [selectedMedicinePrice,setSelectedMedicinePrice]=useState(0);
+  const [selectedMedicineMinimumThreshold, setSelectedMedicineMinimumThreshold]=useState(0);
   const navigate=useNavigate()
-  const  setCart=(sm,smq,smp)=>{
+  const  setCart=(sm,smq,smp,smt)=>{
     
-    
+
 
     // console.log(`${selectedMedicineQuantity} in save button `)
     const newItem={
       itemName:sm,
       quantity:selectedMedicineQuantity,
       price:smp
+    }
+    if(newItem.quantity>smt){
+      toast(`Not all quantity of ${newItem.itemName} available!`)
+      return
     }
     const newArr=medicinesCart.set(selectedMedicine,newItem)
     setMedicineCart(newArr)
@@ -75,6 +82,7 @@ const MedicineList = () => {
     setLoading(false)
   }
   return (
+    <>
     <div>
       <h1 style={{
         paddingTop:"80px",
@@ -113,12 +121,14 @@ const MedicineList = () => {
             <Button color="primary"
             onMouseDown={(e)=>{
               
-              setCart(selectedMedicine,selectedMedicineQuantity,selectedMedicinePrice)
+              setCart(selectedMedicine,selectedMedicineQuantity,selectedMedicinePrice,selectedMedicineMinimumThreshold)
             
               // console.log(medicinesCart)
             }}
             
-            variant="contained">Save</Button>
+            variant="contained"
+            
+            >Save</Button>
             </center>
         
         </Box>
@@ -144,6 +154,7 @@ const MedicineList = () => {
           <td> {med.quantity} </td>
           <td> <IconButton color="primary" onClick={()=>{
             handleOpen()
+            setSelectedMedicineMinimumThreshold(med.minimumThresholdValue)
             setSelectedMedicinePrice(med.price)
             setSelectedMedicine(med.itemName)
           }} aria-label="add to shopping cart">
@@ -193,6 +204,8 @@ const MedicineList = () => {
 
         </Tooltip>
   </div>
+  <ToastContainer/>
+  </>
   )
 }
 
