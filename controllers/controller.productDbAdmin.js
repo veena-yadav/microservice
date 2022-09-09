@@ -69,9 +69,9 @@ const controller = {
                                 response.write("Medicine already availale! Updated the Database")
                                 response.send();
                             })
-                            .catch(err => response.status(400).json("Error: " + err));
+                            // .catch(err => response.status(400).json("Error: " + err));
                     })
-                    .catch(err => response.status(400).json("Error: " + err));
+                    // .catch(err => response.status(400).json("Error: " + err));
             }
         });
     }),
@@ -106,8 +106,6 @@ const controller = {
       
     })
     //addMedicine()
-
-
     await Medicine.deleteOne({itemName:request.params.itemName}),
     await Item.findOneAndUpdate(filter,update,{new:true})
       .then(() => response.json("Updated Databse"))

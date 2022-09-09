@@ -23,4 +23,4 @@ const reorderSchema = mongoose.Schema(
     timestamps: true,
   }
 )
-module.exports = mongoose.model('Reorder Collection', reorderSchema)
+module.exports = mongoose.model('reorder collections', reorderSchema)

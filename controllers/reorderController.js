@@ -28,25 +28,20 @@ const controller = {
                 let query = {
                     itemName: { $regex: itemName },
                 };
+              //  console.log(query)
                 Medicine.findOne(query, async (err, result) => {
                     if (err) {
                         response.json("Error: " + err);
                     }
                     else if (result == null) {
-                        const newMedicine = new Medicine({
+                        const admin = await Medicine.create({
                             itemName,
                             price,
                             quantity,
                             minimumThresholdValue,
-                        });
-                        await newMedicine
-                            .save()
-                            .then(() =>
-                                res.json(
-                                    "not found"
-                                )
-                            )
-                            .catch((err) => res.status(400).json("Error: " + err));
+                        })
+                    
+                       
                     }
                 });
             }
