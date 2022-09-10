@@ -8,30 +8,35 @@ import Errorpage from './components/Errorpage';
 import AdminForm from './components/adminlogin';
 import AdminMedicineList from './components/adminmedicinelist';
 import Orders from './components/orders';
-import React,{useEffect, useState} from 'react'
+import React,{useEffect, useState,useContext} from 'react'
 import AdminReorders from './components/adminReorders';
 import SampleComp from './components/samplecomp';
-
+import { UserContext } from './contextapi/usercontext';
+import PrivateRoute from './privateroutes/privateroutes';
+import UserNavbar from './components/usernavbar';
+import LoginNavbar from './components/loginnavbar';
 function App() {
   const [usr,setUsr]=useState('')
+  const {auth, admin , user}=useContext(UserContext);
   useEffect(()=>{
     setUsr(localStorage.getItem('user'))
   },[])
+  
   return (
     <>
 
     <Router>
+    {auth? (admin?<Navbar/>:<UserNavbar/>):<LoginNavbar/>}
    
-      <Navbar usr={usr}/>
       <Routes>
         <Route path='/'  element={<Registration/>}/>
         <Route path='/login'  element={<LoginForm/>}/>
-        <Route path='/viewmedicine'  element={<MedicineList/>}/>
-        <Route path='/orders'  element={<Orders/>}/>
+        <Route path='/viewmedicine'  element={<PrivateRoute><MedicineList/></PrivateRoute>}/>
+        <Route path='/orders'  element={<PrivateRoute><Orders/></PrivateRoute>}/>
         <Route path='/adminlogin'  element={<AdminForm/>}/>
-         <Route path="/adminviewmedicine" element={<AdminMedicineList/>}/>
-         <Route path="/adminReorders" element={<AdminReorders/>}/>
-         <Route path="/payment" element={<Payment/>}/>
+         <Route path="/adminviewmedicine" element={<PrivateRoute><AdminMedicineList/></PrivateRoute>}/>
+         <Route path="/adminReorders" element={<PrivateRoute><AdminReorders/></PrivateRoute>}/>
+         <Route path="/payment" element={<PrivateRoute><Payment/></PrivateRoute>}/>
         
         <Route path='*' element={<Errorpage/>} />
       </Routes>

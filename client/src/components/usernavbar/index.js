@@ -1,18 +1,18 @@
-import React, { useState,useEffect ,useContext } from 'react'
+import React, { useState,useEffect ,useContext} from 'react'
 import {Link , useLocation} from 'react-router-dom'
 import './navbar.css'
 import IconButton from '@mui/material/IconButton';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import NotificationsIcon from '@mui/icons-material/Notifications';
+// import NotificationsIcon from '@mui/icons-material/Notifications';
 import Tooltip from '@mui/material/Tooltip';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import { Badge } from '@mui/material';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { UserContext } from '../../contextapi/usercontext';
 import { useNavigate } from 'react-router-dom';
-const Navbar = () => {
+// import { Badge } from '@mui/material';
+const Navbar = ({usr}) => {
   const [user,setUser]=useState('')
   const location = useLocation();
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -55,38 +55,31 @@ const logout = async () => {
                 <span className="line line3"></span>
             </div>
             <ul className="menu-items">
-        
-           
-              
-              
-                <li><Link to="/adminviewmedicine">Admin Medicines</Link></li>
           
-                <li><IconButton color="primary" aria-label="add to shopping ">
+           
+                <li><Link to="/viewmedicine">View Medicine</Link></li>
+                <li><Link to="/orders">View My Orders</Link></li>
+                
+                
+                <li><IconButton color="primary" aria-label="add to shopping cart">
+        <AddShoppingCartIcon />
+      
+      </IconButton></li>
+      <li><IconButton color="primary" aria-label="Logout">
         <LogoutIcon onClick={logout}/>
       </IconButton></li>
-    {location.pathname==="/adminReorders" &&  <li> <Tooltip title="Reorder Notifications"><IconButton 
-    color="primary" aria-label="add to shopping cart"
-    
-    onClick={handleClick}
-    > <Badge badgeContent={4} color="error"></Badge>
-    
-        <NotificationsIcon/>
+      <li>
+        <Tooltip title={usr}><IconButton color="primary" aria-label="add to shopping cart">
+        <AccountCircleIcon />
 
-        </IconButton></Tooltip></li>}
-
-{/* <li><a href="#">Menu</a></li>
-
-<li><a href="#">Testimonial</a></li>
-
-<li><a href="#">Contact</a></li> */}
-
-</ul>
-
-<h1 className="logo">Navbar</h1>
-
-</div>
-
-</nav>
+      </IconButton></Tooltip></li>
+  
+              
+            </ul>
+            {/* <img className="img-r" src="assets/images/medico_logo.png" height="20px" width="20px"/> */}
+            <h1 className="logo">MEDICO</h1>
+          </div>
+    </nav>
     <Menu
         id="basic-menu"
         anchorEl={anchorEl}
