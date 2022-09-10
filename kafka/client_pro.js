@@ -9,40 +9,35 @@ const kafka = new Kafka({
 const producer = kafka.producer();
 producer.connect();
 module.exports = function (message) {
-  //   console.log(message);
-  var a = JSON.parse(message);
-  //console.log(a[1].itemName)
-  var ar = [];
+   
+   var a=JSON.stringify(message)
+  
+  //  console.log("msg"+message[0]);
+for(let i=1;i<message.length;i++)
+{
 
-  //var n=message.length;
-  //console.log(n)
-  for (let it in a) {
-    var m1 = a[it].itemName;
-    ar.push(m1);
-  }
-  //console.log(ar)
 
   const msg = {
     from: "telstrakafkanetworking2@gmail.com",
-    to: "kamatsayush@gmail.com",
-    subject: "Reordering.....",
+    to: message[i],
+    subject: "Vicks ki goli lo hich khich dur kro",
     text: "Reorder Below medicines ",
-    html: "<b>Below medicines are low in stock:   <br/>" + ar + "</b>",
+    html: "<b>Bhailog medicine "+message[0]+" available hai...<br/></b>",
   };
 
   producer.send({
-    topic: "reorder",
+    topic: "notification",
     messages: [
       {
-        value: JSON.stringify(ar),
+        value: a,
         data: nodemailer
           .createTransport({
             service: "gmail",
             auth: {
-            // user: "telstrakafkanetworking2@gmail.com",
-              //pass: "yznqnswnzohcdisw",
-               user: process.env.EID,
-              pass: process.env.PASS,
+          //  user: "telstrakafkanetworking2@gmail.com",
+           //pass: "yznqnswnzohcdisw",
+              user: process.env.EID,
+           pass: process.env.PASS,
               port: 465,
               host: "smtp.gmail.com",
             },
@@ -54,4 +49,4 @@ module.exports = function (message) {
       },
     ],
   });
-};
+}};
