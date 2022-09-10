@@ -60,7 +60,8 @@ const loginadmin = asyncHandler(async (req, res) => {
         res.status(400)
         throw new Error('invalid credential')
     }
-})
+})//claims@fhpl.net
+//newindia
 
 const generateToken = (id) => {
     return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "30d" })

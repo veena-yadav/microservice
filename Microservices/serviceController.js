@@ -3,7 +3,7 @@ axios.default.withCredentials = true;
 const producer = require("../kafka/producer");
 const consumer = require("../kafka/consumer");
 const request = require("request");
-
+const producer1=require("../kafka/client_pro")
 //const api=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzMDYxNDVlMjdlZDVjZjU1ZGViMWQ3MCIsImlhdCI6MTY2MTM1NTI2OSwiZXhwIjoxNjYzOTQ3MjY5fQ.MytWjGcCopbFmgpQxCEvGF1BIr-uja3wVonl_xghfUw
 
 const url = "http://localhost:5000/api/medicine/view";
@@ -11,12 +11,33 @@ const url = "http://localhost:5000/api/medicine/view";
 const loginurl = "http://localhost:5000/api/admin/login";
 const url2 = "http://localhost:5000/user/placeOrder";
 const url3 = "http://localhost:5000/api/reorder";
-const reorderurl = "http://localhost:5000/api/admin/reordermedicine"
+const reorderurl = "http://localhost:5000/api/admin/reordermedicine";
+const updateMedicineurl="http://localhost:5000/api/medicine/update/"
 
 
 
 
 var MedicinDetails = {
+
+//Admin:accept req 
+
+updateMedicine:function (req, res) {
+  request.patch({
+
+    url:updateMedicineurl+req.params.itemName,
+    json:true,
+    body:req.body
+    
+        }, function (err, response, body) {
+         
+        producer1(body)
+       // console.log(body)
+     //    console.log("err)
+           res.send(body)
+          })
+  },
+
+
   getMedicine: function (req, res) {
     axios({
       method: "get",
@@ -41,6 +62,7 @@ var MedicinDetails = {
 
        // }, 6000); res.send(body)
       producer(body)
+     console.log(body)
       res.send(body)
      })
   },

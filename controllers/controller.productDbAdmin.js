@@ -2,6 +2,7 @@ const asyncHandler = require("express-async-handler");
 const Medicine = require("../models/reorderModel");
 const addMed = require("../models/adminmedicine")
 const Item = require("../models/model.productDb");
+const user=require("../models/userModel")
 
 const controller = {
     //GET ALL MEDICINES
@@ -94,11 +95,35 @@ const controller = {
      
   updateMedicine:asyncHandler(async (request, response) => {
     //reorderMedicine();
-    console.log(request.body.quantity);
-    console.log(request.params.itemName)
+   // console.log(request.body.quantity);
+   // console.log(request.params.itemName)
     const filter={itemName:request.params.itemName};
+
     const update={quantity:request.body.quantity,minimumThresholdValue:request.body.minimumThresholdValue,price:request.body.price};
 
+
+    const users = await user.find({ "reorder_bucket.itemName":request.params.itemName })
+    var ar=[];
+    ar.push(request.params.itemName)
+  //  console.log(users.email)
+  for(let it in users){
+    let mn=users[it].email
+    ar.push(mn)
+  }
+ 
+ //console.log(users[0].email);
+ console.log(ar)
+
+//console.log(a[5])
+//     for(let j in users){
+//    for(let i in j.reorder_bucket)
+//    {
+//if(i.itemName==request.body.itemName)
+//{
+  // console.log(j.emailID);
+   //console.log(i.itemName)
+//}
+  // }} 
     const addMedicine = await addMed.create({
       itemName:request.body.itemName,
       price:request.body.price,
@@ -110,7 +135,7 @@ const controller = {
 
     await Medicine.deleteOne({itemName:request.params.itemName}),
     await Item.findOneAndUpdate(filter,update,{new:true})
-      .then(() => response.json("Updated Databse"))
+      .then(() => response.json(ar))
       .catch((err) => response.status(400).json("not found: " + err));
   }),
 
