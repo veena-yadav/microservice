@@ -111,25 +111,35 @@ const controller = {
     ar.push(mn)
   }
  
- //console.log(users[0].email);
+
  console.log(ar)
 
-//console.log(a[5])
-//     for(let j in users){
-//    for(let i in j.reorder_bucket)
-//    {
-//if(i.itemName==request.body.itemName)
-//{
-  // console.log(j.emailID);
-   //console.log(i.itemName)
-//}
-  // }} 
+ const numberOfMedi=await addMed.find({"itemName":request.params.itemName})
+ console.log(numberOfMedi)
+ if(numberOfMedi.length!=0)
+ {
+  //  console.log("updating...")
+    //console.log(numberOfMedi[0].count1)
+
+const update1 = {count1:numberOfMedi[0].count1+1 };
+await addMed.updateOne(update1);
+
+  
+//  if(numberOfMedi){
+//     addMed.updateOne({count:numberOfMedi.count+1})
+ }
+  else{
+    //console.log("adding...")
     const addMedicine = await addMed.create({
-      itemName:request.body.itemName,
-      price:request.body.price,
-      quantity:request.body.quantity,
-      
-    })
+        itemName:request.body.itemName,
+        price:request.body.price,
+        quantity:request.body.quantity,
+        count1:1
+      })
+}
+ 
+
+   
     //addMedicine()
 
 

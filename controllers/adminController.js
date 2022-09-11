@@ -30,7 +30,7 @@ const registeradmin = asyncHandler(async (req, res) => {
         })
     else {
         res.status(400)
-        throw new Error('inalid admin data')
+        throw new Error('invalid admin data')
     }
 })
 
