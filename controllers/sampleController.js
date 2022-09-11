@@ -12,6 +12,10 @@ const controller = {
     //reordered admin medicine get 
     getReorderedmed:asyncHandler(async (req, res) => {
         const items = await addMed.find().sort({"count1":-1})
+<<<<<<< HEAD
+=======
+
+>>>>>>> 0cf17d9c9362d6ac734b574e8ab1e37cc20670e3
         res.status(200).json(items)
     }),
 
