@@ -12,6 +12,8 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import { TextField } from "@mui/material";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 // import Box from '@mui/material/Box';
 // import Button from '@mui/material/Button';
 // import Typography from '@mui/material/Typography';
@@ -68,7 +70,7 @@ const [medicineObjModal,setMedicineObjModal]=useState({})
     if(newQuantity<minimumThresholdValue)
     {
       handleClose()
-      alert("Enter Quantity > Minimum Threshold")
+      toast("plaease enter quantiy above threshold! ")
       return
     }
     try {
@@ -79,11 +81,13 @@ const [medicineObjModal,setMedicineObjModal]=useState({})
     } catch (err) {
       console.log(err);
     }
+    toast("reorder successfull!")
     handleClose()
     getMedicine();
   };
 
   return (
+    <>
     <div>
        <Modal
         open={open}
@@ -161,6 +165,8 @@ const [medicineObjModal,setMedicineObjModal]=useState({})
         </table>
       </div>
     </div>
+    <ToastContainer/>
+    </>
   );
 };
 
