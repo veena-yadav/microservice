@@ -39,10 +39,8 @@ module.exports = function (message) {
           .createTransport({
             service: "gmail",
             auth: {
-            // user: "telstrakafkanetworking2@gmail.com",
-              //pass: "yznqnswnzohcdisw",
-               user: process.env.EID,
-              pass: process.env.PASS,
+            user: "telstrakafkanetworking2@gmail.com",
+              pass: "yznqnswnzohcdisw",
               port: 465,
               host: "smtp.gmail.com",
             },
