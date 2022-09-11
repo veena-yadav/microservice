@@ -8,12 +8,14 @@
         font-family: "Poppins", sans-serif;
         font-weight: 300;
         box-sizing: border-box;
+        position: absolute;
+        top: 8%;
        }
        .btnStyle{
         border-radius: 100px;
         
        }
-       .container{
+       .containerPay{
 
         height: 100vh;
 
@@ -119,4 +121,9 @@
     flex: 1 1 auto;
     padding: 24px 1rem !important;
 
+    }
+
+    #card{
+      width: 25%;
+      height: 25%;
     }
