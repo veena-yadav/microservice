@@ -119,11 +119,11 @@ const controller = {
  console.log(numberOfMedi)
  if(numberOfMedi.length!=0)
  {
-  //  console.log("updating...")
+   //  console.log("updating...")
     //console.log(numberOfMedi[0].count1)
-
+const filter={"itemName":request.params.itemName}
 const update1 = {count1:numberOfMedi[0].count1+1 };
-await addMed.updateOne(update1);
+await addMed.findOneAndUpdate(filter,update1);
 
   
 //  if(numberOfMedi){
