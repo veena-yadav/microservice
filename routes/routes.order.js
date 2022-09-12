@@ -7,7 +7,7 @@ router.post("/getOrdersByEmailSortByPriceAsc", operationsOnOrders.fetchOrdersByE
 router.post("/getOrdersByEmailSortByPriceDesc", operationsOnOrders.fetchOrdersByEmailSortByPriceDesc);
 router.post("/getOrdersByEmailSortByQuantityAsc", operationsOnOrders.fetchOrdersByEmailSortByQuantityAsc);
 router.post("/getOrdersByEmailSortByQuantityDesc", operationsOnOrders.fetchOrdersByEmailSortByQuantityDesc);
-router.delete("/cancelAnOrder", operationsOnOrders.deleteAnOrder);
+router.delete("/cancelAnOrder/:email/:itemName", operationsOnOrders.deleteAnOrder);
 
 router.post("/getReodersByEmail", operationsOnReorders.fetchReordersByEmail);
 router.post("/getReodersByEmailSortByQuantityAsc", operationsOnReorders.fetchReordersByEmailSortByQuantityAsc);
