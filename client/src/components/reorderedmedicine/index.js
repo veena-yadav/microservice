@@ -1,30 +1,58 @@
 import React, { useState,useEffect } from 'react'
 import '../medicinelist/medicinelist.css'
 import axios from 'axios'
+import { BarChart, Bar, CartesianGrid, XAxis, YAxis,Label } from 'recharts';
+
 
 
 const AdminReorderedHistory = () => {
+  var ar=[];
+  var arr2=[];
+
   const [medicines,setMedicines]=useState([]);
+  
 
   useEffect(() => {
     getMedicine()
-  }, [])
+  },)
+  
+
+
+  
   const getMedicine=async()=>{
+
     // setLoading(true)
     try {
       const data= await axios.get('http://localhost:5000/api/admin/getreorderedmedicine')
-      console.log(data)
+    
+     let sz=data.data.length;
+ 
+      // for(let i=0;i<sz;i++)
+      // {
+        
+      //   ar.push({name:data.data[i].itemName,count:data.data[i].count1})
+      // }
+     
+     // console.log(ar)
       setMedicines(data.data)
     } catch (error) {
       console.log("error in reorder "+error)
     }
     // setLoading(false)
   }
- 
- 
+
+
+
   return (
     <div>
-     
+  <center style={{padding:"120px"}}>
+<h1 style={{color:"#0064D2"}}>Reordered Medicines</h1>
+<BarChart width={700} height={500}  data={ar} style={{top:"50%"}}>
+  <Bar dataKey="count" fill="#0064D2" name='count' />
+  <CartesianGrid stroke="#ccc" />
+<XAxis  dataKey="name" label={{ value:"Medicines" ,angle:360, position:"insideBottom"}}/> 
+  <YAxis label={{ value: 'count of medicines ', angle: -90, position: 'insideLeft' }}/>
+</BarChart></center>
     <div className='medicineTableDiv'>
     <table className='medicineTable'>
     <thead>
@@ -39,6 +67,7 @@ const AdminReorderedHistory = () => {
     </thead>
     <tbody>
       {medicines.map((med)=>{
+        ar.push({name:med.itemName,count:med.count1})
         return(
           <tr key={Math.random()}>
           <th> {med.itemName} </th>
