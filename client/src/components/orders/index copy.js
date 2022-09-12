@@ -6,10 +6,7 @@ import '../medicinelist/medicinelist.css'
 // import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import axios from 'axios'
 import { UserContext } from '../../contextapi/usercontext'
-import MedicineCard from './MedicineCard'
-import { Grid, Typography } from '@mui/material'
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+
 // import Box from '@mui/material/Box';
 // import Button from '@mui/material/Button';
 // import Typography from '@mui/material/Typography';
@@ -64,47 +61,36 @@ const Orders = () => {
     }
     // setLoading(false)
   }
-  const deleteMedicine=async(medName)=>{
-    // setLoading(true)
-    console.log(`${medName} deleted`)
-    console.log(typeof(user.email))
-    console.log(medName)
-    try {
-      const data= await axios.delete(`http://localhost:5000/user/cancelAnOrder/${user.email}/${medName}`)
-      console.log(data)
-      
-     
-    } catch (error) {
-      console.log("error is "+error)
-      toast("Not Deleted")
-    
-    }
-    toast("Deleted ordered item")
-    getMedicine()
-    // setLoading(false)
-  }
   return (
-    <div style={{
-      width:"100%",
-      height:"100%",
-      paddingTop:"70px",
-      paddingLeft:"10px",
-      paddingRight:"10px"
-
-    }}>
-      <center><Typography variant="h4" >View My Orders</Typography></center>
-      
-   <Grid container  spacing={{ xs: 2, md: 3 }}>
-   {medicines.map((med)=>{
-    return(
-      <Grid item xs={12} sm={6} md={4} >
-      <MedicineCard med={med} deleteMedicine={deleteMedicine}/>  
-      </Grid>
-    )
-   })}
-    
-   </Grid>
- <ToastContainer/>
+    <div>
+     
+    <div className='medicineTableDiv'>
+    <table className='medicineTable'>
+    <thead>
+      <tr>
+        <th>  Name </th>
+        <th>Price</th>
+        <th> Quantity</th>
+       
+      </tr>
+    </thead>
+    <tbody>
+      {medicines.map((med)=>{
+        return(
+          <tr key={Math.random()}>
+          <th> {med.itemName} </th>
+          <td>{med.price} </td>
+          <td> {med.quantity} </td>
+        
+                 
+        </tr>
+        )
+      })}
+     
+    </tbody>
+  </table>
+  </div>
+ 
   </div>
   )
 }
