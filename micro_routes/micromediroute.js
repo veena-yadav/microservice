@@ -7,5 +7,6 @@ module.exports = function (app) {
     app.route("/getnotification").post(controller.getNotification);
     app.route("/order").post(controller.order);
     app.route("/reordermedicines").post(controller.reorderMed);
+    app.route("/accept/:itemName").patch(controller.updateMedicine)
 
 }

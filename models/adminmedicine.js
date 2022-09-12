@@ -15,6 +15,9 @@ const adminSchema = mongoose.Schema(
       type: Number,
       required: true
     },
+    count1:{
+      type:Number
+    }
   },
   {
     timestamps: true,

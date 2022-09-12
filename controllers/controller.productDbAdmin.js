@@ -2,6 +2,8 @@ const asyncHandler = require("express-async-handler");
 const Medicine = require("../models/reorderModel");
 const addMed = require("../models/adminmedicine")
 const Item = require("../models/model.productDb");
+const user=require("../models/userModel")
+
 
 const controller = {
     //GET ALL MEDICINES
@@ -92,25 +94,63 @@ const controller = {
     }),
     // add reorder med  reorder-history(admin-reorder) and updating in medicine collection
      
-  updateMedicine:asyncHandler(async (request, response) => {
-    //reorderMedicine();
-    console.log(request.body.quantity);
-    console.log(request.params.itemName)
+    updateMedicine:asyncHandler(async (request, response) => {
+       //reorderMedicine();
+   // console.log(request.body.quantity);
+   // console.log(request.params.itemName)
     const filter={itemName:request.params.itemName};
+
     const update={quantity:request.body.quantity,minimumThresholdValue:request.body.minimumThresholdValue,price:request.body.price};
 
+
+    const users = await user.find({ "reorder_bucket.itemName":request.params.itemName })
+    var ar=[];
+    ar.push(request.params.itemName)
+  //  console.log(users.email)
+  for(let it in users){
+    let mn=users[it].email
+    ar.push(mn)
+  }
+ 
+
+ console.log(ar)
+
+ const numberOfMedi=await addMed.find({"itemName":request.params.itemName})
+ console.log(numberOfMedi)
+ if(numberOfMedi.length!=0)
+ {
+   //  console.log("updating...")
+    //console.log(numberOfMedi[0].count1)
+const filter={"itemName":request.params.itemName}
+const update1 = {count1:numberOfMedi[0].count1+1 };
+await addMed.findOneAndUpdate(filter,update1);
+
+  
+//  if(numberOfMedi){
+//     addMed.updateOne({count:numberOfMedi.count+1})
+ }
+  else{
+    //console.log("adding...")
     const addMedicine = await addMed.create({
-      itemName:request.body.itemName,
-      price:request.body.price,
-      quantity:request.body.quantity,
-      
-    })
-    //addMedicine()
-    await Medicine.deleteOne({itemName:request.params.itemName}),
-    await Item.findOneAndUpdate(filter,update,{new:true})
-      .then(() => response.json("Updated Databse"))
-      .catch((err) => response.status(400).json("not found: " + err));
-  }),
+        itemName:request.body.itemName,
+        price:request.body.price,
+        quantity:request.body.quantity,
+        count1:1
+      })
+}
+ 
+        //addMedicine()
+    
+    
+        await Medicine.deleteOne({itemName:request.params.itemName}),
+        await Item.findOneAndUpdate(filter,update,{new:true})
+          .then(() => response.json(ar))
+          .catch((err) => response.status(400).json("not found: " + err));
+      }),
+    
+    
+    
+    
 
 
 
