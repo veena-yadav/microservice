@@ -36,6 +36,7 @@ app.use('/user', require('./routes/routes.order'));
 
 // reorder medicine
 
+
 //METHOD : GET
 //TEST METHOD TO CHECK IF SERVER RESPONDS
 app.get('/', (req, res) => {
@@ -43,6 +44,9 @@ app.get('/', (req, res) => {
   res.send("GET ROUTE WORKS")
 })
 routes(app)
+
+const criticslroute=require('./routes/criticalhospitalRoutes')
+criticslroute(app)
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server started at port ${PORT}`))

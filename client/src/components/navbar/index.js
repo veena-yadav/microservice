@@ -61,6 +61,7 @@ const logout = async () => {
               
                 <li><Link to="/adminviewmedicine">Admin Medicines</Link></li>
                 <li><Link to="/getreorderedmedicine">Reordered Medicines</Link></li>
+                <li><Link to="/criticalhospitals">Hospitals</Link></li>
                 <li><IconButton color="primary" aria-label="add to shopping ">
         <LogoutIcon onClick={logout}/>
       </IconButton></li>

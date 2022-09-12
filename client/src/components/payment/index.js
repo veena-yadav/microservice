@@ -1,13 +1,57 @@
-import React from 'react'
+import React, { useState ,useEffect } from 'react'
 import './payment.css'
 import '../../../node_modules/bootstrap/dist/css/bootstrap.min.css'
 import '../../../node_modules/bootstrap/dist/js/bootstrap.bundle'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import axios from 'axios'
+import validator from 'validator'
+// import medicineArray from './medicineArray';
 const Payment = () => {
+
+  // const [cardNumber,setCardNumber]=useState('')
+  const [expDate,setExpDate]=useState('')
+  const [errorMessage, setErrorMessage] = useState('')
+  const [errorColor,setErrorColor]=useState('red')
+  const [val, setVal] = useState('');
+  const [totalPrice , setTotalPrice]=useState(0)
+  const [CardHolderName,setCardHolderName]=useState('')
+const d = new Date();
+const month = d.getMonth()+1;
+const year=d.getFullYear();
+
+const minDate=month<10?`${year}-0${month}`:`${year}-${month}`;
+const maxYear=year+5;
+const maxMonth=month;
+const maxDate=maxMonth<10?`${maxYear}-0${maxMonth}`:`${maxYear}-${maxMonth}`;
+
+//   const notify = ()=>{
+ 
+//     // Calling toast method by passing string
+//     toast('Hello Geeks')
+// }
+
+// validate card number
+  const validateCreditCard = (value) => {
+    
+    if (validator.isCreditCard(value)) {
+      setErrorMessage('Valid CreditCard Number')
+      setErrorColor('green')
+      // toast(errorMessage);
+    } else {
+      setErrorMessage('Enter valid CreditCard Number!')
+      setErrorColor('red')
+    }
+  }
+  // const getMedicinePrice=()=>{
+  //   return medicineArray.reduce((a,v)=>a+v.price)
+  // }
+  // useEffect(() => {
+   
+  // }, [input])
   return (
     <div id='paymentDiv'>
-    <div className="container d-flex justify-content-center mt-5 mb-5">
-
-            
+    <div className="containerPay d-flex justify-content-center mt-5 mb-5">
 
             <div className="row g-3">
 
@@ -24,8 +68,10 @@ const Payment = () => {
                           <button className="btn btn-light btn-block text-left collapsed p-3 rounded-0 border-bottom-custom" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
                             <div className="d-flex align-items-center justify-content-between">
 
-                              <span>Paypal</span>
-                              <img src="https://i.imgur.com/7kQEsHU.png" alt="xyz" width="30"/>
+                              <span onClick={(e)=>{
+                                toast("You have to pay 70")
+                              }}>Cash on Delivery</span>
+                              {/* <img src="cash-on-delivery.png" alt="xyz" width="30"/> */}
                               
                             </div>
                           </button>
@@ -46,10 +92,10 @@ const Payment = () => {
 
                               <span>Credit card</span>
                               <div className="icons">
-                                <img src="https://i.imgur.com/2ISgYja.png" width="30" alt="xyz"/>
-                                <img src="https://i.imgur.com/W1vtnOV.png" width="30" alt="xyz"/>
-                                <img src="https://i.imgur.com/35tC99g.png" width="30" alt="xyz"/>
-                                <img src="https://i.imgur.com/2ISgYja.png" width="30" alt="xyz"/>
+                                <img id="card" src="https://i.imgur.com/2ISgYja.png" width="30" alt="xyz"/>
+                                <img id="card" src="https://i.imgur.com/W1vtnOV.png" width="30" alt="xyz"/>
+                                <img id="card" src="https://i.imgur.com/35tC99g.png" width="30" alt="xyz"/>
+                                <img id="card" src="https://i.imgur.com/2ISgYja.png" width="30" alt="xyz"/>
                               </div>
                               
                             </div>
@@ -59,12 +105,34 @@ const Payment = () => {
 
                       <div id="collapseOne" className="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
                         <div className="card-body payment-card-body">
-                          
+                        <span className="font-weight-normal card-text">Card Holder Name</span>
+                          <div className="input">
+
+                            <i className="fa fa-credit-card"></i>
+                            <input type="text"
+                             className="form-control" 
+                            value={CardHolderName}
+                            onChange={(e)=>setCardHolderName(e.target.value)}
+                           
+                             required
+                             />
+                   
+                            
+                          </div>   
                           <span className="font-weight-normal card-text">Card Number</span>
                           <div className="input">
 
                             <i className="fa fa-credit-card"></i>
-                            <input type="text" className="form-control" placeholder="0000 0000 0000 0000"/>
+                            <input type="text"
+                             className="form-control" 
+                             placeholder="0000 0000 0000 0000"
+                             onChange={(e) => validateCreditCard(e.target.value)}
+                             required
+                             />
+                             <span style={{
+          fontWeight: 'bold',
+          color: errorColor,
+        }}>{errorMessage}</span>
                             
                           </div> 
 
@@ -76,7 +144,7 @@ const Payment = () => {
                               <div className="input">
 
                                 <i className="fa fa-calendar"></i>
-                                <input type="text" className="form-control" placeholder="MM/YY"/>
+                                <input type="month"  min={minDate} max={maxDate} className="form-control" placeholder="MM/YY"/>
                                 
                               </div> 
                               
@@ -89,7 +157,12 @@ const Payment = () => {
                               <div className="input">
 
                                 <i className="fa fa-lock"></i>
-                                <input type="text" className="form-control" placeholder="000"/>
+                                <input type="text"
+        pattern="[0-9]*" maxLength={3} minLength={0}
+        value={val}
+        onChange={(e) =>
+          setVal((v) => (e.target.validity.valid ? e.target.value : v))
+        } className="form-control" placeholder="000"/>
                                 
                               </div> 
                               
@@ -119,38 +192,39 @@ const Payment = () => {
 
                       <div className="d-flex flex-column">
 
-                        <span>Medicine Price <i className="fa fa-caret-down"></i></span>
-                       
+                        <span>Total Amount <i className="fa fa-caret-down"></i></span>
+                        {/* <a href="#" className="billing">Save 20% with annual billing</a> */}
                         
                       </div>
 
                       <div className="mt-1">
-                        <sup className="super-price">$9.99</sup>
-                      
+                        <sup className="super-price">3.4</sup>
+                        {/* <span className="super-month">/Month</span> */}
                       </div>
                       
                     </div>
 
                     <hr className="mt-0 line"/>
 
-                   
+                    <div className="p-3">
+  
+                    
+                     {/* {medicineArray.map(medicine=>{
+                      
+                      
+                      return (
+                        <div key={medicine.id} className="d-flex justify-content-between">
 
-                      {/* <div className="d-flex justify-content-between mb-2">
-
-                        <span>Refferal Bonouses</span>
-                        <span>-$2.00</span>
-                        
-                      </div> */}
-
-                      {/* <div className="d-flex justify-content-between">
-
-                        <span>Vat <i className="fa fa-clock-o"></i></span>
-                        <span>-20%</span>
+                        <span>{medicine.name}</span>
+                        <span>{medicine.price}</span>
                         
                       </div>
-                       */}
-
+                      )
+                     })} */}
                    
+                      
+
+                    </div>
 
                     <hr className="mt-0 line"/>
 
@@ -160,10 +234,10 @@ const Payment = () => {
                       <div className="d-flex flex-column">
 
                         <span>Today you pay(US Dollars)</span>
-                        {/* <small>After 30 days $9.59</small> */}
+                        <small>After 5% GST </small>
                         
                       </div>
-                      <span>$9.99</span>
+                      <span>0</span>
 
                       
 
@@ -172,10 +246,44 @@ const Payment = () => {
 
                     <div className="p-3">
 
-                    <button className="btn btn-primary btn-block free-button w-100 btnStyle">Try it free for 30 days</button> 
-                   <div className="text-center">
+                    <button onClick={(e)=>{
+                      // console.log(val)
+                      console.log(month)
+                      console.log(year)
+                      
+                      if(errorMessage==='Enter valid CreditCard Number!')
+                      {
+                        setErrorColor('red')
+                        console.log(errorMessage)
+                        toast(errorMessage)
+                        return 
+                      }
+                      else
+                      {
+                        setErrorColor('green')
+                      }
+                      if(val==='')
+                      {
+                        toast("Please enter CVV")
+                        return
+                     
+                      }
+                
+                      const newPayment={
+                        CardHolderName,
+                        price:'66'
+                      }
+                      
+                      console.log(newPayment)
+                      const paymentDone=  axios.post('http://localhost:5000/payment/add',newPayment)
+                       toast("Payment Successful")
                     
-                   </div>
+
+                    }} className="btn btn-primary btn-block free-button w-100 btnStyle">Pay Amount</button> 
+                   {/* <div className="text-center">
+                    
+                     <a href="#">Recheck Details </a>
+                   </div> */}
                       
                     </div>
 
@@ -188,6 +296,7 @@ const Payment = () => {
             </div>
             
             </div>
+            <ToastContainer />
           </div>
   )
 }

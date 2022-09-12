@@ -61,6 +61,7 @@ const [medicineObjModal,setMedicineObjModal]=useState({})
     } catch (err) {
       console.log(err);
     }
+    toast("Reorder Rejected!")
     getMedicine();
   };
   // accept reorders admin side
