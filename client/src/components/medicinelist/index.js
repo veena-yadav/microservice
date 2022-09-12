@@ -16,6 +16,7 @@ import Tooltip from '@mui/material/Tooltip';
 import { UserContext } from '../../contextapi/usercontext';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { TextField } from '@mui/material';
 const style = {
   position: 'absolute',
   top: '50%',
@@ -38,6 +39,7 @@ const MedicineList = () => {
   const [selectedMedicineQuantity,setSelectedMedicineQuantity]=useState(0)
   const [selectedMedicinePrice,setSelectedMedicinePrice]=useState(0);
   const [selectedMedicineMinimumThreshold, setSelectedMedicineMinimumThreshold]=useState(0);
+  const [searchMedicine, setSearchmedicine]= useState("")
   const navigate=useNavigate()
   const  setCart=(sm,smq,smp,smt)=>{
     
@@ -81,6 +83,14 @@ const MedicineList = () => {
     }
     setLoading(false)
   }
+
+  const findMedicine=async(val)=>{
+    const  searchboxmed= await axios.get(`http://localhost:5000/api/medicine/filter/${val}`)
+   
+    console.log(searchboxmed.data)
+    const newAr=searchboxmed.data
+    setMedicines(medicines=>[...newAr])
+     }
   return (
     <>
     <div>
@@ -133,6 +143,29 @@ const MedicineList = () => {
         
         </Box>
       </Modal>
+      <Modal
+        open={searchModalOpen}
+        onClose={handleSearchModalClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            Search Medicine
+          </Typography>
+          <center style={{ marginTop: "10px" }}>
+           <TextField
+           value={searchMedicine}
+           onChange={(e)=>{
+            setSearchmedicine(e.target.value)
+            findMedicine(e.target.value)
+           }}
+           />
+            
+          </center>
+        </Box>
+       
+      </Modal>
     <div className='medicineTableDiv' style={{
         marginTop:"-60px"
       }}>
@@ -141,7 +174,6 @@ const MedicineList = () => {
       <tr>
         <th>  Name </th>
         <th>Price</th>
-        <th> Quantity</th>
         <th> Action</th>
       </tr>
     </thead>
@@ -151,7 +183,6 @@ const MedicineList = () => {
           <tr key={Math.random()}>
           <th> {med.itemName} </th>
           <td>{med.price} </td>
-          <td> {med.quantity} </td>
           <td> <IconButton color="primary" onClick={()=>{
             handleOpen()
             setSelectedMedicineMinimumThreshold(med.minimumThresholdValue)
@@ -192,6 +223,9 @@ const MedicineList = () => {
         </Fab>
         <Tooltip title="Search Medicine">
 <Fab color="primary" aria-label="search"
+onClick={()=>{
+  handleSearchModalOpen()
+}}
  style={{
   position: 'fixed',
   top: '160px',
