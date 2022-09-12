@@ -2,6 +2,8 @@ const jwt = require('jsonwebtoken')
 const bcrypt = require("bcryptjs")
 const asyncHandler = require("express-async-handler")
 const User = require("../models/userModel")
+const nodemailer=require("nodemailer")
+const { request } = require('express')
 
 
 const registerUser = asyncHandler(async (req, res) => {
@@ -66,6 +68,44 @@ const loginUser = asyncHandler(async (req, res) => {
 
 })
 
+const resetPass=asyncHandler(async (req, res) => {
+
+const pass=req.body.password;
+const email=req.body.email
+const user = await User.findOne({ email });
+const salt = await bcrypt.genSalt(10)
+const hashedPassword = await bcrypt.hash(pass, salt)
+const filter={"email":email}
+const update1 = {password: hashedPassword};
+await User.findOneAndUpdate(filter,update1);
+
+res.send("password reset successfully")
+})
+
+const foregtPass=asyncHandler(async (req, res) => {
+    const eid=req.params.email;
+    const msg={
+        from:"telstrakafkanetworking2@gmail.com",
+        to:eid,
+        subject:"Reset your account password",
+        html:"<h4>Hello "+eid+"<br/>Please click on below link to reset your password.</h4>"
+    
+    };
+    nodemailer.createTransport({
+        service:'gmail',
+        auth:{
+            user:"telstrakafkanetworking2@gmail.com",
+            pass:"yznqnswnzohcdisw",
+            port:465,
+            host:"smtp.gmail.com"
+        }
+    }).sendMail(msg,(err)=>{
+        if(err)
+        return console.log("error",err)
+        else return console.log("sent")
+    })
+
+})
 
 const getme = asyncHandler(async (req, res) => {
     const { _id, name, email } = await User.findById(req.user.id)
@@ -83,5 +123,5 @@ const generateToken = (id) => {
 }
 
 module.exports = {
-    registerUser, loginUser, getme
+    registerUser, loginUser, getme,foregtPass,resetPass
 }
