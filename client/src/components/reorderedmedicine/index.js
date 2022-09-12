@@ -50,9 +50,9 @@ const AdminReorderedHistory = () => {
 <BarChart width={700} height={500}  data={ar} style={{top:"50%"}}>
   <Bar dataKey="count" fill="#0064D2" name='count' />
   <CartesianGrid stroke="#ccc" />
-<XAxis  dataKey="name" label={{ value:"Medicines" ,angle:360, position:"insideBottom"}}/> 
+<XAxis  dataKey="name" /> 
   <YAxis label={{ value: 'count of medicines ', angle: -90, position: 'insideLeft' }}/>
-</BarChart></center>
+</BarChart><p>Medicine Name</p></center>
     <div className='medicineTableDiv'>
     <table className='medicineTable'>
     <thead>
