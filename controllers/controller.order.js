@@ -306,9 +306,9 @@ const operationsOnReorders = {
 
     deleteAnReorder: expressAsyncHandler(async (request, response) => {
         let queryUserDb = {
-            "email": { $regex: request.body.email }
+            "email": { $regex: request.params.email }
         };
-        await userDb.findOneAndUpdate(queryUserDb, { $pull: { "reorder_bucket": { "itemName": request.body.itemName } } })
+        await userDb.findOneAndUpdate(queryUserDb, { $pull: { "reorder_bucket": { "itemName": request.params.itemName } } })
             .then(() => response.json("deleted"))
             .catch(err => response.json("Error : " + err));
     })

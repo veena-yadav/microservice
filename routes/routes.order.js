@@ -14,6 +14,6 @@ router.post("/getReodersByEmailSortByQuantityAsc", operationsOnReorders.fetchReo
 router.post("/getReodersByEmailSortByQuantityDesc", operationsOnReorders.fetchReordersByEmailSortByQuantityDesc);
 router.post("/getReodersByEmailSortByPriceAsc", operationsOnReorders.fetchReordersByEmailSortByPriceAsc);
 router.post("/getReodersByEmailSortByPriceDesc", operationsOnReorders.fetchReordersByEmailSortByPriceDesc);
-router.delete("/cancelAnReorder", operationsOnReorders.deleteAnReorder);
+router.delete("/cancelAnReorder/:email/:itemName", operationsOnReorders.deleteAnReorder);
 
 module.exports = router;

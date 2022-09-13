@@ -54,10 +54,15 @@ const logout = async () => {
           
            
                 <li><Link to="/viewmedicine">View Medicine</Link></li>
-                <li><Link to="/orders">View My Orders</Link></li>
                 
+                <li><Link to="/userReorders">View Pending Reorder</Link></li>
                 
-                <li><IconButton color="primary" aria-label="add to shopping cart">
+                <li><IconButton color="primary" aria-label="add to shopping cart"
+                onClick={()=>{
+                  navigate('/orders')
+                }}
+                
+                >
         <AddShoppingCartIcon />
       
       </IconButton></li>
