@@ -82,6 +82,24 @@ await User.findOneAndUpdate(filter,update1);
 res.send("password reset successfully")
 })
 
+const changeAddress=asyncHandler(async (req, res) => {
+    const ad2=req.body.address2;
+    const email=req.body.email
+    const user = await User.findOne({ email });
+
+    const filter={"email":email}
+    const update1 = {address2: ad2};
+    await User.findOneAndUpdate(filter,update1);
+    res.send("address changed...")
+
+
+})
+const getAddress=asyncHandler(async (req, res) => {
+    const email=req.body.email
+    const user = await User.findOne({ email });
+    res.send(user.address)
+})
+
 const foregtPass=asyncHandler(async (req, res) => {
     const eid=req.params.email;
     const msg={
@@ -123,5 +141,5 @@ const generateToken = (id) => {
 }
 
 module.exports = {
-    registerUser, loginUser, getme,foregtPass,resetPass
+    registerUser, loginUser, getme,foregtPass,resetPass,changeAddress,getAddress
 }

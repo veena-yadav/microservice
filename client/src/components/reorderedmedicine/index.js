@@ -45,7 +45,7 @@ const AdminReorderedHistory = () => {
 
   return (
     <div>
-  <center style={{padding:"120px"}}>
+  <center style={{paddingTop:"120px"}}>
 <h1 style={{color:"#0064D2"}}>Reordered Medicines</h1>
 <BarChart width={700} height={500}  data={ar} style={{top:"50%"}}>
   <Bar dataKey="count" fill="#0064D2" name='count' />

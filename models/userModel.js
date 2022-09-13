@@ -33,6 +33,9 @@ const userSchema=mongoose.Schema({
         type:String,
         required:[true,'Please add a address']
     },
+    address2:{
+        type:String
+    },
     healthCond:{
         type:String,
       
