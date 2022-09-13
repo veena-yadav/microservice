@@ -57,7 +57,8 @@ const Orders = () => {
       const data= await axios.post('http://localhost:5000/user/getOrdersByEmail',{
         email: user.email
       })
-      setMedicines(data.data)
+      const amount = data.data[0];
+      setMedicines(data.data[1])
     } catch (error) {
       console.log("error is "+error)
     }

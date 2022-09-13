@@ -10,9 +10,13 @@ const controller = {
     getMedicine: asyncHandler(async (req, res) => {
         //   console.log(req.cookies.jwt)
         const items = await Item.find()
-
-        res.status(200).json(items)
-
+        items.sort((a,b) => {
+            let item1 = a.itemName.toLowerCase();
+            let item2 = b.itemName.toLowerCase();
+            if(item1 > item2) return 1;
+            return -1;
+        })
+        res.status(200).json(items);
     }),
 
     getMedicinebyvalue: asyncHandler(async (req, res) => {

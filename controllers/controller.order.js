@@ -9,12 +9,10 @@ const medicineDbController = require('../controllers/reorderController');
 const controller = {
     PlaceOrder: expressAsyncHandler(async (req, res) => {
 
-
         const items = await Item.find({
             $expr: { $gt: ["$minimumThresholdValue", "$quantity"] },
         });
 
-        console.log(items)
         req.body.orders.forEach(element => {
             let query = {
                 "itemName": { $regex: element.itemName }
@@ -22,7 +20,6 @@ const controller = {
 
             //finding medicine name in the medcicine database
             Item.findOne(query, expressAsyncHandler(async (err, medicine) => {
-                console.log(medicine)
         
                 if (err) {
                     res.json("Error: " + err);
@@ -32,7 +29,6 @@ const controller = {
                         await drivers.addToReorderBucket_UserDB(element, req.body.email);
                       //  medicine.quantity += element.quantity;
                       //  medicineDbController.getMedicinebyvalue()
-                      console.log(medicine) 
                      
                       const itemName =medicine.itemName;
                       const price =medicine.price;
@@ -52,25 +48,14 @@ const controller = {
                                   quantity,
                                   minimumThresholdValue,
                               });
-                              await newMedicine
-                                  .save()
-                                  .then(() =>
-                                      res.json(
-                                          "not found"
-                                      )
-                                  )
-                                  .catch((err) => res.status(400).json("Error: " + err));
+                              await newMedicine.save();
                           }
                       });
-
-
-
-                    }  else if(medicine.quantity<=medicine.minimumThresholdValue) {
+                    }  
+                    else if(medicine.quantity<=medicine.minimumThresholdValue) {
                         
                         if (element.quantity <= medicine.quantity) {
                             await drivers.addToOrderBucket_UserDB(element, req.body.email);
-                          //  medicine.quantity -= element.quantity;
-                            //await drivers.updateMedicineDB(medicine);
                         }
                         else if (element.quantity > medicine.quantity) {
                             element.quantity -= medicine.quantity;
@@ -78,10 +63,7 @@ const controller = {
                             await drivers.addToReorderBucket_UserDB(element, req.body.email);
                             element.quantity = medicine.quantity;
                             await drivers.addToOrderBucket_UserDB(element, req.body.email);
-                          //  medicine.quantity -= element.quantity;
-                            ////await drivers.updateMedicineDB(medicine);
                         }
-
 
                         const itemName =medicine.itemName;
                         const price =medicine.price;
@@ -101,27 +83,13 @@ const controller = {
                                     quantity,
                                     minimumThresholdValue,
                                 });
-                                await newMedicine
-                                    .save()
-                                    .then(() =>
-                                        res.json(
-                                            "not found"
-                                        )
-                                    )
-                                 //   .catch((err) => res.status(400).json("Error: " + err));
+                                await newMedicine.save();
                             }
                         });
-
-
-
-
-
                     }
                     else {
                         if (element.quantity <= medicine.quantity) {
                             await drivers.addToOrderBucket_UserDB(element, req.body.email);
-                          //  medicine.quantity -= element.quantity;
-                            //await drivers.updateMedicineDB(medicine);
                         }
                         else if (element.quantity > medicine.quantity) {
                             element.quantity -= medicine.quantity;
@@ -129,15 +97,12 @@ const controller = {
                             await drivers.addToReorderBucket_UserDB(element, req.body.email);
                             element.quantity = medicine.quantity;
                             await drivers.addToOrderBucket_UserDB(element, req.body.email);
-                          //  medicine.quantity -= element.quantity;
-                            ////await drivers.updateMedicineDB(medicine);
                         }
                     }
                 }
             }))
         });
-        res.send(items)
-       // res.end()
+        res.send(items);
     }),
 
 }
@@ -149,13 +114,27 @@ const operationsOnOrders = {
         }
         const result = await userDb.findOne(queryUserDb);
         if (result && result.order_bucket.length > 0) {
+            let wrappedArray = [];
+            const ordersFound = result.order_bucket;
+            let notPaidOrders = [];
+            
             result.order_bucket.sort((a, b) => {
-                if (a.itemName > b.itemName) return 1;
+                let item1 = a.itemName.toLowerCase(), item2 = b.itemName.toLowerCase();
+                if (item1 > item2) return 1;
                 return -1;
             })
-            response.json(result.order_bucket);
+            let totalAmount = 0;
+            for(let i = 0 ;i < ordersFound.length; i++){
+                if(ordersFound[i].status === "Not Paid"){
+                    notPaidOrders.push(ordersFound[i]);
+                    totalAmount += ordersFound[i].price * ordersFound[i].quantity;
+                }
+            }
+            wrappedArray.push(totalAmount);
+            wrappedArray.push(notPaidOrders);
+            response.json(wrappedArray);
         }
-        else response.json("You have no orders to view");
+        else response.json([]);
     }),
 
     fetchOrdersByEmailSortByPriceAsc: expressAsyncHandler(async (request, response) => {
@@ -170,7 +149,7 @@ const operationsOnOrders = {
             })
             response.json(result.order_bucket);
         }
-        else response.json("You have no orders to view");
+        else response.json([]);
     }),
 
     fetchOrdersByEmailSortByPriceDesc: expressAsyncHandler(async (request, response) => {
@@ -185,7 +164,7 @@ const operationsOnOrders = {
             })
             response.json(result.order_bucket);
         }
-        else response.json("You have no orders to view");
+        else response.json([]);
     }),
 
     fetchOrdersByEmailSortByQuantityAsc: expressAsyncHandler(async (request, response) => {
@@ -200,7 +179,7 @@ const operationsOnOrders = {
             })
             response.json(result.order_bucket);
         }
-        else response.json("You have no orders to view");
+        else response.json([]);
     }),
 
     fetchOrdersByEmailSortByQuantityDesc: expressAsyncHandler(async (request, response) => {
@@ -215,7 +194,7 @@ const operationsOnOrders = {
             })
             response.json(result.order_bucket);
         }
-        else response.json("You have no orders to view");
+        else response.json([]);
     }),
 
     deleteAnOrder: expressAsyncHandler(async (request, response) => {
@@ -235,13 +214,14 @@ const operationsOnReorders = {
         }
         const result = await userDb.findOne(queryUserDb);
         if (result && result.reorder_bucket.length > 0) {
-            result.reorder_bucket.sort((a, b) => {
-                if (a.itemName > b.itemName) return 1;
+            result.order_bucket.sort((a, b) => {
+                let item1 = a.itemName.toLowerCase(), item2 = b.itemName.toLowerCase();
+                if (item1 > item2) return 1;
                 return -1;
             })
             response.json(result.reorder_bucket);
         }
-        else response.json("You have no orders to view");
+        else response.json([]);
     }),
 
     fetchReordersByEmailSortByPriceAsc: expressAsyncHandler(async (request, response) => {
@@ -256,7 +236,7 @@ const operationsOnReorders = {
             })
             response.json(result.order_bucket);
         }
-        else response.json("You have no orders to view");
+        else response.json([]);
     }),
 
     fetchReordersByEmailSortByPriceDesc: expressAsyncHandler(async (request, response) => {
@@ -271,7 +251,7 @@ const operationsOnReorders = {
             })
             response.json(result.order_bucket);
         }
-        else response.json("You have no orders to view");
+        else response.json([]);
     }),
 
     fetchReordersByEmailSortByQuantityAsc: expressAsyncHandler(async (request, response) => {
@@ -286,7 +266,7 @@ const operationsOnReorders = {
             })
             response.json(result.order_bucket);
         }
-        else response.json("You have no orders to view");
+        else response.json([]);
     }),
 
     fetchReordersByEmailSortByQuantityDesc: expressAsyncHandler(async (request, response) => {
@@ -301,7 +281,7 @@ const operationsOnReorders = {
             })
             response.json(result.order_bucket);
         }
-        else response.json("You have no orders to view");
+        else response.json([]);
     }),
 
     deleteAnReorder: expressAsyncHandler(async (request, response) => {
@@ -325,7 +305,7 @@ const drivers = {
 
             await userDb.updateOne(queryUserDb, { $inc: { "reorder_bucket.$.quantity": order.quantity } }, { new: true })
                 .then(() => {
-                    console.log("Successfully updated in the reorder bucket and reorder exists");
+                    console.log("Successfully updated in the reorder bucket");
                 })
                 .catch(err => { console.log("Error : " + err) })
         }
@@ -344,22 +324,71 @@ const drivers = {
             "email": { $regex: email },
             "order_bucket.itemName": { $regex: order.itemName }
         };
+        for(let iter = 0; iter < order.length ;iter++){
+            order[i].status = "Not Paid";
+        }
         const orderExist = await userDb.findOne(queryUserDb);
         if (orderExist) {
-
-            await userDb.updateOne(queryUserDb, { $inc: { "order_bucket.$.quantity": order.quantity } }, { new: true })
-                .then(() => {
-                    console.log("Successfully updated in the order bucket and reorder exists");
-                })
+            await userDb.updateOne(queryUserDb, { $set: { "order_bucket.$.quantity": order.quantity } }, { new: true })
+            .then(() => {
+                console.log("Successfully updated in the order bucket");
+            })
                 .catch(err => { console.log("Error : " + err) })
         }
         else {
             let userExist = await userDb.findOne({ "email": { $regex: email } });
             await userDb.findByIdAndUpdate(userExist._id, { $push: { order_bucket: order } }, { new: true })
                 .then(() => {
-                    console.log("Successfully added in the reorder bucket");
+                    console.log("Successfully added in the order bucket");
                 })
                 .catch(err => { console.log("Error : " + err) })
+        }
+    }),
+
+    moveOrderBucket: expressAsyncHandler(async(request, response) => {
+        let queryUserDb = {
+            "email": {$regex : request.body.email}
+        };
+        const entry = await userDb.findOne(queryUserDb);
+        let ordersOrderDb = [];
+        let ordersUserDb = entry.order_bucket;
+        console.log(ordersUserDb);
+        for(let i = 0; i < request.body.order_bucket.length; i++){
+            // console.log(request.body.order_bucket[i]);
+            // continue;
+            const manasi = request.body.order_bucket;
+            console.log(manasi[i]);
+            for(let j = 0 ; j < ordersUserDb.length; j++){
+                if(ordersUserDb[j].itemName === manasi[i].itemName && ordersUserDb[j].status === "Not Paid"){
+                    ordersOrderDb.push({"address": manasi[i].address,"status": "Paid","itemName":  manasi[i].itemName,"quantity" : manasi[i].quantity,"price" : manasi[i].price})
+                    ordersUserDb[j].status = "Paid";
+                    await entry.save();
+                    break;
+                }
+            }
+        }
+        // return;
+        const entryInOrderDb = await orderDb.findOne(queryUserDb).clone();
+        if(entryInOrderDb){
+            await orderDb.findByIdAndUpdate(entryInOrderDb._id, {$push: {order_bucket: ordersOrderDb}}, {new: true})
+            .then(async() => {
+                for(let i = 0; i < request.body.order_bucket.length; i++){
+                    drivers.updateMedicineDB(request.body.order_bucket[i]);
+                }
+                response.json("Ordered Successfully");
+            })
+            .catch(err => response.json("Error : " + err));
+        }
+        else{
+            const email = entry.email;
+            await orderDb.create({
+                email,
+                order_bucket: ordersOrderDb
+            });
+            for(let i = 0; i < request.body.order_bucket.length; i++){
+                drivers.updateMedicineDB(request.body.order_bucket[i]);
+            }
+            response.json("Ordered Successfully");
         }
     }),
 
@@ -367,15 +396,16 @@ const drivers = {
         let queryMedicineDb = {
             itemName: { $regex: order.itemName }
         };
-        Item.findOne(queryMedicineDb, async (err, result) => {
-            let quantity = order.quantity;
-            Item.findByIdAndUpdate(result.id, { $set: { quantity } })
+        await Item.findOne(queryMedicineDb, async (err, result) => {
+            let quantity = result.quantity - order.quantity;
+            quantity = (quantity < 0) ? 0 : quantity;
+            Item.findByIdAndUpdate(result._id, { $set: { quantity } })
                 .then(() => {
                     console.log("Sucessfully updated the medicine database");
                 })
-        });
+        }).clone();
     }
 }
 
 
-module.exports = { controller, operationsOnOrders, operationsOnReorders };
+module.exports = { controller, operationsOnOrders, operationsOnReorders, drivers };

@@ -16,4 +16,6 @@ router.post("/getReodersByEmailSortByPriceAsc", operationsOnReorders.fetchReorde
 router.post("/getReodersByEmailSortByPriceDesc", operationsOnReorders.fetchReordersByEmailSortByPriceDesc);
 router.delete("/cancelAnReorder/:email/:itemName", operationsOnReorders.deleteAnReorder);
 
+//last step in the ordering lifecycle
+router.post("/moveOrderBucket", drivers.moveOrderBucket);
 module.exports = router;

@@ -33,9 +33,6 @@ const userSchema=mongoose.Schema({
         type:String,
         required:[true,'Please add a address']
     },
-    address2:{
-        type:String
-    },
     healthCond:{
         type:String,
       
@@ -51,6 +48,10 @@ const userSchema=mongoose.Schema({
                 },
                 price: {
                     type: Number
+                },
+                status: {
+                    type: String,
+                    default: "Not Paid"
                 }
             }
         ],
