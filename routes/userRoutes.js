@@ -17,5 +17,5 @@ router.post("/resetpassword",resetPass)
 
 router.get("/getaddress",getAddress)
 
-router.post()
+//router.post()
 module.exports = router;
