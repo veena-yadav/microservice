@@ -198,6 +198,7 @@ const MedicineList = () => {
     </tbody>
   </table>
   </div>
+  <Tooltip title="Place Order" >
   <Fab color="primary" aria-label="add" style={{
           position: 'fixed',
           top: '80px',
@@ -220,6 +221,7 @@ const MedicineList = () => {
         >
           <AddShoppingCartIcon />
         </Fab>
+        </Tooltip>
         <Tooltip title="Search Medicine">
 <Fab color="primary" aria-label="search"
 onClick={()=>{

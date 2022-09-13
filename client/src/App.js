@@ -7,7 +7,7 @@ import MedicineList from './components/medicinelist';
 import Errorpage from './components/Errorpage';
 import AdminForm from './components/adminlogin';
 import AdminMedicineList from './components/adminmedicinelist';
-import Orders from './components/orders';
+import Orders from './components/orders/index';
 import React,{useEffect, useState,useContext} from 'react'
 import AdminReorders from './components/adminReorders';
 import SampleComp from './components/samplecomp';

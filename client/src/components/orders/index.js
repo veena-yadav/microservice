@@ -7,8 +7,8 @@ import '../medicinelist/medicinelist.css'
 import axios from 'axios'
 import { UserContext } from '../../contextapi/usercontext'
 import MedicineCard from './MedicineCard'
-import { Grid, Typography } from '@mui/material'
-
+import { Button, Grid, Paper, Typography } from '@mui/material'
+import './sui.css'
 // import Box from '@mui/material/Box';
 // import Button from '@mui/material/Button';
 // import Typography from '@mui/material/Typography';
@@ -27,7 +27,7 @@ import { Grid, Typography } from '@mui/material'
 // };
 const Orders = () => {
   const [medicines,setMedicines]=useState([]);
- 
+ const [totalPrice,setTotalPrice]=useState(0)
   const {auth, admin , user}=useContext(UserContext);  
 
 
@@ -57,7 +57,8 @@ const Orders = () => {
       const data= await axios.post('http://localhost:5000/user/getOrdersByEmail',{
         email: user.email
       })
-      const amount = data.data[0];
+      // const amount = data.data[0];
+      setTotalPrice(data.data[0])
       setMedicines(data.data[1])
     } catch (error) {
       console.log("error is "+error)
@@ -89,8 +90,8 @@ const Orders = () => {
 
     }}>
       <center><Typography variant="h4" >View My Orders</Typography></center>
-      
-   <Grid container  spacing={{ xs: 2, md: 3 }}>
+    <div className="custom_Grid_124">
+   <Grid container  spacing={{ xs: 2, md: 3 }} className="custom_Grid_124_item_1">
    {medicines.map((med)=>{
     return(
       <Grid item xs={12} sm={6} md={4} >
@@ -100,7 +101,30 @@ const Orders = () => {
    })}
     
    </Grid>
- 
+   <div className='custom_Grid_124_item_2'>
+ <div style={
+  {
+   
+    height:"100px",
+
+    display:"block",
+    margin:"0px auto",
+    textAlign:"center",
+    border:"1px solid black",
+    width:"80%"
+  }
+ }>
+  <Typography variant="h4">Price : {totalPrice}</Typography>
+  <Button variant="contained" color="primary" style={{marginTop:"5px"}}>Go to payment</Button>
+ </div>
+ <Paper style={{width:"80%" , margin:"0px auto" , marginTop:"20px"}}>
+  <center>
+  <Typography variant="h4">Address</Typography>
+  <p>B-801, Altia , Lodha New Cuffe Parade , Wadala (East) , Mumbai-400037</p>
+  </center>
+ </Paper>
+ </div>
+ </div>
   </div>
   )
 }
