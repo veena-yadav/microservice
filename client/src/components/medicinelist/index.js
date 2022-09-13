@@ -52,8 +52,7 @@ const MedicineList = () => {
       price:smp
     }
     if(newItem.quantity>smt){
-      toast(`Not all quantity of ${newItem.itemName} available!`)
-      return
+      toast(`only ${smt} quantity are in stock!`)
     }
     const newArr=medicinesCart.set(selectedMedicine,newItem)
     setMedicineCart(newArr)

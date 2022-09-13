@@ -25,7 +25,7 @@ import { Grid, Typography } from '@mui/material'
 //   boxShadow: 24,
 //   p: 4,
 // };
-const Orders = () => {
+const UserReorder = () => {
   const [medicines,setMedicines]=useState([]);
  
   const {auth, admin , user}=useContext(UserContext);  
@@ -54,7 +54,7 @@ const Orders = () => {
   const getMedicine=async()=>{
     // setLoading(true)
     try {
-      const data= await axios.post('http://localhost:5000/user/getOrdersByEmail',{
+      const data= await axios.post('http://localhost:5000/user/getReodersByEmail',{
         email: user.email
       })
       setMedicines(data.data)
@@ -69,7 +69,7 @@ const Orders = () => {
     console.log(typeof(user.email))
     console.log(medName)
     try {
-      const data= await axios.delete(`http://localhost:5000/user/cancelAnOrder/${user.email}/${medName}`)
+      const data= await axios.delete(`http://localhost:5000/user/cancelAnReorder/${user.email}/${medName}`)
       console.log(data)
      
     } catch (error) {
@@ -87,7 +87,7 @@ const Orders = () => {
       paddingRight:"10px"
 
     }}>
-      <center><Typography variant="h4" >View My Orders</Typography></center>
+      <center><Typography variant="h4" >View My Reorders</Typography></center>
       
    <Grid container  spacing={{ xs: 2, md: 3 }}>
    {medicines.map((med)=>{
@@ -104,4 +104,4 @@ const Orders = () => {
   )
 }
 
-export default Orders
+export default UserReorder

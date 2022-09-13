@@ -18,6 +18,7 @@ import LoginNavbar from './components/loginnavbar';
 import AdminReorderedHistory from './components/reorderedmedicine/index.js'
 import CriticalHospitals from './components/criticalhospitals'
 import Criticalreorder from './components/criticalreorder'
+import UserReorder from './components/orders/UserReorder';
 function App() {
   const [usr,setUsr]=useState('')
   const {auth, admin , user}=useContext(UserContext);
@@ -42,6 +43,7 @@ function App() {
          <Route path="/payment" element={<Payment/>}/>
          <Route path="/getreorderedmedicine" element={<AdminReorderedHistory/>}/>
          <Route path='/criticalhospitals' element={<PrivateRoute><CriticalHospitals/></PrivateRoute>}/>
+         <Route path="/userReorders"  element={<PrivateRoute><UserReorder/></PrivateRoute>}/>
         <Route path='/criticalhospitals/criticalreorder' element={<PrivateRoute><Criticalreorder/></PrivateRoute>}/>
         <Route path='*' element={<Errorpage/>} />
       </Routes>
