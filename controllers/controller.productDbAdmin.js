@@ -33,9 +33,29 @@ const controller = {
         const items = await Item.find({
             itemName: { $regex: "^" + a, $options: 'i' },
         });
+        const i2=await Item.find()
+   if(!req.params.name || req.params.name===" ")
+        res.status(200).json(i2);
+       else res.status(200).json(items);
+    }),
 
+
+    filterbyorder: asyncHandler(async (request, response) => {
+        var a = request.params.name;
+        var b=request.params.email;
+        console.log(user.order_bucket)
+        const items = await user.order_bucket.find({
+            itemName: { $regex: "^" + a, $options: 'i' },
+        });
+        const i2=await user.order_bucket.find()
+        if(items==null) 
+        res.status(200).json(i2);
         res.status(200).json(items);
     }),
+
+
+
+
 
     getById: asyncHandler(async (request, response) => {
         await Item.findById(request.params.id)
