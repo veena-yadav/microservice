@@ -40,8 +40,9 @@ const MedicineList = () => {
   const [selectedMedicinePrice,setSelectedMedicinePrice]=useState(0);
   const [selectedMedicineMinimumThreshold, setSelectedMedicineMinimumThreshold]=useState(0);
   const [searchMedicine, setSearchmedicine]= useState("")
+  const [medicineQuantity,setMedicineQuantity]=useState(0)
   const navigate=useNavigate()
-  const  setCart=(sm,smq,smp,smt)=>{
+  const  setCart=(sm,smq,smp,smt,mq)=>{
     
 
 
@@ -51,13 +52,13 @@ const MedicineList = () => {
       quantity:selectedMedicineQuantity,
       price:smp
     }
-    if(newItem.quantity>smt){
-      toast(`only ${smt} quantity are in stock!`)
+    if(newItem.quantity>mq){
+      toast(`only ${mq} quantity are in stock!`)
     }
     const newArr=medicinesCart.set(selectedMedicine,newItem)
     setMedicineCart(newArr)
    setOpen(false)
-
+  setSelectedMedicineQuantity(0)
   }
   const handleOpen = () => {setOpen(true)
 
@@ -130,7 +131,7 @@ const MedicineList = () => {
             <Button color="primary"
             onMouseDown={(e)=>{
               
-              setCart(selectedMedicine,selectedMedicineQuantity,selectedMedicinePrice,selectedMedicineMinimumThreshold)
+              setCart(selectedMedicine,selectedMedicineQuantity,selectedMedicinePrice,selectedMedicineMinimumThreshold,medicineQuantity)
             
               // console.log(medicinesCart)
             }}
@@ -187,6 +188,7 @@ const MedicineList = () => {
             setSelectedMedicineMinimumThreshold(med.minimumThresholdValue)
             setSelectedMedicinePrice(med.price)
             setSelectedMedicine(med.itemName)
+            setMedicineQuantity(med.quantity)
           }} aria-label="add to shopping cart">
         <AddShoppingCartIcon />
       </IconButton></td>

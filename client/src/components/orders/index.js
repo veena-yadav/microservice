@@ -30,7 +30,7 @@ const Orders = () => {
   const [medicines,setMedicines]=useState([]);
  const [totalPrice,setTotalPrice]=useState(0)
   const {auth, admin , user}=useContext(UserContext);  
-
+const [userAddress,setUserAddress]=useState('')
 const navigate=useNavigate()
   
 //   const  setCart=(sm,smq,smp)=>{
@@ -51,8 +51,20 @@ const navigate=useNavigate()
 
   useEffect(() => {
     getMedicine()
+    getAddress()
   }, [medicines])
-
+  const getAddress=async()=>
+  {
+    try{
+    const addr=await axios.get(`http://localhost:5000/api/users/getaddress/${user.email}`)
+    console.log(addr.data)
+    setUserAddress(addr.data)
+    }
+    catch(err)
+    {
+     console.log(err) 
+    }
+  }
   const getMedicine=async()=>{
     // setLoading(true)
     try {
@@ -127,7 +139,7 @@ const navigate=useNavigate()
  <Paper style={{width:"80%" , margin:"0px auto" , marginTop:"20px"}}>
   <center>
   <Typography variant="h4">Address</Typography>
-  <p>B-801, Altia , Lodha New Cuffe Parade , Wadala (East) , Mumbai-400037</p>
+  <p>{userAddress}</p>
   </center>
  </Paper>
  </div>
