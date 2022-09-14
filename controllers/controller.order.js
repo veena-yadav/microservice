@@ -3,6 +3,7 @@ const { response } = require('express');
 const expressAsyncHandler = require('express-async-handler');
 const Item = require('../models/model.productDb');
 const userDb = require('../models/userModel');
+const orderDb = require('../models/model.orderDb');
 const Medicine = require("../models/reorderModel");
 const medicineDbController = require('../controllers/reorderController');
 
@@ -20,40 +21,41 @@ const controller = {
 
             //finding medicine name in the medcicine database
             Item.findOne(query, expressAsyncHandler(async (err, medicine) => {
-        
+
                 if (err) {
                     res.json("Error: " + err);
                 }
                 else {
                     if (medicine.quantity == 0) {
                         await drivers.addToReorderBucket_UserDB(element, req.body.email);
-                      //  medicine.quantity += element.quantity;
-                      //  medicineDbController.getMedicinebyvalue()
-                     
-                      const itemName =medicine.itemName;
-                      const price =medicine.price;
-                      let quantity = element.quantity;
-                      const minimumThresholdValue = medicine.minimumThresholdValue;
-                      let query = {
-                          itemName: { $regex: itemName },
-                      };
-                      Medicine.findOne(query, async (err, result) => {
-                          if (err) {
-                              response.json("Error: " + err);
-                          }
-                          else if (result == null) {
-                              const newMedicine = new Medicine({
-                                  itemName,
-                                  price,
-                                  quantity,
-                                  minimumThresholdValue,
-                              });
-                              await newMedicine.save();
-                          }
-                      });
-                    }  
-                    else if(medicine.quantity<=medicine.minimumThresholdValue) {
                         
+                        //  medicine.quantity += element.quantity;
+                        //  medicineDbController.getMedicinebyvalue()
+
+                        const itemName = medicine.itemName;
+                        const price = medicine.price;
+                        let quantity = element.quantity;
+                        const minimumThresholdValue = medicine.minimumThresholdValue;
+                        let query = {
+                            itemName: { $regex: itemName },
+                        };
+                        Medicine.findOne(query, async (err, result) => {
+                            if (err) {
+                                response.json("Error: " + err);
+                            }
+                            else if (result == null) {
+                                const newMedicine = new Medicine({
+                                    itemName,
+                                    price,
+                                    quantity,
+                                    minimumThresholdValue,
+                                });
+                                await newMedicine.save();
+                            }
+                        });
+                    }
+                    else if (medicine.quantity <= medicine.minimumThresholdValue) {
+
                         if (element.quantity <= medicine.quantity) {
                             await drivers.addToOrderBucket_UserDB(element, req.body.email);
                         }
@@ -65,9 +67,9 @@ const controller = {
                             await drivers.addToOrderBucket_UserDB(element, req.body.email);
                         }
 
-                        const itemName =medicine.itemName;
-                        const price =medicine.price;
-                        let quantity =element.quantity;
+                        const itemName = medicine.itemName;
+                        const price = medicine.price;
+                        let quantity = element.quantity;
                         const minimumThresholdValue = medicine.minimumThresholdValue;
                         let query = {
                             itemName: { $regex: itemName },
@@ -117,15 +119,15 @@ const operationsOnOrders = {
             let wrappedArray = [];
             const ordersFound = result.order_bucket;
             let notPaidOrders = [];
-            
+
             result.order_bucket.sort((a, b) => {
                 let item1 = a.itemName.toLowerCase(), item2 = b.itemName.toLowerCase();
                 if (item1 > item2) return 1;
                 return -1;
             })
             let totalAmount = 0;
-            for(let i = 0 ;i < ordersFound.length; i++){
-                if(ordersFound[i].status === "Not Paid"){
+            for (let i = 0; i < ordersFound.length; i++) {
+                if (ordersFound[i].status === "Not Paid") {
                     notPaidOrders.push(ordersFound[i]);
                     totalAmount += ordersFound[i].price * ordersFound[i].quantity;
                 }
@@ -324,15 +326,15 @@ const drivers = {
             "email": { $regex: email },
             "order_bucket.itemName": { $regex: order.itemName }
         };
-        for(let iter = 0; iter < order.length ;iter++){
+        for (let iter = 0; iter < order.length; iter++) {
             order[i].status = "Not Paid";
         }
         const orderExist = await userDb.findOne(queryUserDb);
         if (orderExist) {
             await userDb.updateOne(queryUserDb, { $set: { "order_bucket.$.quantity": order.quantity } }, { new: true })
-            .then(() => {
-                console.log("Successfully updated in the order bucket");
-            })
+                .then(() => {
+                    console.log("Successfully updated in the order bucket");
+                })
                 .catch(err => { console.log("Error : " + err) })
         }
         else {
@@ -345,22 +347,22 @@ const drivers = {
         }
     }),
 
-    moveOrderBucket: expressAsyncHandler(async(request, response) => {
+    moveOrderBucket: expressAsyncHandler(async (request, response) => {
         let queryUserDb = {
-            "email": {$regex : request.body.email}
+            "email": { $regex: request.body.email }
         };
         const entry = await userDb.findOne(queryUserDb);
         let ordersOrderDb = [];
         let ordersUserDb = entry.order_bucket;
         console.log(ordersUserDb);
-        for(let i = 0; i < request.body.order_bucket.length; i++){
+        for (let i = 0; i < request.body.order_bucket.length; i++) {
             // console.log(request.body.order_bucket[i]);
             // continue;
             const manasi = request.body.order_bucket;
             console.log(manasi[i]);
-            for(let j = 0 ; j < ordersUserDb.length; j++){
-                if(ordersUserDb[j].itemName === manasi[i].itemName && ordersUserDb[j].status === "Not Paid"){
-                    ordersOrderDb.push({"address": manasi[i].address,"status": "Paid","itemName":  manasi[i].itemName,"quantity" : manasi[i].quantity,"price" : manasi[i].price})
+            for (let j = 0; j < ordersUserDb.length; j++) {
+                if (ordersUserDb[j].itemName === manasi[i].itemName && ordersUserDb[j].status === "Not Paid") {
+                    ordersOrderDb.push({ "address": manasi[i].address, "status": "Paid", "itemName": manasi[i].itemName, "quantity": manasi[i].quantity, "price": manasi[i].price })
                     ordersUserDb[j].status = "Paid";
                     await entry.save();
                     break;
@@ -369,26 +371,99 @@ const drivers = {
         }
         // return;
         const entryInOrderDb = await orderDb.findOne(queryUserDb).clone();
-        if(entryInOrderDb){
-            await orderDb.findByIdAndUpdate(entryInOrderDb._id, {$push: {order_bucket: ordersOrderDb}}, {new: true})
-            .then(async() => {
-                for(let i = 0; i < request.body.order_bucket.length; i++){
-                    drivers.updateMedicineDB(request.body.order_bucket[i]);
-                }
-                response.json("Ordered Successfully");
-            })
-            .catch(err => response.json("Error : " + err));
+        if (entryInOrderDb) {
+            var ar = [];
+            await orderDb.findByIdAndUpdate(entryInOrderDb._id, { $push: { order_bucket: ordersOrderDb } }, { new: true })
+                .then(async () => {
+                    for (let i = 0; i < request.body.order_bucket.length; i++) {
+                        drivers.updateMedicineDB(request.body.order_bucket[i]);
+
+                        //notification
+                        const itemName = request.body.order_bucket[i].itemName;
+
+                        const arjun = await Item.find({ itemName })
+
+
+                        const price = arjun[0].price;
+                        let quantity = arjun[0].quantity;
+                        const minimumThresholdValue = arjun[0].minimumThresholdValue;
+                      //  ar.push({ "itemName": itemName })
+                        let query = {
+                            itemName: { $regex: itemName },
+                        };
+                        //  console.log(query)
+                        Medicine.findOne(query, async (err, result) => {
+                            if (err) {
+                                response.json("Error: " + err);
+                            }
+                            else if (result == null) {
+                                const admin = await Medicine.create({
+                                    itemName,
+                                    price,
+                                    quantity,
+                                    minimumThresholdValue,
+                                })
+
+
+                            }
+                        });
+
+
+
+                        //
+                    }
+                 
+        const items = await Item.find({
+            $expr: { $gt: ["$minimumThresholdValue", "$quantity"] },
+        });
+            response.send(items);
+                })
+                .catch(err => response.json("Error : " + err));
         }
-        else{
+        else {
             const email = entry.email;
             await orderDb.create({
                 email,
                 order_bucket: ordersOrderDb
             });
-            for(let i = 0; i < request.body.order_bucket.length; i++){
+            for (let i = 0; i < request.body.order_bucket.length; i++) {
                 drivers.updateMedicineDB(request.body.order_bucket[i]);
+                const itemName = request.body.order_bucket[i].itemName;
+                console.log("reorder", request.body.order_bucket[i])
+                const arjun = await Item.find({ itemName })
+                console.log("arjun", arjun)
+                const price = arjun[0].price;
+                let quantity = arjun[0].quantity;
+                const minimumThresholdValue = arjun[0].minimumThresholdValue;
+             //   ar.push({ "itemName": itemName })
+                let query = {
+                    itemName: { $regex: itemName },
+                };
+                //  console.log(query)
+                Medicine.findOne(query, async (err, result) => {
+                    if (err) {
+                        response.json("Error: " + err);
+                    }
+                    else if (result == null) {
+                        const admin = await Medicine.create({
+                            itemName,
+                            price,
+                            quantity,
+                            minimumThresholdValue,
+                        })
+
+
+                    }
+                });
+
+
             }
-            response.json("Ordered Successfully");
+
+        const items = await Item.find({
+            $expr: { $gt: ["$minimumThresholdValue", "$quantity"] },
+        });
+            
+            response.send(items);
         }
     }),
 
@@ -403,6 +478,11 @@ const drivers = {
                 .then(() => {
                     console.log("Sucessfully updated the medicine database");
                 })
+
+
+
+
+
         }).clone();
     }
 }

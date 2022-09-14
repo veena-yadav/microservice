@@ -14,7 +14,7 @@ const url2 = "http://localhost:5000/user/placeOrder";
 const url3 = "http://localhost:5000/api/reorder";
 const reorderurl = "http://localhost:5000/api/admin/reordermedicine";
 const updateMedicineurl="http://localhost:5000/api/medicine/update/";
-
+const moveurl="http://localhost:5000/user/moveOrderBucket"
 
 
 
@@ -22,7 +22,30 @@ const updateMedicineurl="http://localhost:5000/api/medicine/update/";
 
 var MedicinDetails = {
   
-//Admin:accept req 
+//reorder event
+moveOrderBucket:function (req, res) {
+  request.post({
+
+url:moveurl,
+json:true,
+body:req.body
+
+
+  }, function (err, response, body) {
+    //producer(JSON.stringify(body))
+
+    console.log(body)
+    producer(JSON.stringify(body))
+
+     res.send(body)
+    })
+ },
+
+
+
+
+
+  //Admin:accept req 
 
 updateMedicine:function (req, res) {
   request.patch({
@@ -67,19 +90,7 @@ updateMedicine:function (req, res) {
       res.send(body)
      })
   },
-  // order: function (req, res) {
-  //   axios({
-  //     method: "post",
-  //     url: url2,
-  //     data: req.body,
-  //     withCredentials: true,
-  //   }).then((e) => {
-  //     producer(req.body.order)
-  //     res.send("succcesssfull");
-  //   });
-  
-  // },
-
+ 
   order:function (req, res) {
     request.post({
 
