@@ -6,6 +6,7 @@ import '../medicinelist/medicinelist.css'
 // import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import axios from 'axios'
 import { UserContext } from '../../contextapi/usercontext'
+import {useNavigate} from 'react-router-dom'
 import MedicineCard from './MedicineCard'
 import { Button, Grid, Paper, Typography } from '@mui/material'
 import './sui.css'
@@ -30,7 +31,7 @@ const Orders = () => {
  const [totalPrice,setTotalPrice]=useState(0)
   const {auth, admin , user}=useContext(UserContext);  
 
-
+const navigate=useNavigate()
   
 //   const  setCart=(sm,smq,smp)=>{
     
@@ -51,6 +52,7 @@ const Orders = () => {
   useEffect(() => {
     getMedicine()
   }, [medicines])
+
   const getMedicine=async()=>{
     // setLoading(true)
     try {
@@ -65,6 +67,7 @@ const Orders = () => {
     }
     // setLoading(false)
   }
+
   const deleteMedicine=async(medName)=>{
     // setLoading(true)
     console.log(`${medName} deleted`)
@@ -89,7 +92,7 @@ const Orders = () => {
       paddingRight:"10px"
 
     }}>
-      <center><Typography variant="h4" >View My Orders</Typography></center>
+      <center><Typography variant="h4" >View Cart</Typography></center>
     <div className="custom_Grid_124">
    <Grid container  spacing={{ xs: 2, md: 3 }} className="custom_Grid_124_item_1">
    {medicines.map((med)=>{
@@ -115,7 +118,11 @@ const Orders = () => {
   }
  }>
   <Typography variant="h4">Price : {totalPrice}</Typography>
-  <Button variant="contained" color="primary" style={{marginTop:"5px"}}>Go to payment</Button>
+  <Button variant="contained" color="primary" style={{marginTop:"5px"}}
+  onClick={(e)=>{
+    navigate('/payment')
+  }}
+  >Go to payment</Button>
  </div>
  <Paper style={{width:"80%" , margin:"0px auto" , marginTop:"20px"}}>
   <center>

@@ -1,12 +1,12 @@
-import React, { useState ,useEffect } from 'react'
+import React, { useState ,useEffect,useContext } from 'react'
 import './payment.css'
 import '../../../node_modules/bootstrap/dist/css/bootstrap.min.css'
 import '../../../node_modules/bootstrap/dist/js/bootstrap.bundle'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios'
+import { UserContext } from '../../contextapi/usercontext'
 import validator from 'validator'
-// import medicineArray from './medicineArray';
 const Payment = () => {
 
   // const [cardNumber,setCardNumber]=useState('')
@@ -16,6 +16,7 @@ const Payment = () => {
   const [val, setVal] = useState('');
   const [totalPrice , setTotalPrice]=useState(0)
   const [CardHolderName,setCardHolderName]=useState('')
+  const [medicineArray,setMedicineArray]=useState([])
 const d = new Date();
 const month = d.getMonth()+1;
 const year=d.getFullYear();
@@ -30,8 +31,24 @@ const maxDate=maxMonth<10?`${maxYear}-0${maxMonth}`:`${maxYear}-${maxMonth}`;
 //     // Calling toast method by passing string
 //     toast('Hello Geeks')
 // }
-
+useEffect(()=>{
+  getMedicines()
+},[])
+const {auth, admin , user}=useContext(UserContext);  
 // validate card number
+const getMedicines=async()=>{
+  try{
+    const data= await axios.post('http://localhost:5000/user/getOrdersByEmail',{
+        email: user.email
+      })
+      setMedicineArray(data.data[1])
+      setTotalPrice(data.data[0])
+  }
+  catch(err)
+  {
+    console.log(err)
+  }
+}
   const validateCreditCard = (value) => {
     
     if (validator.isCreditCard(value)) {
@@ -192,13 +209,13 @@ const maxDate=maxMonth<10?`${maxYear}-0${maxMonth}`:`${maxYear}-${maxMonth}`;
 
                       <div className="d-flex flex-column">
 
-                        <span>Total Amount <i className="fa fa-caret-down"></i></span>
+                        <span>Total Amount </span>
                         {/* <a href="#" className="billing">Save 20% with annual billing</a> */}
                         
                       </div>
 
                       <div className="mt-1">
-                        <sup className="super-price">3.4</sup>
+                        <sup className="super-price">{totalPrice}</sup>
                         {/* <span className="super-month">/Month</span> */}
                       </div>
                       
@@ -209,18 +226,18 @@ const maxDate=maxMonth<10?`${maxYear}-0${maxMonth}`:`${maxYear}-${maxMonth}`;
                     <div className="p-3">
   
                     
-                     {/* {medicineArray.map(medicine=>{
+                     {medicineArray.map(medicine=>{
                       
                       
                       return (
-                        <div key={medicine.id} className="d-flex justify-content-between">
+                        <div key={medicine._id} className="d-flex justify-content-between">
 
-                        <span>{medicine.name}</span>
+                        <span>{medicine.itemName} X {medicine.quantity}</span>
                         <span>{medicine.price}</span>
                         
                       </div>
                       )
-                     })} */}
+                     })} 
                    
                       
 

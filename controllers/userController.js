@@ -95,7 +95,7 @@ const changeAddress=asyncHandler(async (req, res) => {
 
 })
 const getAddress=asyncHandler(async (req, res) => {
-    const email=req.body.email
+    const email=req.params.email
     const user = await User.findOne({ email });
     res.send(user.address)
 })

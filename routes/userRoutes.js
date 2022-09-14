@@ -15,7 +15,7 @@ router.get("/forgetpassword/:email",foregtPass)
 
 router.post("/resetpassword",resetPass)
 
-router.get("/getaddress",getAddress)
+router.get("/getaddress/:email",getAddress)
 
 //router.post()
 module.exports = router;
