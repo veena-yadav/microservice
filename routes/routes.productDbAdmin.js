@@ -5,13 +5,15 @@ const { } = require("../controllers/userController")
 const { protect } = require("../middleware/authMiddleware")
 
 const medicineDbController = require('../controllers/controller.productDbAdmin');
-
+//change status
+router.post("/status/:email",medicineDbController.changestatus)
 //get all medicines
 router.get("/view", medicineDbController.getMedicine)
 //router.get("/filter", medicineDbController.filterByName)
 //get document using unique ID from db
 router.get('/getMedicine/:id', medicineDbController.getById);
 router.get("/filter/:name?", medicineDbController.filterByName)
+//router.get("/filterbyorder/:email/:name?", medicineDbController.filterbyorder)
 //add document into the database
 router.post('/addMedicine', medicineDbController.addMedicine);
 

@@ -3,9 +3,40 @@ const Medicine = require("../models/reorderModel");
 const addMed = require("../models/adminmedicine")
 const Item = require("../models/model.productDb");
 const user=require("../models/userModel")
+const orderDb = require('../models/model.orderDb');
 
 
 const controller = {
+
+//update status
+
+// changestatus:asyncHandler(async (req, res) => {
+// var ar=['pickup','Onprocess','On Delivery','Delivered']
+//     const a=req.params.email
+//     const items = await orderDb.find({"email":a});
+//     console.log(items[0].order_bucket[0].status);
+//     const filter={"email":a}
+
+
+//     for(let i=0;i<4;i++){
+//         setInterval(() => {
+//             const update1 = {status:ar[i] };
+//             orderDb.findOneAndUpdate(filter,update1);
+//                 }, 6000)
+//     res.send(ar[i]);   
+//     }
+    
+
+
+// await addMed.findOneAndUpdate(filter,update1);
+//     res.send(items)
+
+// }),
+
+
+
+
+
     //GET ALL MEDICINES
     getMedicine: asyncHandler(async (req, res) => {
         //   console.log(req.cookies.jwt)
@@ -40,18 +71,22 @@ const controller = {
     }),
 
 
-    filterbyorder: asyncHandler(async (request, response) => {
-        var a = request.params.name;
-        var b=request.params.email;
-        console.log(user.order_bucket)
-        const items = await user.order_bucket.find({
-            itemName: { $regex: "^" + a, $options: 'i' },
-        });
-        const i2=await user.order_bucket.find()
-        if(items==null) 
-        res.status(200).json(i2);
-        res.status(200).json(items);
-    }),
+//     filterbyorder: asyncHandler(async (request, response) => {
+//         var b=request.params.email;
+//         var a = request.params.name;
+
+//         const med= await user.find({"email":b});
+// //console.log(med[0].order_bucket)
+//       const items = await user.order_bucket.find({"itemName":a},{"email":b})
+//         console.log("items",med);
+//         const i2=med[0].order_bucket;
+
+      
+//        // console.log("i2",typeof(i2.order_bucket))
+//         if(!request.params.name || request.params.name===" ")
+//         response.status(200).json(i2);
+//        else response.status(200).json(items);
+//     }),
 
 
 

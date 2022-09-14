@@ -8,6 +8,8 @@ const Medicine = require("../models/reorderModel");
 const medicineDbController = require('../controllers/reorderController');
 
 const controller = {
+
+
     PlaceOrder: expressAsyncHandler(async (req, res) => {
 
         const items = await Item.find({
@@ -376,7 +378,7 @@ const drivers = {
             await orderDb.findByIdAndUpdate(entryInOrderDb._id, { $push: { order_bucket: ordersOrderDb } }, { new: true })
                 .then(async () => {
                     for (let i = 0; i < request.body.order_bucket.length; i++) {
-                        drivers.updateMedicineDB(request.body.order_bucket[i]);
+                        await drivers.updateMedicineDB(request.body.order_bucket[i]);
 
                         //notification
                         const itemName = request.body.order_bucket[i].itemName;
@@ -427,7 +429,7 @@ const drivers = {
                 order_bucket: ordersOrderDb
             });
             for (let i = 0; i < request.body.order_bucket.length; i++) {
-                drivers.updateMedicineDB(request.body.order_bucket[i]);
+                await drivers.updateMedicineDB(request.body.order_bucket[i]);
                 const itemName = request.body.order_bucket[i].itemName;
                 console.log("reorder", request.body.order_bucket[i])
                 const arjun = await Item.find({ itemName })
