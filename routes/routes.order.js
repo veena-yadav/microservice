@@ -1,4 +1,5 @@
-const { controller, operationsOnOrders, operationsOnReorders,drivers} = require('../controllers/controller.order')
+const { controller, operationsOnOrders, operationsOnReorders,drivers} = require('../controllers/controller.order');
+const {userCritical} = require('../controllers/controller.userCriticalMed');
 const router = require('express').Router();
 
 router.post("/placeOrder", controller.PlaceOrder);
@@ -15,6 +16,11 @@ router.post("/getReodersByEmailSortByQuantityDesc", operationsOnReorders.fetchRe
 router.post("/getReodersByEmailSortByPriceAsc", operationsOnReorders.fetchReordersByEmailSortByPriceAsc);
 router.post("/getReodersByEmailSortByPriceDesc", operationsOnReorders.fetchReordersByEmailSortByPriceDesc);
 router.delete("/cancelAnReorder/:email/:itemName", operationsOnReorders.deleteAnReorder);
+
+//operations on critical medicines user side
+router.post("/addCriticalMedicine", userCritical.addMed);
+router.post("/getCriticalMedicines", userCritical.getMed);
+router.delete("/removeCriticalMedicine", userCritical.removeMed);
 
 //last step in the ordering lifecycle
 router.post("/moveOrderBucket", drivers.moveOrderBucket);

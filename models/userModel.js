@@ -37,6 +37,7 @@ const userSchema=mongoose.Schema({
         type:String,
       
     },
+    criticalMedicines: [{type:String}],
     order_bucket:
         [
             {
