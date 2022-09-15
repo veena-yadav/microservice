@@ -17,6 +17,7 @@ const Payment = () => {
   const [totalPrice , setTotalPrice]=useState(0)
   const [CardHolderName,setCardHolderName]=useState('')
   const [medicineArray,setMedicineArray]=useState([])
+  const [userAddress,setUserAddress]=useState('')
 const d = new Date();
 const month = d.getMonth()+1;
 const year=d.getFullYear();
@@ -35,7 +36,18 @@ useEffect(()=>{
   getMedicines()
 },[])
 const {auth, admin , user}=useContext(UserContext);  
-// validate card number
+const getAddress=async()=>
+{
+  try{
+  const addr=await axios.get(`http://localhost:5000/api/users/getaddress/${user.email}`)
+  console.log(addr.data)
+  setUserAddress(addr.data)
+  }
+  catch(err)
+  {
+   console.log(err) 
+  }
+}
 const getMedicines=async()=>{
   try{
     const data= await axios.post('http://localhost:5000/user/getOrdersByEmail',{
