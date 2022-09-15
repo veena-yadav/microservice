@@ -6,6 +6,7 @@ import { BarChart, Bar, CartesianGrid, XAxis, YAxis, Label } from "recharts";
 const AdminReorderedHistory = () => {
   var ar = [];
   var arr2 = [];
+  let sz=0;
 
   const [medicines, setMedicines] = useState([]);
 
@@ -20,7 +21,7 @@ const AdminReorderedHistory = () => {
         "http://localhost:5000/api/admin/getreorderedmedicine"
       );
 
-      let sz = data.data.length;
+
 
       // for(let i=0;i<sz;i++)
       // {
@@ -60,8 +61,11 @@ const AdminReorderedHistory = () => {
       </tr>
     </thead>
     <tbody>
+      
             {medicines.map((med) => {
+              if(sz!==7){
               ar.push({ name: med.itemName, count: med.count1 });
+            sz++;}
               var dateObject = new Date(med.createdAt);
               var utcYearFromTS = dateObject.getUTCFullYear();
               var utcMonthFromTS = dateObject.getUTCMonth() + 1;
