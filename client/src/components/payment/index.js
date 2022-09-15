@@ -1,5 +1,6 @@
 import React, { useState ,useEffect,useContext } from 'react'
 import './payment.css'
+import {useNavigate} from 'react-router-dom'
 import '../../../node_modules/bootstrap/dist/css/bootstrap.min.css'
 import '../../../node_modules/bootstrap/dist/js/bootstrap.bundle'
 import { ToastContainer, toast } from 'react-toastify';
@@ -19,6 +20,7 @@ const Payment = () => {
   const [medicineArray,setMedicineArray]=useState([])
 
   const [userAddress,setUserAddress]=useState('')
+  const [paymentArray,setPaymentArray]=useState([])
 
 const d = new Date();
 const month = d.getMonth()+1;
@@ -34,9 +36,25 @@ const maxDate=maxMonth<10?`${maxYear}-0${maxMonth}`:`${maxYear}-${maxMonth}`;
 //     // Calling toast method by passing string
 //     toast('Hello Geeks')
 // }
+const navigate=useNavigate()
 useEffect(()=>{
   getMedicines()
 },[])
+useEffect(()=>{
+  getAddress()
+},[])
+const getAddress=async()=>
+  {
+    try{
+    const addr=await axios.get(`http://localhost:5000/api/users/getaddress/${user.email}`)
+    console.log(addr.data)
+    setUserAddress(addr.data)
+    }
+    catch(err)
+    {
+     console.log(err) 
+    }
+  }
 const {auth, admin , user}=useContext(UserContext);  
 // validate card number
 const getMedicines=async()=>{
@@ -62,6 +80,62 @@ const getMedicines=async()=>{
       setErrorMessage('Enter valid CreditCard Number!')
       setErrorColor('red')
     }
+  }
+  const paymentsubmit=async()=>{
+    // console.log(val)
+    console.log(month)
+    console.log(year)
+    
+    if(errorMessage==='Enter valid CreditCard Number!')
+    {
+      setErrorColor('red')
+      console.log(errorMessage)
+      toast(errorMessage)
+      return 
+    }
+    else
+    {
+      setErrorColor('green')
+    }
+    if(val==='')
+    {
+      toast("Please enter CVV")
+      return
+   
+    }
+
+    // const newPayment={
+    //   CardHolderName,
+    //   price:'66'
+    // }
+    
+    // console.log(newPayment)
+    if(medicineArray.length>0)
+    {
+     const updatedArray=[...medicineArray]
+     for(let i=0;i<updatedArray.length;i++)
+     {
+      updatedArray[i].address=userAddress
+     }
+     setPaymentArray(updatedArray)
+      try{
+     
+        const paymentDone=  await axios.post('http://localhost:5050/move',{
+          email: user.email,
+          order_bucket:updatedArray
+        })
+        
+      }
+     catch(err)
+     {
+      console.log(err)
+      return
+     }
+     navigate('/viewmedicine')
+    }
+  
+  
+
   }
   // const getMedicinePrice=()=>{
   //   return medicineArray.reduce((a,v)=>a+v.price)
@@ -266,40 +340,7 @@ const getMedicines=async()=>{
 
                     <div className="p-3">
 
-                    <button onClick={(e)=>{
-                      // console.log(val)
-                      console.log(month)
-                      console.log(year)
-                      
-                      if(errorMessage==='Enter valid CreditCard Number!')
-                      {
-                        setErrorColor('red')
-                        console.log(errorMessage)
-                        toast(errorMessage)
-                        return 
-                      }
-                      else
-                      {
-                        setErrorColor('green')
-                      }
-                      if(val==='')
-                      {
-                        toast("Please enter CVV")
-                        return
-                     
-                      }
-                
-                      const newPayment={
-                        CardHolderName,
-                        price:'66'
-                      }
-                      
-                      console.log(newPayment)
-                      const paymentDone=  axios.post('http://localhost:5000/payment/add',newPayment)
-                       toast("Payment Successful")
-                    
-
-                    }} className="btn btn-primary btn-block free-button w-100 btnStyle">Pay Amount</button> 
+                    <button onClick={paymentsubmit} className="btn btn-primary btn-block free-button w-100 btnStyle">Pay Amount</button> 
                    {/* <div className="text-center">
                     
                      <a href="#">Recheck Details </a>

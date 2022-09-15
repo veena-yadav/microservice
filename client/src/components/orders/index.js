@@ -31,6 +31,7 @@ const Orders = () => {
  const [totalPrice,setTotalPrice]=useState(0)
   const {auth, admin , user}=useContext(UserContext);  
 const [userAddress,setUserAddress]=useState('')
+
 const navigate=useNavigate()
   
 //   const  setCart=(sm,smq,smp)=>{
@@ -107,13 +108,15 @@ const navigate=useNavigate()
       <center><Typography variant="h4" >View Cart</Typography></center>
     <div className="custom_Grid_124">
    <Grid container  spacing={{ xs: 2, md: 3 }} className="custom_Grid_124_item_1">
-   {medicines.map((med)=>{
+   {medicines.length>0 ? medicines.map((med)=>{
     return(
       <Grid item xs={12} sm={6} md={4} >
       <MedicineCard med={med} deleteMedicine={deleteMedicine}/>  
       </Grid>
     )
-   })}
+   }):(
+    <h1 style={{marginLeft:"70px", textAlign:'center'}}>No items in cart</h1>
+   )}
     
    </Grid>
    <div className='custom_Grid_124_item_2'>
@@ -130,11 +133,11 @@ const navigate=useNavigate()
   }
  }>
   <Typography variant="h4">Price : {totalPrice}</Typography>
-  <Button variant="contained" color="primary" style={{marginTop:"5px"}}
+  {totalPrice>0 && (<Button variant="contained" color="primary" style={{marginTop:"5px"}}
   onClick={(e)=>{
     navigate('/payment')
   }}
-  >Go to payment</Button>
+  >Go to payment</Button>)}
  </div>
  <Paper style={{width:"80%" , margin:"0px auto" , marginTop:"20px"}}>
   <center>
