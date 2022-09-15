@@ -40,7 +40,7 @@ function App() {
         <Route path='/adminlogin'  element={<AdminForm/>}/>
          <Route path="/adminviewmedicine" element={<PrivateRoute><AdminMedicineList/></PrivateRoute>}/>
          <Route path="/adminReorders" element={<PrivateRoute><AdminReorders/></PrivateRoute>}/>
-         <Route path="/payment" element={<Payment/>}/>
+         <Route path="/payment" element={<PrivateRoute><Payment/></PrivateRoute>}/>
          <Route path="/getreorderedmedicine" element={<AdminReorderedHistory/>}/>
          <Route path='/criticalhospitals' element={<PrivateRoute><CriticalHospitals/></PrivateRoute>}/>
          <Route path="/userReorders"  element={<PrivateRoute><UserReorder/></PrivateRoute>}/>
