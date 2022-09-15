@@ -15,7 +15,6 @@ module.exports = function () {
         eachMessage: async ({ topic, partition, message }) => {
             console.log(JSON.parse(message.value))
 
-
             axios({
                 method: 'post', url: 'http://localhost:5050/getnotification',
                 data: JSON.parse(message.value)

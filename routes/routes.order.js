@@ -1,5 +1,5 @@
-const { controller, operationsOnOrders, operationsOnReorders,drivers} = require('../controllers/controller.order');
-const {userCritical} = require('../controllers/controller.userCriticalMed');
+const { controller, operationsOnOrders, operationsOnReorders, drivers } = require('../controllers/controller.order');
+const { userCritical } = require('../controllers/controller.userCriticalMed');
 const router = require('express').Router();
 
 router.post("/placeOrder", controller.PlaceOrder);
@@ -24,4 +24,8 @@ router.delete("/removeCriticalMedicine", userCritical.removeMed);
 
 //last step in the ordering lifecycle
 router.post("/moveOrderBucket", drivers.moveOrderBucket);
+
+//shw the paid orders
+router.post("/showHistory", operationsOnOrders.fetchOrdersPaid);
+
 module.exports = router;

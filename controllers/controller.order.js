@@ -1,5 +1,4 @@
 const axios = require('axios');
-const { response } = require('express');
 const expressAsyncHandler = require('express-async-handler');
 const Item = require('../models/model.productDb');
 const userDb = require('../models/userModel');
@@ -8,7 +7,6 @@ const Medicine = require("../models/reorderModel");
 const medicineDbController = require('../controllers/reorderController');
 
 const controller = {
-
 
     PlaceOrder: expressAsyncHandler(async (req, res) => {
 
@@ -30,9 +28,6 @@ const controller = {
                 else {
                     if (medicine.quantity == 0) {
                         await drivers.addToReorderBucket_UserDB(element, req.body.email);
-                        
-                        //  medicine.quantity += element.quantity;
-                        //  medicineDbController.getMedicinebyvalue()
 
                         const itemName = medicine.itemName;
                         const price = medicine.price;
@@ -136,6 +131,36 @@ const operationsOnOrders = {
             }
             wrappedArray.push(totalAmount);
             wrappedArray.push(notPaidOrders);
+            response.json(wrappedArray);
+        }
+        else response.json([]);
+    }),
+
+    fetchOrdersPaid: expressAsyncHandler(async (request, response) => {
+        let queryUserDb = {
+            "email": { $regex: request.body.email }
+        }
+        const result = await userDb.findOne(queryUserDb);
+        if (result && result.order_bucket.length > 0) {
+            let wrappedArray = [];
+            const ordersFound = result.order_bucket;
+            let PaidOrders = [];
+
+            result.order_bucket.sort((a, b) => {
+                let item1 = a.itemName.toLowerCase(), item2 = b.itemName.toLowerCase();
+                if (item1 > item2) return 1;
+                return -1;
+            })
+            let totalAmount = 0;
+            for (let i = 0; i < ordersFound.length; i++) {
+                if (ordersFound[i].status !== "Not Paid") {
+                    PaidOrders.push(ordersFound[i]);
+                    totalAmount += ordersFound[i].price * ordersFound[i].quantity;
+                }
+            }
+            totalAmount.toFixed(2);
+            wrappedArray.push(totalAmount);
+            wrappedArray.push(PaidOrders);
             response.json(wrappedArray);
         }
         else response.json([]);
@@ -325,28 +350,35 @@ const drivers = {
 
     addToOrderBucket_UserDB: expressAsyncHandler(async (order, email) => {
         let queryUserDb = {
-            "email": { $regex: email },
-            "order_bucket.itemName": { $regex: order.itemName }
+            "email": { $regex: email }
+            // "order_bucket.itemName": { $regex: order.itemName }
         };
         for (let iter = 0; iter < order.length; iter++) {
             order[i].status = "Not Paid";
         }
-        const orderExist = await userDb.findOne(queryUserDb);
-        if (orderExist) {
-            await userDb.updateOne(queryUserDb, { $set: { "order_bucket.$.quantity": order.quantity } }, { new: true })
-                .then(() => {
-                    console.log("Successfully updated in the order bucket");
-                })
-                .catch(err => { console.log("Error : " + err) })
-        }
-        else {
-            let userExist = await userDb.findOne({ "email": { $regex: email } });
-            await userDb.findByIdAndUpdate(userExist._id, { $push: { order_bucket: order } }, { new: true })
-                .then(() => {
-                    console.log("Successfully added in the order bucket");
-                })
-                .catch(err => { console.log("Error : " + err) })
-        }
+        await userDb.findOne(queryUserDb, async (err, result) => {
+            if (err) {
+                console.log("Error : ", err);
+            }
+            else if (result) {
+                let flagFound = false;
+                for (let i = 0; i < result.order_bucket.length; i++) {
+                    if (result.order_bucket[i].itemName === order.itemName && result.order_bucket[i].status === "Not Paid") {
+                        result.order_bucket[i].quantity = order.quantity;
+                        await result.save();
+                        flagFound = true;
+                        console.log("updated the order as the order entry was already present");
+                        break;
+                    }
+                }
+                if (flagFound !== true) {
+                    console.log(order);
+                    result.order_bucket.push(order);
+                    await result.save();
+                    console.log("added new entry in order bucket as previous order was not found");
+                }
+            }
+        }).clone();
     }),
 
     moveOrderBucket: expressAsyncHandler(async (request, response) => {
@@ -356,12 +388,8 @@ const drivers = {
         const entry = await userDb.findOne(queryUserDb);
         let ordersOrderDb = [];
         let ordersUserDb = entry.order_bucket;
-        console.log(ordersUserDb);
         for (let i = 0; i < request.body.order_bucket.length; i++) {
-            // console.log(request.body.order_bucket[i]);
-            // continue;
             const manasi = request.body.order_bucket;
-            console.log(manasi[i]);
             for (let j = 0; j < ordersUserDb.length; j++) {
                 if (ordersUserDb[j].itemName === manasi[i].itemName && ordersUserDb[j].status === "Not Paid") {
                     ordersOrderDb.push({ "address": manasi[i].address, "status": "Paid", "itemName": manasi[i].itemName, "quantity": manasi[i].quantity, "price": manasi[i].price })
@@ -371,10 +399,8 @@ const drivers = {
                 }
             }
         }
-        // return;
         const entryInOrderDb = await orderDb.findOne(queryUserDb).clone();
         if (entryInOrderDb) {
-            var ar = [];
             await orderDb.findByIdAndUpdate(entryInOrderDb._id, { $push: { order_bucket: ordersOrderDb } }, { new: true })
                 .then(async () => {
                     for (let i = 0; i < request.body.order_bucket.length; i++) {
@@ -384,16 +410,13 @@ const drivers = {
                         const itemName = request.body.order_bucket[i].itemName;
 
                         const arjun = await Item.find({ itemName })
-
-
                         const price = arjun[0].price;
                         let quantity = arjun[0].quantity;
                         const minimumThresholdValue = arjun[0].minimumThresholdValue;
-                      //  ar.push({ "itemName": itemName })
+
                         let query = {
                             itemName: { $regex: itemName },
                         };
-                        //  console.log(query)
                         Medicine.findOne(query, async (err, result) => {
                             if (err) {
                                 response.json("Error: " + err);
@@ -405,20 +428,14 @@ const drivers = {
                                     quantity,
                                     minimumThresholdValue,
                                 })
-
-
                             }
                         });
-
-
-
-                        //
                     }
-                 
-        const items = await Item.find({
-            $expr: { $gt: ["$minimumThresholdValue", "$quantity"] },
-        });
-            response.send(items);
+
+                    const items = await Item.find({
+                        $expr: { $gt: ["$minimumThresholdValue", "$quantity"] },
+                    });
+                    response.send(items);
                 })
                 .catch(err => response.json("Error : " + err));
         }
@@ -431,17 +448,15 @@ const drivers = {
             for (let i = 0; i < request.body.order_bucket.length; i++) {
                 await drivers.updateMedicineDB(request.body.order_bucket[i]);
                 const itemName = request.body.order_bucket[i].itemName;
-                console.log("reorder", request.body.order_bucket[i])
                 const arjun = await Item.find({ itemName })
-                console.log("arjun", arjun)
                 const price = arjun[0].price;
                 let quantity = arjun[0].quantity;
                 const minimumThresholdValue = arjun[0].minimumThresholdValue;
-             //   ar.push({ "itemName": itemName })
+
                 let query = {
                     itemName: { $regex: itemName },
                 };
-                //  console.log(query)
+
                 Medicine.findOne(query, async (err, result) => {
                     if (err) {
                         response.json("Error: " + err);
@@ -453,18 +468,14 @@ const drivers = {
                             quantity,
                             minimumThresholdValue,
                         })
-
-
                     }
                 });
-
-
             }
 
-        const items = await Item.find({
-            $expr: { $gt: ["$minimumThresholdValue", "$quantity"] },
-        });
-            
+            const items = await Item.find({
+                $expr: { $gt: ["$minimumThresholdValue", "$quantity"] },
+            });
+
             response.send(items);
         }
     }),
@@ -480,11 +491,6 @@ const drivers = {
                 .then(() => {
                     console.log("Sucessfully updated the medicine database");
                 })
-
-
-
-
-
         }).clone();
     }
 }

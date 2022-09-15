@@ -3,7 +3,7 @@ axios.default.withCredentials = true;
 const producer = require("../kafka/producer");
 const consumer = require("../kafka/consumer");
 const request = require("request");
-const producer1=require("../kafka/client_pro")
+const producer1 = require("../kafka/client_pro")
 
 //const api=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzMDYxNDVlMjdlZDVjZjU1ZGViMWQ3MCIsImlhdCI6MTY2MTM1NTI2OSwiZXhwIjoxNjYzOTQ3MjY5fQ.MytWjGcCopbFmgpQxCEvGF1BIr-uja3wVonl_xghfUw
 
@@ -13,54 +13,47 @@ const loginurl = "http://localhost:5000/api/admin/login";
 const url2 = "http://localhost:5000/user/placeOrder";
 const url3 = "http://localhost:5000/api/reorder";
 const reorderurl = "http://localhost:5000/api/admin/reordermedicine";
-const updateMedicineurl="http://localhost:5000/api/medicine/update/";
-const moveurl="http://localhost:5000/user/moveOrderBucket"
-
-
-
+const updateMedicineurl = "http://localhost:5000/api/medicine/update/";
+const moveurl = "http://localhost:5000/user/moveOrderBucket"
 
 
 var MedicinDetails = {
-  
-//reorder event
-moveOrderBucket:function (req, res) {
-  request.post({
 
-url:moveurl,
-json:true,
-body:req.body
+  //reorder event
+  moveOrderBucket: function (req, res) {
+    request.post({
+
+      url: moveurl,
+      json: true,
+      body: req.body
 
 
-  }, function (err, response, body) {
-    //producer(JSON.stringify(body))
+    }, function (err, response, body) {
+      //producer(JSON.stringify(body))
 
-    console.log(body)
-    producer(JSON.stringify(body))
+      console.log(body)
+      producer(JSON.stringify(body))
 
-     res.send(body)
+      res.send(body)
     })
- },
-
-
-
-
+  },
 
   //Admin:accept req 
 
-updateMedicine:function (req, res) {
-  request.patch({
+  updateMedicine: function (req, res) {
+    request.patch({
 
-    url:updateMedicineurl+req.params.itemName,
-    json:true,
-    body:req.body
-    
-        }, function (err, response, body) {
-         
-        producer1(body)
-       // console.log(body)
-     //    console.log("err)
-           res.send(body)
-          })
+      url: updateMedicineurl + req.params.itemName,
+      json: true,
+      body: req.body
+
+    }, function (err, response, body) {
+
+      producer1(body)
+      // console.log(body)
+      //    console.log("err)
+      res.send(body)
+    })
   },
 
   getMedicine: function (req, res) {
@@ -78,33 +71,34 @@ updateMedicine:function (req, res) {
         console.log(error);
       });
   },
-  //belothreshold
-   getMedicinebyvalue: function (req, res) {
-   request(url3, function (err, response, body) {
- //setInterval(() => {
-  //       producer(body)
-       //   //  console.log()
 
-       // }, 6000); res.send(body)
+  //belothreshold
+  getMedicinebyvalue: function (req, res) {
+    request(url3, function (err, response, body) {
+      //setInterval(() => {
+      //       producer(body)
+      //   //  console.log()
+
+      // }, 6000); res.send(body)
       producer(body)
       res.send(body)
-     })
+    })
   },
- 
-  order:function (req, res) {
+
+  order: function (req, res) {
     request.post({
 
-url:url2,
-json:true,
-body:req.body
+      url: url2,
+      json: true,
+      body: req.body
 
 
     }, function (err, response, body) {
       producer(JSON.stringify(body))
-       console.log(body)
-       res.send(body)
-      })
-   },
+      console.log(body)
+      res.send(body)
+    })
+  },
 
   Login: function (req, res) {
     axios({
@@ -118,6 +112,7 @@ body:req.body
 
     res.send("succcesssfull");
   },
+
   reorderMed: function (req, res) {
 
     axios({ method: 'post', url: reorderurl, data: req.body }).then((e) => {
@@ -131,6 +126,7 @@ body:req.body
 
 
   },
+
   getNotification: function (req, res) {
 
     var list = req.body;

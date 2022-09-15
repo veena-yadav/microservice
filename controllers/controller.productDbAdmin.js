@@ -2,36 +2,36 @@ const asyncHandler = require("express-async-handler");
 const Medicine = require("../models/reorderModel");
 const addMed = require("../models/adminmedicine")
 const Item = require("../models/model.productDb");
-const user=require("../models/userModel")
+const user = require("../models/userModel")
 const orderDb = require('../models/model.orderDb');
 
 
 const controller = {
 
-//update status
+    //update status
 
-// changestatus:asyncHandler(async (req, res) => {
-// var ar=['pickup','Onprocess','On Delivery','Delivered']
-//     const a=req.params.email
-//     const items = await orderDb.find({"email":a});
-//     console.log(items[0].order_bucket[0].status);
-//     const filter={"email":a}
-
-
-//     for(let i=0;i<4;i++){
-//         setInterval(() => {
-//             const update1 = {status:ar[i] };
-//             orderDb.findOneAndUpdate(filter,update1);
-//                 }, 6000)
-//     res.send(ar[i]);   
-//     }
-    
+    // changestatus:asyncHandler(async (req, res) => {
+    // var ar=['pickup','Onprocess','On Delivery','Delivered']
+    //     const a=req.params.email
+    //     const items = await orderDb.find({"email":a});
+    //     console.log(items[0].order_bucket[0].status);
+    //     const filter={"email":a}
 
 
-// await addMed.findOneAndUpdate(filter,update1);
-//     res.send(items)
+    //     for(let i=0;i<4;i++){
+    //         setInterval(() => {
+    //             const update1 = {status:ar[i] };
+    //             orderDb.findOneAndUpdate(filter,update1);
+    //                 }, 6000)
+    //     res.send(ar[i]);   
+    //     }
 
-// }),
+
+
+    // await addMed.findOneAndUpdate(filter,update1);
+    //     res.send(items)
+
+    // }),
 
 
 
@@ -41,10 +41,10 @@ const controller = {
     getMedicine: asyncHandler(async (req, res) => {
         //   console.log(req.cookies.jwt)
         const items = await Item.find()
-        items.sort((a,b) => {
+        items.sort((a, b) => {
             let item1 = a.itemName.toLowerCase();
             let item2 = b.itemName.toLowerCase();
-            if(item1 > item2) return 1;
+            if (item1 > item2) return 1;
             return -1;
         })
         res.status(200).json(items);
@@ -64,29 +64,29 @@ const controller = {
         const items = await Item.find({
             itemName: { $regex: "^" + a, $options: 'i' },
         });
-        const i2=await Item.find()
-   if(!req.params.name || req.params.name===" ")
-        res.status(200).json(i2);
-       else res.status(200).json(items);
+        const i2 = await Item.find()
+        if (!req.params.name || req.params.name === " ")
+            res.status(200).json(i2);
+        else res.status(200).json(items);
     }),
 
 
-//     filterbyorder: asyncHandler(async (request, response) => {
-//         var b=request.params.email;
-//         var a = request.params.name;
+    //     filterbyorder: asyncHandler(async (request, response) => {
+    //         var b=request.params.email;
+    //         var a = request.params.name;
 
-//         const med= await user.find({"email":b});
-// //console.log(med[0].order_bucket)
-//       const items = await user.order_bucket.find({"itemName":a},{"email":b})
-//         console.log("items",med);
-//         const i2=med[0].order_bucket;
+    //         const med= await user.find({"email":b});
+    // //console.log(med[0].order_bucket)
+    //       const items = await user.order_bucket.find({"itemName":a},{"email":b})
+    //         console.log("items",med);
+    //         const i2=med[0].order_bucket;
 
-      
-//        // console.log("i2",typeof(i2.order_bucket))
-//         if(!request.params.name || request.params.name===" ")
-//         response.status(200).json(i2);
-//        else response.status(200).json(items);
-//     }),
+
+    //        // console.log("i2",typeof(i2.order_bucket))
+    //         if(!request.params.name || request.params.name===" ")
+    //         response.status(200).json(i2);
+    //        else response.status(200).json(items);
+    //     }),
 
 
 
@@ -130,9 +130,9 @@ const controller = {
                                 response.write("Medicine already availale! Updated the Database")
                                 response.send();
                             })
-                            // .catch(err => response.status(400).json("Error: " + err));
+                        // .catch(err => response.status(400).json("Error: " + err));
                     })
-                    // .catch(err => response.status(400).json("Error: " + err));
+                // .catch(err => response.status(400).json("Error: " + err));
             }
         });
     }),
@@ -152,85 +152,84 @@ const controller = {
             .catch(err => response.status(400).json("Error: " + err));
     }),
     // add reorder med  reorder-history(admin-reorder) and updating in medicine collection
-     
-    updateMedicine:asyncHandler(async (request, response) => {
-       //reorderMedicine();
-   // console.log(request.body.quantity);
-   // console.log(request.params.itemName)
-    const filter={itemName:request.params.itemName};
 
-    const update={quantity:request.body.quantity,minimumThresholdValue:request.body.minimumThresholdValue,price:request.body.price};
+    updateMedicine: asyncHandler(async (request, response) => {
+        //reorderMedicine();
+        // console.log(request.body.quantity);
+        // console.log(request.params.itemName)
+        const filter = { itemName: request.params.itemName };
+
+        const update = { quantity: request.body.quantity, minimumThresholdValue: request.body.minimumThresholdValue, price: request.body.price };
 
 
-    const users = await user.find({ "reorder_bucket.itemName":request.params.itemName })
-    var ar=[];
-    ar.push(request.params.itemName)
-  //  console.log(users.email)
-  for(let it in users){
-    let mn=users[it].email
-    ar.push(mn)
-  }
- 
+        const users = await user.find({ "reorder_bucket.itemName": request.params.itemName })
+        var ar = [];
+        ar.push(request.params.itemName)
+        //  console.log(users.email)
+        for (let it in users) {
+            let mn = users[it].email
+            ar.push(mn)
+        }
 
- console.log(ar)
 
- const numberOfMedi=await addMed.find({"itemName":request.params.itemName})
- console.log(numberOfMedi)
- if(numberOfMedi.length!=0)
- {
-   //  console.log("updating...")
-    //console.log(numberOfMedi[0].count1)
-const filter={"itemName":request.params.itemName}
-const update1 = {count1:numberOfMedi[0].count1+1 };
-await addMed.findOneAndUpdate(filter,update1);
+        console.log(ar)
 
-  
-//  if(numberOfMedi){
-//     addMed.updateOne({count:numberOfMedi.count+1})
- }
-  else{
-    //console.log("adding...")
-    const addMedicine = await addMed.create({
-        itemName:request.body.itemName,
-        price:request.body.price,
-        quantity:request.body.quantity,
-        count1:1
-      })
-}
- 
+        const numberOfMedi = await addMed.find({ "itemName": request.params.itemName })
+        console.log(numberOfMedi)
+        if (numberOfMedi.length != 0) {
+            //  console.log("updating...")
+            //console.log(numberOfMedi[0].count1)
+            const filter = { "itemName": request.params.itemName }
+            const update1 = { count1: numberOfMedi[0].count1 + 1 };
+            await addMed.findOneAndUpdate(filter, update1);
+
+
+            //  if(numberOfMedi){
+            //     addMed.updateOne({count:numberOfMedi.count+1})
+        }
+        else {
+            //console.log("adding...")
+            const addMedicine = await addMed.create({
+                itemName: request.body.itemName,
+                price: request.body.price,
+                quantity: request.body.quantity,
+                count1: 1
+            })
+        }
+
         //addMedicine()
-    
-    
-        await Medicine.deleteOne({itemName:request.params.itemName}),
-        await Item.findOneAndUpdate(filter,update,{new:true})
-          .then(() => response.json(ar))
-          .catch((err) => response.status(400).json("not found: " + err));
-      }),
-    
-    
-    
-    
+
+
+        await Medicine.deleteOne({ itemName: request.params.itemName }),
+            await Item.findOneAndUpdate(filter, update, { new: true })
+                .then(() => response.json(ar))
+                .catch((err) => response.status(400).json("not found: " + err));
+    }),
 
 
 
 
-  //delete from reorder_collection db and medicine db
-
-
-deleteMedicine:asyncHandler(async (request, response) => {
-  
-  await Medicine.deleteOne({itemName:request.params.itemName}),
-  Item.deleteOne({itemName:request.params.itemName})
-      .then(() => {
-     
-          response.json("Medicine Deleted from Database that has been reordered");
-      })
-      .catch(err => response.status(400).json("Error: " + err));
-}
 
 
 
-)
+
+    //delete from reorder_collection db and medicine db
+
+
+    deleteMedicine: asyncHandler(async (request, response) => {
+
+        await Medicine.deleteOne({ itemName: request.params.itemName }),
+            Item.deleteOne({ itemName: request.params.itemName })
+                .then(() => {
+
+                    response.json("Medicine Deleted from Database that has been reordered");
+                })
+                .catch(err => response.status(400).json("Error: " + err));
+    }
+
+
+
+    )
 }
 
 module.exports = controller;

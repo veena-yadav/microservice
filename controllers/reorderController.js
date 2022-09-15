@@ -4,12 +4,10 @@ const Item = require("../models/model.productDb");
 const Medicine = require("../models/reorderModel");
 
 const controller = {
-    getReorder:asyncHandler(async (req, res) => {
+    getReorder: asyncHandler(async (req, res) => {
         const items = await Medicine.find();
-    
+
         res.status(200).json(items);
-    
-    
     }),
 
     getMedicinebyvalue: asyncHandler(async (req, res) => {
@@ -28,7 +26,7 @@ const controller = {
                 let query = {
                     itemName: { $regex: itemName },
                 };
-              //  console.log(query)
+                //  console.log(query)
                 Medicine.findOne(query, async (err, result) => {
                     if (err) {
                         response.json("Error: " + err);
@@ -40,8 +38,6 @@ const controller = {
                             quantity,
                             minimumThresholdValue,
                         })
-                    
-                       
                     }
                 });
             }
