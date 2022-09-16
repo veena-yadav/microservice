@@ -73,6 +73,8 @@ const navigate=useNavigate()
         email: user.email
       })
       // const amount = data.data[0];
+      console.log("undefinedTest")
+      console.log(data.data[1])
       setTotalPrice(data.data[0])
       setMedicines(data.data[1])
     } catch (error) {

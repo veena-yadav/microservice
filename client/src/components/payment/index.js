@@ -292,7 +292,7 @@ const getMedicines=async()=>{
                       </div>
 
                       <div className="mt-1">
-                        <sup className="super-price">{totalPrice}</sup>
+                        <sup className="super-price">₹{totalPrice}</sup>
                         {/* <span className="super-month">/Month</span> */}
                       </div>
                       

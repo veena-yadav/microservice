@@ -129,11 +129,15 @@ const operationsOnOrders = {
                     totalAmount += ordersFound[i].price * ordersFound[i].quantity;
                 }
             }
+            totalAmount = totalAmount.toFixed(2);
             wrappedArray.push(totalAmount);
             wrappedArray.push(notPaidOrders);
+            // console.log("undefined testing")
+            // console.log(wrappedArray[0])
+            // console.log(wrappedArray[1])
             response.json(wrappedArray);
         }
-        else response.json([]);
+        else response.json([0,[]]);
     }),
 
     fetchOrdersPaid: expressAsyncHandler(async (request, response) => {
@@ -158,7 +162,7 @@ const operationsOnOrders = {
                     totalAmount += ordersFound[i].price * ordersFound[i].quantity;
                 }
             }
-            totalAmount.toFixed(2);
+            totalAmount = totalAmount.toFixed(2);
             wrappedArray.push(totalAmount);
             wrappedArray.push(PaidOrders);
             response.json(wrappedArray);
