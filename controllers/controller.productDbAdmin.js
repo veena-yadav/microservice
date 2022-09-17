@@ -10,28 +10,44 @@ const controller = {
 
     //update status
 
-    // changestatus:asyncHandler(async (req, res) => {
-    // var ar=['pickup','Onprocess','On Delivery','Delivered']
-    //     const a=req.params.email
-    //     const items = await orderDb.find({"email":a});
-    //     console.log(items[0].order_bucket[0].status);
-    //     const filter={"email":a}
-
-
-    //     for(let i=0;i<4;i++){
-    //         setInterval(() => {
-    //             const update1 = {status:ar[i] };
-    //             orderDb.findOneAndUpdate(filter,update1);
-    //                 }, 6000)
-    //     res.send(ar[i]);   
-    //     }
-
-
-
-    // await addMed.findOneAndUpdate(filter,update1);
-    //     res.send(items)
-
+    // trackorder:asyncHandler(async (req, res) => {
+    //  res.json("orderd");
     // }),
+    changestatus:asyncHandler(async (req, res) => {
+    var ar=['pickup','Onprocess','On Delmnivery','Delivered']
+        const a=req.params.email
+        const items = await orderDb.find({"email":a});
+        console.log(items[0].order_bucket[0].status);
+        const filter={"email":a}
+       
+
+
+       ar.forEach(element => {
+        res.send(   
+            setInterval(() => {
+            const update1 = {status:element };
+            orderDb.findOneAndUpdate(filter,update1);
+          
+          
+   console.log(element)
+       
+       
+             }, 6000)
+    )
+
+
+
+})
+
+
+
+
+}),
+
+
+
+
+
 
 
 
