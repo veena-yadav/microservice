@@ -1,9 +1,9 @@
 const axios = require("axios");
 axios.default.withCredentials = true;
-const producer = require("../kafka/producer");
-const consumer = require("../kafka/consumer");
+const producer = require("./kafka/producer");
+const consumer = require("./kafka/consumer");
 const request = require("request");
-const producer1=require("../kafka/client_pro")
+const producer1=require("./kafka/client_pro")
 
 //const api=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzMDYxNDVlMjdlZDVjZjU1ZGViMWQ3MCIsImlhdCI6MTY2MTM1NTI2OSwiZXhwIjoxNjYzOTQ3MjY5fQ.MytWjGcCopbFmgpQxCEvGF1BIr-uja3wVonl_xghfUw
 
