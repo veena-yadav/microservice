@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "../medicinelist/medicinelist.css";
+import './reorderedmedicine.css';
 import axios from "axios";
 import { BarChart, Bar, CartesianGrid, XAxis, YAxis, Label } from "recharts";
 
@@ -36,11 +37,26 @@ const AdminReorderedHistory = () => {
     }
     // setLoading(false)
   };
+  const printpart = () => {
+    window.print()
+}
 
   return (
-    <div>
+    <>
+    <div><button onClick={printpart} style={{
+  position: 'fixed',
+  borderColor:'#0064D2',
+  borderRadius:'5px',
+  backgroundColor:"#0064D2",
+  color:'white',
+  top: '120px',
+  right: '100px'
 
-  <center style={{paddingTop:"120px"}}>
+}}>Download Report</button></div>
+    <div className="printthis">
+
+
+  <center style={{paddingTop:"80px"}}>
 <h1 style={{color:"#0064D2"}}>Reordered Medicines</h1>
 <BarChart width={700} height={500}  data={ar} style={{top:"50%"}}>
   <Bar dataKey="count" fill="#0064D2" name='count' />
@@ -89,6 +105,7 @@ const AdminReorderedHistory = () => {
   </div>
  
   </div>
+  </>
   )
 }
 
