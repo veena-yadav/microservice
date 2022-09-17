@@ -15,8 +15,10 @@ import SearchIcon from '@mui/icons-material/Search';
 import Tooltip from '@mui/material/Tooltip';
 import { UserContext } from '../../contextapi/usercontext';
 import { ToastContainer, toast } from 'react-toastify';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import 'react-toastify/dist/ReactToastify.css';
 import { TextField } from '@mui/material';
+import CancelIcon from '@mui/icons-material/Cancel';
 const style = {
   position: 'absolute',
   top: '50%',
@@ -40,6 +42,7 @@ const MedicineList = () => {
   const [selectedMedicinePrice,setSelectedMedicinePrice]=useState(0);
   const [selectedMedicineMinimumThreshold, setSelectedMedicineMinimumThreshold]=useState(0);
   const [searchMedicine, setSearchmedicine]= useState("")
+  const [criticalMedicines,setCriticalMedicines]=useState([])
   const [medicineQuantity,setMedicineQuantity]=useState(0)
   const navigate=useNavigate()
   const  setCart=(sm,smq,smp,smt,mq)=>{
@@ -70,20 +73,47 @@ const MedicineList = () => {
 
   };
   const handleClose = () => setOpen(false);
-  useEffect(() => {
+  useEffect(()=>{
     getMedicine()
-  }, [])
+    getCriticalMedicine()
+  },[criticalMedicines,searchMedicine])
+  
+  
+
+  const isMatch=(medn)=>
+  {
+    if(criticalMedicines.length>0)
+    {
+      for(let i=0;i<criticalMedicines.length;i++)
+      {
+        if(criticalMedicines[i]===medn)
+        return true
+      }
+    }
+    return false
+  }
   const getMedicine=async()=>{
     setLoading(true)
     try {
-      const data= await axios.get('http://localhost:5000/api/medicine/view')
+      const data= await axios.get(`http://localhost:5000/api/medicine/filter/${searchMedicine}`)
       setMedicines(data.data)
     } catch (error) {
       console.log("error is "+error)
     }
     setLoading(false)
   }
+const getCriticalMedicine=async()=>{
+  try
+  {
+  const data = await axios.get(`http://localhost:5000/user/getCriticalMedicines/${user.email}`)
+  console.log("critical are")
+  console.log(data.data)
+  setCriticalMedicines(data.data)
+  }
+  catch(err){
 
+  }
+}
   const findMedicine=async(val)=>{
     const  searchboxmed= await axios.get(`http://localhost:5000/api/medicine/filter/${val}`)
    
@@ -91,6 +121,26 @@ const MedicineList = () => {
     const newAr=searchboxmed.data
     setMedicines(medicines=>[...newAr])
      }
+const RemoveCritical=async(medni)=>{
+  try {
+    const removecrit= await axios.delete(`http://localhost:5000/user/removeCriticalMedicine/${user.email}/${medni}`)
+  } catch (error) {
+    
+  }
+}
+     const AddToCritical=async(med)=>{
+          try {
+            const addCriticalMed= await axios.post(`http://localhost:5000/user/addCriticalMedicine`,{
+              email:user.email,
+              criticalMedicines:med.itemName
+
+            })
+          } catch (err) {
+            console.log("failed to add into critical medicine")
+            console.log(err)
+          }    
+     }
+    
   return (
     <>
     <div>
@@ -158,7 +208,7 @@ const MedicineList = () => {
            value={searchMedicine}
            onChange={(e)=>{
             setSearchmedicine(e.target.value)
-            findMedicine(e.target.value)
+            
            }}
            />
             
@@ -175,6 +225,7 @@ const MedicineList = () => {
         <th>  Name </th>
         <th>Price</th>
         <th> Action</th>
+        <th> Mark Critical</th>
       </tr>
     </thead>
     <tbody>
@@ -183,7 +234,7 @@ const MedicineList = () => {
           <tr key={Math.random()}>
           <th> {med.itemName} </th>
           <td>{med.price} </td>
-          <td> <IconButton color="primary" onClick={()=>{
+          <td> <IconButton color="primary" onMouseDown={()=>{
             handleOpen()
             setSelectedMedicineMinimumThreshold(med.minimumThresholdValue)
             setSelectedMedicinePrice(med.price)
@@ -192,7 +243,7 @@ const MedicineList = () => {
           }} aria-label="add to shopping cart">
         <AddShoppingCartIcon />
       </IconButton></td>
-                 
+        <td>{!isMatch(med.itemName) ?<IconButton onMouseDown={()=>AddToCritical(med)}><CheckCircleIcon color="success"/></IconButton>:<IconButton onClick={()=>RemoveCritical(med.itemName)}><CancelIcon/></IconButton>}</td>         
         </tr>
         )
       })}

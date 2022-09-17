@@ -336,7 +336,7 @@ const drivers = {
         const reorderExist = await userDb.findOne(queryUserDb);
         if (reorderExist) {
 
-            await userDb.updateOne(queryUserDb, { $inc: { "reorder_bucket.$.quantity": order.quantity } }, { new: true })
+            await userDb.updateOne(queryUserDb, { $set: { "reorder_bucket.$.quantity": order.quantity } }, { new: true })
                 .then(() => {
                     console.log("Successfully updated in the reorder bucket");
                 })

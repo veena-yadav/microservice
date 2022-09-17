@@ -30,10 +30,10 @@ const userCritical = {
 
     removeMed: expressAsyncHandler(async (request, response) => {
         let queryUserDb = {
-            "email": { $regex: request.body.email }
+            "email": { $regex: request.params.email }
         };
-        const x = await userDb.findOneAndUpdate(queryUserDb, { $pull: { "criticalMedicines": request.body.itemName } })
-            .then(() => response.json(`${request.body.itemName} is now not neing monitered`))
+        const x = await userDb.findOneAndUpdate(queryUserDb, { $pull: { "criticalMedicines": request.params.itemName } })
+            .then(() => response.json(`${request.params.itemName} is now not neing monitered`))
             .catch(err => console.log("Error : ", err));
     }),
 

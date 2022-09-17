@@ -20,7 +20,7 @@ router.delete("/cancelAnReorder/:email/:itemName", operationsOnReorders.deleteAn
 //operations on critical medicines user side
 router.post("/addCriticalMedicine", userCritical.addMed);
 router.get("/getCriticalMedicines/:email", userCritical.getMed);
-router.delete("/removeCriticalMedicine", userCritical.removeMed);
+router.delete("/removeCriticalMedicine/:email/:itemName", userCritical.removeMed);
 router.get("/checkItem/:email/:itemName", userCritical.checkIfCritical);
 
 //last step in the ordering lifecycle

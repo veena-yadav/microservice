@@ -9,32 +9,33 @@ const kafka = new Kafka({
 const producer = kafka.producer();
 producer.connect();
 module.exports = function (message) {
-  //   console.log(message);
   var a = JSON.parse(message);
-  //console.log(a[1].itemName)
-  var ar = [];
-
-  //var n=message.length;
-  //console.log(n)
-  for (let it in a) {
-    var m1 = a[it].itemName;
-    ar.push(m1);
+  if (a.length < 1) {
+    console.log("Message is empty");
+    return;
   }
-  //console.log(ar)
+
+  var result = "<table border = 10 style='border-style:hidden;'>";
+  for (let it in a) {
+    result += "<tr style = 'border-bottom-color:cyan; border-left-color:cyan; border-right-color:cyan; border-top-color:gold'>";
+    result += "<td  style = 'font-size:15px; text-align: center; width:200px; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px; border-top-right-radius: 5px;'>" + a[it].itemName + "</td>";
+    result += "</tr>";
+  }
+  result += "</table>";
 
   const msg = {
     from: "telstrakafkanetworking2@gmail.com",
     to: "arjunprasad070901@gmail.com",
-    subject: "Reordering.....",
+    subject: "Reorder Stock Notification",
     text: "Reorder Below medicines ",
-    html: "<b>Below medicines are low in stock:   <br/>" + ar + "</b>",
+    html: "<center><h2><b>Below medicines are low in stock:</h2>   <br/>" + result + "</b><br/><br/></center>",
   };
 
   producer.send({
     topic: "reorder",
     messages: [
       {
-        value: JSON.stringify(ar),
+        value: JSON.stringify(a),
         data: nodemailer
           .createTransport({
             service: "gmail",
