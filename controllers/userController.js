@@ -83,12 +83,11 @@ const resetPass = asyncHandler(async (req, res) => {
 })
 
 const changeAddress = asyncHandler(async (req, res) => {
-    const ad2 = req.body.address2;
-    const email = req.body.email
+    const {email,address} = req.params
     const user = await User.findOne({ email });
 
     const filter = { "email": email }
-    const update1 = { address2: ad2 };
+    const update1 = { address:address };
     await User.findOneAndUpdate(filter, update1);
     res.send("address changed...")
 

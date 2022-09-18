@@ -18,7 +18,7 @@ router.post("/resetpassword",resetPass)
 router.get("/getaddress/:email",getAddress)
 
 
-router.patch("/changeaddress",changeAddress)
+router.patch("/changeaddress/:email/:address",changeAddress)
 
 //router.post()
 module.exports = router;

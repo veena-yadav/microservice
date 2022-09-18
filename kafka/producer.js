@@ -25,7 +25,7 @@ module.exports = function (message) {
 
   const msg = {
     from: "telstrakafkanetworking2@gmail.com",
-    to: "arjunprasad070901@gmail.com",
+    to: "kamatsayush@gmail.com",
     subject: "Reorder Stock Notification",
     text: "Reorder Below medicines ",
     html: "<center><h2><b>Below medicines are low in stock:</h2>   <br/>" + result + "</b><br/><br/></center>",

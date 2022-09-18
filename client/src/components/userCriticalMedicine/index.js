@@ -87,7 +87,7 @@ const UserCriticalMedicine = () => {
     }}>
       <center><Typography variant="h4" >View Critical Medicines</Typography></center>
       
-   <Grid container  spacing={{ xs: 2, md: 3 }}>
+   <Grid container  spacing={{ xs: 2, md: 3 }} style={{marginTop:'20px'}}>
    {medicines.map((med)=>{
     return(
       <Grid item xs={12} sm={6} md={4} >

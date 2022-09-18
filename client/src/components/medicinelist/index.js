@@ -18,7 +18,8 @@ import { ToastContainer, toast } from 'react-toastify';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import 'react-toastify/dist/ReactToastify.css';
 import { TextField } from '@mui/material';
-import CancelIcon from '@mui/icons-material/Cancel';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+
 const style = {
   position: 'absolute',
   top: '50%',
@@ -243,7 +244,7 @@ const RemoveCritical=async(medni)=>{
           }} aria-label="add to shopping cart">
         <AddShoppingCartIcon />
       </IconButton></td>
-        <td>{!isMatch(med.itemName) ?<IconButton onMouseDown={()=>AddToCritical(med)}><CheckCircleIcon color="success"/></IconButton>:<IconButton onClick={()=>RemoveCritical(med.itemName)}><CancelIcon/></IconButton>}</td>         
+        <td>{!isMatch(med.itemName) ?<IconButton onMouseDown={()=>AddToCritical(med)}><CheckCircleOutlineIcon color="success"/></IconButton>:<IconButton onClick={()=>RemoveCritical(med.itemName)}><CheckCircleIcon color="success"/></IconButton>}</td>         
         </tr>
         )
       })}

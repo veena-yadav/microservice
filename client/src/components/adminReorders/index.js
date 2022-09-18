@@ -76,7 +76,7 @@ const [medicineObjModal,setMedicineObjModal]=useState({})
     }
     try {
       const acceptedMedicine = await axios.patch(
-        `http://localhost:5000/api/medicine/update/${medicineObject.itemName}`,
+        `http://localhost:5050/accept/${medicineObject.itemName}`,
         { price, quantity:newQuantity, itemName ,minimumThresholdValue}
       );
     } catch (err) {

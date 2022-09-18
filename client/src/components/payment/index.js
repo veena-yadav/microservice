@@ -323,20 +323,6 @@ const getMedicines=async()=>{
                     <hr className="mt-0 line"/>
 
 
-                    <div className="p-3 d-flex justify-content-between">
-
-                      <div className="d-flex flex-column">
-
-                        <span>Today you pay(US Dollars)</span>
-                        <small>After 5% GST </small>
-                        
-                      </div>
-                      <span>0</span>
-
-                      
-
-                    </div>
-
 
                     <div className="p-3">
 
