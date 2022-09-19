@@ -19,9 +19,9 @@ module.exports = function (message) {
     const msg = {
       from: "telstrakafkanetworking2@gmail.com",
       to: message[i],
-      subject: "Vicks ki goli lo hich khich dur kro",
-      text: "Reorder Below medicines ",
-      html: "<b>Bhailog medicine " + message[0] + " available hai...<br/></b>",
+      subject: " Important ! Medicine "+message[0]+" is available",
+      text: "YDear Customer , you can now order the below medicine ",
+      html: "<b> medicine " + message[0] + " is available  now !!<br/></b>",
     };
 
     producer.send({

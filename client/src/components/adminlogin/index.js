@@ -27,10 +27,10 @@ const AdminForm = () => {
       setAuth(true);
       setAdmin(true);
     } catch (error) {
-      toast.error(error.response.data.message)
+      toast.error(error.response.data.message,{ theme: "colored" })
       return;
     }
-    toast("login success")
+    toast.success("login success",{ theme: "colored" })
     Navigate("/adminviewmedicine")
   }
   return (

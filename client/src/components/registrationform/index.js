@@ -28,7 +28,7 @@ try {
 const newData= await axios.post('http://localhost:5000/api/users/',newUser)
 } catch (error) {
 console.log(error.response.data.message)
-toast.error(error.response.data.message)
+toast.error(error.response.data.message,{ theme: "colored" })
 return
 }
 Navigate("/viewmedicine")

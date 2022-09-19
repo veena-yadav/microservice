@@ -68,9 +68,10 @@ const AdminMedicineList = () => {
       const deletedMed = await axios.delete(`http://localhost:5000/api/medicine/deleteMedicine/${medicineid}`)
 
     } catch (error) {
+      toast.error("Try again",{ theme: "colored" })
       console.log(error)
     }
-    toast("Medicine Deleted")
+    toast.success("Medicine Deleted",{ theme: "colored" })
     getMedicine()
   }
   const findMedicine=async(val)=>{
@@ -97,7 +98,7 @@ const AdminMedicineList = () => {
     catch (err) {
       console.log(err)
     }
-    toast("Medicine Updated")
+    toast.success("Medicine Updated",{ theme: "colored" })
     getMedicine()
     setOpen(false)
   }
@@ -116,7 +117,7 @@ const AdminMedicineList = () => {
     } catch (error) {
       console.log(error)
     }
-    toast("New medicine added")
+    toast.success("New medicine added", { theme: "colored" })
     getMedicine()
     setOpen(false)
   }

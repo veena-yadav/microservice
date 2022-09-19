@@ -61,7 +61,7 @@ const [medicineObjModal,setMedicineObjModal]=useState({})
     } catch (err) {
       console.log(err);
     }
-    toast("Reorder Rejected!")
+    toast.success("Reorder Rejected!",{ theme: "colored" })
     getMedicine();
   };
   // accept reorders admin side
@@ -71,7 +71,7 @@ const [medicineObjModal,setMedicineObjModal]=useState({})
     if(newQuantity<minimumThresholdValue)
     {
       handleClose()
-      toast("plaease enter quantiy above threshold! ")
+      toast.error("plaease enter quantiy above threshold!",{ theme: "colored" })
       return
     }
     try {
@@ -82,7 +82,7 @@ const [medicineObjModal,setMedicineObjModal]=useState({})
     } catch (err) {
       console.log(err);
     }
-    toast("reorder successfull!")
+    toast.success("reorder successfull!",{ theme: "colored" })
     handleClose()
     getMedicine();
   };

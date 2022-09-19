@@ -8,7 +8,8 @@ import axios from 'axios'
 import { UserContext } from '../../contextapi/usercontext'
 import MedicineCard from './MedicineCard'
 import { Grid, Typography } from '@mui/material'
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 // import Box from '@mui/material/Box';
 // import Button from '@mui/material/Button';
 // import Typography from '@mui/material/Typography';
@@ -74,11 +75,15 @@ const UserReorder = () => {
      
     } catch (error) {
       console.log("error is "+error)
+      toast.error(`Server disconnected.Try Again`,{ theme: "colored" })
+      return
     }
+    toast.success(`Medicine Deleted Successfully`,{ theme: "colored" })
     getMedicine()
     // setLoading(false)
   }
   return (
+    <>
     <div style={{
       width:"100%",
       height:"100%",
@@ -101,6 +106,8 @@ const UserReorder = () => {
    </Grid>
  
   </div>
+  <ToastContainer/>
+  </>
   )
 }
 

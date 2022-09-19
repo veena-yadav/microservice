@@ -12,7 +12,10 @@ import { Button, Grid, Paper, Typography } from '@mui/material'
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import { TextField } from '@mui/material';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import './sui.css'
+
 
 // import Box from '@mui/material/Box';
 // import Button from '@mui/material/Button';
@@ -90,7 +93,10 @@ const navigate=useNavigate()
   }
   catch(err){
  console.log(err)
+ toast.error("Unable to update address",{ theme: "colored" })
+ return
   }
+  toast.success("Updated Address Successfully")
   getAddress()
   handleClose()
   }
@@ -126,6 +132,7 @@ const navigate=useNavigate()
     } catch (error) {
       console.log("error is "+error)
     }
+    toast.success(`Medicine ${medName} has been deleted`,{ theme: "colored" })
     getMedicine()
     // setLoading(false)
   }
@@ -213,6 +220,8 @@ const navigate=useNavigate()
  </div>
  </div>
   </div>
+  <ToastContainer/>
+
   </>
   )
 }

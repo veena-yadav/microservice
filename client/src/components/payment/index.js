@@ -90,7 +90,7 @@ const getMedicines=async()=>{
     {
       setErrorColor('red')
       console.log(errorMessage)
-      toast(errorMessage)
+      toast.error(errorMessage,{ theme: "colored" })
       return 
     }
     else
@@ -99,7 +99,7 @@ const getMedicines=async()=>{
     }
     if(val==='')
     {
-      toast("Please enter CVV")
+      toast.error("Please enter CVV",{ theme: "colored" })
       return
    
     }
@@ -131,6 +131,8 @@ const getMedicines=async()=>{
       console.log(err)
       return
      }
+     toast.success("Payment successful")
+
      navigate('/viewmedicine')
     }
   

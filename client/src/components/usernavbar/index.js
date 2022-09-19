@@ -116,7 +116,9 @@ const logout = async () => {
         }}
       >
         <MenuItem>{user.email}</MenuItem>
-        <MenuItem onClick={handleClose}>Reset Password</MenuItem>
+        <MenuItem onClick={()=>{
+          navigate('/resetpassword')
+        }}>Reset Password</MenuItem>
         <MenuItem onClick={logout}>Logout</MenuItem>
       </Menu>
 </div>

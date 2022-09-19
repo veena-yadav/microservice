@@ -57,7 +57,7 @@ const MedicineList = () => {
       price:smp
     }
     if(newItem.quantity>mq){
-      toast(`only ${mq} quantity are in stock!`)
+      toast.error(`only ${mq} quantity are in stock!`,{ theme: "colored" })
     }
     const newArr=medicinesCart.set(selectedMedicine,newItem)
     setMedicineCart(newArr)
@@ -137,9 +137,10 @@ const RemoveCritical=async(medni)=>{
 
             })
           } catch (err) {
-            console.log("failed to add into critical medicine")
+            toast.error("Failed to add to critical medicine",{ theme: "colored" })
             console.log(err)
-          }    
+          }
+          toast.success("Medicine Added to critical medicines",{ theme: "colored" })    
      }
     
   return (
