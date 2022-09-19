@@ -56,7 +56,7 @@ const logout = async () => {
             <ul className="menu-items">
           
            
-                <li><Link to="/viewmedicine">Place order</Link></li>
+                <li><Link to="/viewmedicine">Medicines</Link></li>
                 
                 <li><Link to="/userReorders">Pending Reorders</Link></li>
                 <li><Link to="/usercriticalmedicine">Critical Medicines</Link></li>
