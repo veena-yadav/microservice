@@ -96,7 +96,7 @@ const navigate=useNavigate()
  toast.error("Unable to update address",{ theme: "colored" })
  return
   }
-  toast.success("Updated Address Successfully")
+  toast.success("Updated Address Successfully",{ theme: "colored" })
   getAddress()
   handleClose()
   }
