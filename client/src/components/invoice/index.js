@@ -8,13 +8,25 @@ import { UserContext } from '../../contextapi/usercontext'
 function Invoice() {
     const [medicineArray,setMedicineArray]=useState([])
     const [totalPrice,setTotalPrice]=useState(0)
-
+    const [userAddress,setUserAddress]=useState('')
 useEffect(()=>{
     getMedicines()
+    getAddress()
   },[])
 
     const {auth, admin , user}=useContext(UserContext);  
-
+    const getAddress=async()=>
+    {
+      try{
+      const addr=await axios.get(`http://localhost:5000/api/users/getaddress/${user.email}`)
+      console.log(addr.data)
+      setUserAddress(addr.data)
+      }
+      catch(err)
+      {
+       console.log(err) 
+      }
+    }
 const getMedicines=async()=>{
   try{
     // console.log(user.email)
@@ -54,7 +66,7 @@ const getMedicines=async()=>{
                 {/* admin details */}
                 <section className='adminDetails'>
                     <h2>Medico</h2>
-                    <p>Sector 15, Prahar Chowk <br/>MumbaiPin Code:400001<br/>Mahrashtra,India</p>
+                    <p>{userAddress}</p>
                 </section>
                 {/* details ends */}
 
