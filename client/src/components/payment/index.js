@@ -133,7 +133,7 @@ const getMedicines=async()=>{
      }
      toast.success("Payment successful")
 
-     navigate('/viewmedicine')
+     navigate('/invoice')
     }
   
   

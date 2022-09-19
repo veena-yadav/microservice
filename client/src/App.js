@@ -21,6 +21,7 @@ import Criticalreorder from './components/criticalreorder'
 import UserReorder from './components/orders/UserReorder';
 import UserCriticalMedicine from './components/userCriticalMedicine';
 import ResetPassword from './components/registrationform/ResetPassword';
+import Invoice from './components/invoice';
 function App() {
   const [usr,setUsr]=useState('')
   const {auth, admin , user}=useContext(UserContext);
@@ -49,7 +50,7 @@ function App() {
          <Route path="/usercriticalmedicine" element={<PrivateRoute><UserCriticalMedicine/></PrivateRoute>}/>
         <Route path='/criticalhospitals/criticalreorder' element={<PrivateRoute><Criticalreorder/></PrivateRoute>}/>
         <Route path='/resetpassword' element={<PrivateRoute><ResetPassword/></PrivateRoute>}/>
-        
+        <Route path='/invoice' element={<PrivateRoute><Invoice/></PrivateRoute>} />
         <Route path='*' element={<Errorpage/>} />
       </Routes>
     </Router>
