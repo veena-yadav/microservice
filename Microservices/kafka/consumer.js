@@ -2,7 +2,7 @@ const { Kafka } = require("kafkajs");
 const axios = require('axios')
 const kafka = new Kafka({
     clientId: "kafkaex",
-    brokers: ['localhost:9092']
+    brokers: ['host.docker.io:9092']
 })
 
 const consumer = kafka.consumer({ groupId: 'mygrp2' })

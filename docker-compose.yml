@@ -10,8 +10,8 @@ services:
     image: wurstmeister/kafka
     ports:
       - 9092:9092
-    volumes:
-      - ./data/kafka:/var/run/docker.sock:/var/run/docker.sock
+    # volumes:
+    #   - ./data/kafka:/var/run/docker.sock:/var/run/docker.sock
     environment:
       - KAFKA_BROKER_ID=1
       - KAFKA_ADVERTISED_HOST_NAME=localhost
@@ -48,6 +48,8 @@ services:
       - '5050:5050'
     depends_on:
       - server
+    environment:
+      - KAFKA_CONNECT=9092
  
     
       
