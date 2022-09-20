@@ -207,6 +207,8 @@ const RemoveCritical=async(medni)=>{
           </Typography>
           <center style={{ marginTop: "10px" }}>
            <TextField
+           variant='outlined'
+           label= 'search'
            value={searchMedicine}
            onChange={(e)=>{
             setSearchmedicine(e.target.value)

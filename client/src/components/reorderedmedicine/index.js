@@ -44,7 +44,7 @@ const AdminReorderedHistory = () => {
   return (
     <>
     <div><button onClick={printpart} style={{
-  position: 'fixed',
+  position: 'absolute',
   borderColor:'#0064D2',
   borderRadius:'5px',
   backgroundColor:"#0064D2",
