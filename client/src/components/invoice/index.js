@@ -66,14 +66,14 @@ const getMedicines=async()=>{
                 {/* admin details */}
                 <section className='adminDetails'>
                     <h2>Medico</h2>
-                    <p>{userAddress}</p>
+                    <p>Baker Street, 19 June Road, New Delhi <br/> Pin Code: 110001 </p>
                 </section>
                 {/* details ends */}
 
                 {/* user details */}
                 <section className='userDetails'>
                     <h2>{user.email}</h2>
-                    
+                    <p>{userAddress}</p>
                 </section>
                 {/* user details ends */}
                 

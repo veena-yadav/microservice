@@ -47,12 +47,18 @@ const Criticalreorder = () => {
     </thead>
     <tbody>
       {medicines.map((med)=>{
+        var dateObject = new Date(med.createdAt);
+        var utcYearFromTS = dateObject.getUTCFullYear();
+        var utcMonthFromTS = dateObject.getUTCMonth() + 1;
+        var utcDateFromTS = dateObject.getUTCDate();
+        var utcTimeFromTS = dateObject.getUTCHours();
+        var utcMinutesFromTS = dateObject.getUTCMinutes();
         return(
           <tr key={Math.random()}>
           <th> {med.medicineName} </th>
           <td> {med.hospitalName} </td>
           <td>{med.quantity} </td>
-          <td> {med.createdAt} </td>
+          <td> {utcDateFromTS + "/"+ utcMonthFromTS + "/" + utcYearFromTS + " " + utcTimeFromTS + "H :" + utcMinutesFromTS + "M"} </td>
         </tr>
         )
       })}
