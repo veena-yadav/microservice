@@ -44,7 +44,7 @@ const [medicineObjModal,setMedicineObjModal]=useState({})
   const getMedicine = async () => {
     // setLoading(true)
     try {
-      const data = await axios.get("http://localhost:5050/belowthreshold");
+      const data = await axios.get("http://localhost:4005/belowthreshold");
       console.log(data);
       setMedicines(data.data);
     } catch (error) {
@@ -76,7 +76,7 @@ const [medicineObjModal,setMedicineObjModal]=useState({})
     }
     try {
       const acceptedMedicine = await axios.patch(
-        `http://localhost:5050/accept/${medicineObject.itemName}`,
+        `http://localhost:4005/accept/${medicineObject.itemName}`,
         { price, quantity:newQuantity, itemName ,minimumThresholdValue}
       );
     } catch (err) {

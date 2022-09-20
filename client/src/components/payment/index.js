@@ -120,7 +120,7 @@ const getMedicines=async()=>{
      setPaymentArray(updatedArray)
       try{
      
-        const paymentDone=  await axios.post('http://localhost:5050/move',{
+        const paymentDone=  await axios.post('http://localhost:4005/move',{
           email: user.email,
           order_bucket:updatedArray
         })

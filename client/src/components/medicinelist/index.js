@@ -270,7 +270,7 @@ const RemoveCritical=async(medni)=>{
           // const usr=localStorage.getItem('user')
           // console.log(usr)
           const cartObj={email:user.email,orders:narr}
-          await axios.post(`http://localhost:5050/order`,cartObj)
+          await axios.post(`http://localhost:4005/order`,cartObj)
           navigate('/orders') 
           }}
         >
