@@ -1,0 +1,82 @@
+version: '3.2'
+services:
+  zookeeper:
+    container_name: zookeeper
+    image: wurstmeister/zookeeper
+    ports:
+      - 2181:2181
+  kafka:
+    container_name: kafka
+    image: wurstmeister/kafka
+    ports:
+      - 9092:9092
+    # volumes:
+    #   - ./data/kafka:/var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - KAFKA_BROKER_ID=1
+      - KAFKA_ADVERTISED_HOST_NAME=localhost
+      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
+    
+      
+      
+  
+  mongo:
+    container_name: mongo
+    image: mongo
+    ports:
+      - 27017:27017
+    volumes:
+      - ./data/mongo:/data/db
+    environment:
+      - user=cluster0
+      - password=Telstra22
+  client:
+    build: ./client
+    ports:
+      - '3000:3000'
+    depends_on:
+      - server
+  server:
+    build: ./server
+    ports:
+      - '5000:5000'
+    depends_on:
+      - mongo
+  microservices:
+    build: ./microservices
+    ports:
+      - '5050:5050'
+    depends_on:
+      - server
+    environment:
+      - KAFKA_CONNECT=9092
+ 
+    
+      
+
+
+  # server:
+  #   build:
+  #     dockerfile: dockerfile
+  #     context: "./server"
+  #   depends_on:
+  #     - mongo
+  #   volumes:
+  #     - /app/node_modules
+  #     - ./server:/app
+    
+  
+  # client:
+  #   stdin_open: true
+  #   environment:
+  #     - CHOKIDAR_USEPOLLING=true
+  #   build:
+  #     dockerfile: dockerfile
+  #     context: ./client
+  #   volumes:
+  #     - /app/node_modules
+  #     - ./client:/app
+
+      
+
+
