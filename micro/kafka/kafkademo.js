@@ -2,7 +2,7 @@ const { Kafka } = require("kafkajs");
 
 const kafka = new Kafka({
     clientId: "kafkaex",
-    brokers: ['localhost:9092']
+    brokers: ['host.docker.internal:9092']
 })
 
 const admin = kafka.admin()
