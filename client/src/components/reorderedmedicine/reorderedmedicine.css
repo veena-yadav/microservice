@@ -1,4 +1,9 @@
 @media only print {
-    body { visibility: hidden; }
-    .printthis { visibility: visible; }
+  body {
+    visibility: hidden;
   }
+
+  .printthis {
+    visibility: visible;
+  }
+}

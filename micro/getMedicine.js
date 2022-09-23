@@ -2,18 +2,13 @@ const axios = require("axios");
 axios.default.withCredentials = true
 
 const request = require('request')
-
-//const api=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzMDYxNDVlMjdlZDVjZjU1ZGViMWQ3MCIsImlhdCI6MTY2MTM1NTI2OSwiZXhwIjoxNjYzOTQ3MjY5fQ.MytWjGcCopbFmgpQxCEvGF1BIr-uja3wVonl_xghfUw
-
 const url = "http://localhost:5000/api/medicine/view";
-
 const loginurl = "http://localhost:5000/api/admin/login";
 const url2 = "http://localhost:5000/api/medicine/";
 const reorderurl = "http://localhost:5000/api/admin/reordermedicine"
 
 var MedicinDetails =
 {
-
     getMedicine: function (req, res) {
         axios({
             method: 'get',

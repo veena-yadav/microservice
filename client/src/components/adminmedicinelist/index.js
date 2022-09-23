@@ -16,7 +16,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import Tooltip from '@mui/material/Tooltip';
 import TextField from '@mui/material/TextField';
 import PointOfSaleIcon from '@mui/icons-material/PointOfSale';
-import {useNavigate} from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -41,18 +41,21 @@ const AdminMedicineList = () => {
   const [selectedItemQuantity, setSelectedItemQuantity] = useState('')
   const [selectedItemThreshold, setSelectedItemThreshold] = useState('')
   const [selectedMedicineQuantity, setSelectedMedicineQuantity] = useState(1)
-  const [query,setQuery]=useState('')
+  const [query, setQuery] = useState('')
   const [SelectedItemId, setSelectedItemId] = useState(0)
   const [operation, setOperation] = useState('Edit')
-  const [searchSelected,setSearchSelected]=useState(false)
-  const navigate=useNavigate()
+  const [searchSelected, setSearchSelected] = useState(false)
+  const navigate = useNavigate()
+
   const handleOpen = () => {
     setOpen(true)
   };
+
   const handleClose = () => setOpen(false);
   useEffect(() => {
     getMedicine()
   }, [])
+
   const getMedicine = async () => {
     setLoading(true)
     try {
@@ -63,25 +66,28 @@ const AdminMedicineList = () => {
     }
     setLoading(false)
   }
+
   const DeleteMedicine = async (medicineid) => {
     try {
       const deletedMed = await axios.delete(`http://localhost:5000/api/medicine/deleteMedicine/${medicineid}`)
 
     } catch (error) {
-      toast.error("Try again",{ theme: "colored" })
+      toast.error("Try again", { theme: "colored" })
       console.log(error)
     }
-    toast.success("Medicine Deleted",{ theme: "colored" })
+    toast.success("Medicine Deleted", { theme: "colored" })
     getMedicine()
   }
-  const findMedicine=async(val)=>{
- const  searchboxmed= await axios.get(`http://localhost:5000/api/medicine/filter/${val}`)
- 
 
- console.log(searchboxmed.data)
- const newAr=searchboxmed.data
- setMedicines(medicines=>[...newAr])
+  const findMedicine = async (val) => {
+    const searchboxmed = await axios.get(`http://localhost:5000/api/medicine/filter/${val}`)
+
+
+    console.log(searchboxmed.data)
+    const newAr = searchboxmed.data
+    setMedicines(medicines => [...newAr])
   }
+
   const EditMed = async (id) => {
     try {
       console.log(`ID TO BE UPDATED ${id}`)
@@ -98,10 +104,11 @@ const AdminMedicineList = () => {
     catch (err) {
       console.log(err)
     }
-    toast.success("Medicine Updated",{ theme: "colored" })
+    toast.success("Medicine Updated", { theme: "colored" })
     getMedicine()
     setOpen(false)
   }
+
   const AddMed = async () => {
     const newMedicineObj = {
 
@@ -121,74 +128,75 @@ const AdminMedicineList = () => {
     getMedicine()
     setOpen(false)
   }
+
   return (
     <>
-    <div >
-      <h1 style={{
-        paddingTop:"80px",
-        textAlign:"center"
-      }}>View Medicine</h1>
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        {!searchSelected ?  <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            {operation} Medicine {selectedMedicine}
-          </Typography>
-          <center style={{ marginTop: "10px" }}>
-            <TextField value={selectedItemName}
-              label="Medicine Name"
-              variant="outlined"
-              onChange={(e) => {
-                setSelectedItemName(e.target.value)
+      <div >
+        <h1 style={{
+          paddingTop: "80px",
+          textAlign: "center"
+        }}>View Medicine</h1>
+        <Modal
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          {!searchSelected ? <Box sx={style}>
+            <Typography id="modal-modal-title" variant="h6" component="h2">
+              {operation} Medicine {selectedMedicine}
+            </Typography>
+            <center style={{ marginTop: "10px" }}>
+              <TextField value={selectedItemName}
+                label="Medicine Name"
+                variant="outlined"
+                onChange={(e) => {
+                  setSelectedItemName(e.target.value)
 
-              }}
-            /><br /><br />
-            <TextField
-              label="Medicine Price"
-              variant="outlined"
-              value={selectedItemPrice}
-              onChange={(e) => {
-                setSelectedItemPrice(e.target.value)
+                }}
+              /><br /><br />
+              <TextField
+                label="Medicine Price"
+                variant="outlined"
+                value={selectedItemPrice}
+                onChange={(e) => {
+                  setSelectedItemPrice(e.target.value)
 
-              }}
-            /><br /><br />
-            <TextField
-              label="Medicine Quantity"
-              variant="outlined"
-              value={selectedItemQuantity}
-              onChange={(e) => {
-                setSelectedItemQuantity(e.target.value)
+                }}
+              /><br /><br />
+              <TextField
+                label="Medicine Quantity"
+                variant="outlined"
+                value={selectedItemQuantity}
+                onChange={(e) => {
+                  setSelectedItemQuantity(e.target.value)
 
-              }}
-            /><br /><br />
-            <TextField
-              label="Medicine Threshold"
-              variant="outlined"
-              value={selectedItemThreshold}
-              onChange={(e) => {
-                setSelectedItemThreshold(e.target.value)
+                }}
+              /><br /><br />
+              <TextField
+                label="Medicine Threshold"
+                variant="outlined"
+                value={selectedItemThreshold}
+                onChange={(e) => {
+                  setSelectedItemThreshold(e.target.value)
 
-              }}
-            /><br /><br />
-            <Button variant="contained" color="primary"
-              onClick={(e) => {
+                }}
+              /><br /><br />
+              <Button variant="contained" color="primary"
+                onClick={(e) => {
 
-                if (operation === 'Edit') {
-                  EditMed(SelectedItemId)
-                }
-                else {
-                  AddMed()
-                }
+                  if (operation === 'Edit') {
+                    EditMed(SelectedItemId)
+                  }
+                  else {
+                    AddMed()
+                  }
 
-              }}
-            >{operation}</Button>
-          </center>
-        </Box> :<Box sx={style}><center>
-        <TextField value={query}
+                }}
+              >{operation}</Button>
+            </center>
+          </Box> : <Box sx={style}><center>
+            <TextField value={query}
               label="Medicine Name"
               variant="outlined"
               onChange={(e) => {
@@ -197,117 +205,117 @@ const AdminMedicineList = () => {
 
               }}
             />
-           <div style={{marginTop:"30px"}}></div>
+            <div style={{ marginTop: "30px" }}></div>
           </center></Box>}
-       
-      </Modal>
 
-      <div className='medicineTableDiv' style={{
-        marginTop:"-60px"
-      }}>
-      
-        <table className='medicineTable'>
+        </Modal>
 
-          <thead>
-            <tr>
-              <th>  Name </th>
-              <th>Price</th>
-              <th>Quantity</th>
-              <th>Minimum Threshhold</th>
-              <th> Edit</th>
-              <th>Delete</th>
-            </tr>
-          </thead>
-          <tbody>
-            {medicines.map((med) => {
-              return (
-                <tr key={Math.random()}>
-                  <th> {med.itemName} </th>
-                  <td>{med.price} </td>
-                  <td>{med.quantity}</td>
-                  <td>{med.minimumThresholdValue}</td>
-                  <td><IconButton color="secondary"
-                    style={{
+        <div className='medicineTableDiv' style={{
+          marginTop: "-60px"
+        }}>
+
+          <table className='medicineTable'>
+
+            <thead>
+              <tr>
+                <th>  Name </th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Minimum Threshhold</th>
+                <th> Edit</th>
+                <th>Delete</th>
+              </tr>
+            </thead>
+            <tbody>
+              {medicines.map((med) => {
+                return (
+                  <tr key={Math.random()}>
+                    <th> {med.itemName} </th>
+                    <td>{med.price} </td>
+                    <td>{med.quantity}</td>
+                    <td>{med.minimumThresholdValue}</td>
+                    <td><IconButton color="secondary"
+                      style={{
+                        color: "#0064D2"
+                      }}
+
+                      aria-label="edit item"
+                      onMouseDown={(e) => {
+                        setSelectedMedicine(med.itemName)
+                        setSelectedItemName(med.ItemName)
+                        setSelectedItemId(med._id)
+                        setOperation("Edit")
+                        setSearchSelected(false)
+                        setOpen(true)
+                        console.log("edit")
+                      }}
+                    > <EditIcon /></IconButton></td>
+                    <td><IconButton style={{
                       color: "#0064D2"
-                    }}
+                    }} aria-label="delete item"
+                      onMouseDown={(e) => {
+                        DeleteMedicine(med._id)
+                      }}
 
-                    aria-label="edit item"
-                    onMouseDown={(e) => {
-                      setSelectedMedicine(med.itemName)
-                      setSelectedItemName(med.ItemName)
-                      setSelectedItemId(med._id)
-                      setOperation("Edit")
-                      setSearchSelected(false)
-                      setOpen(true)
-                      console.log("edit")
-                    }}
-                  > <EditIcon /></IconButton></td>
-                  <td><IconButton style={{
-                    color: "#0064D2"
-                  }} aria-label="delete item"
-                    onMouseDown={(e) => {
-                      DeleteMedicine(med._id)
-                    }}
+                    > <DeleteIcon /></IconButton></td>
 
-                  > <DeleteIcon /></IconButton></td>
+                  </tr>
+                )
+              })}
 
-                </tr>
-              )
-            })}
+            </tbody>
+          </table>
+        </div>
+        <Tooltip title="Add Medicine" style={{ backgroundColor: "red" }} placement="left">
+          <Fab color="primary" aria-label="add" style={{
+            position: 'fixed',
+            top: '80px',
+            right: '100px'
 
-          </tbody>
-        </table>
+          }}
+            onClick={(e) => {
+              console.log("Add btn click")
+              setOperation("Add")
+              setSearchSelected(false)
+              setSelectedMedicine('')
+              setOpen(true)
+            }}
+          >
+            <AddIcon />
+          </Fab>
+        </Tooltip>
+        <Tooltip title="Search Medicine" style={{ backgroundColor: "red" }} placement="left">
+          <Fab color="primary" aria-label="Search Medicine" style={{
+            position: 'fixed',
+            top: '240px',
+            right: '100px'
+
+          }}
+            onClick={(e) => {
+              console.log("Search btn click")
+              setSearchSelected(true)
+              setOpen(true)
+            }}
+          >
+            <SearchIcon />
+          </Fab>
+        </Tooltip>
+        <Tooltip title="Reorder Medicine" style={{ backgroundColor: "red" }} placement="left">
+          <Fab color="primary" aria-label="Reorder Medicine" style={{
+            position: 'fixed',
+            top: '160px',
+            right: '100px'
+
+          }}
+            onClick={() => {
+              navigate('/adminReorders')
+            }}
+          >
+            <PointOfSaleIcon />
+          </Fab>
+        </Tooltip>
       </div>
-      <Tooltip title="Add Medicine" style={{ backgroundColor: "red" }} placement="left">
-        <Fab color="primary" aria-label="add" style={{
-          position: 'fixed',
-          top: '80px',
-          right: '100px'
-
-        }}
-          onClick={(e) => {
-            console.log("Add btn click")
-            setOperation("Add")
-            setSearchSelected(false)
-            setSelectedMedicine('')
-            setOpen(true)
-          }}
-        >
-          <AddIcon />
-        </Fab>
-      </Tooltip>
-      <Tooltip title="Search Medicine" style={{ backgroundColor: "red" }} placement="left">
-        <Fab color="primary" aria-label="Search Medicine" style={{
-          position: 'fixed',
-          top: '240px',
-          right: '100px'
-
-        }}
-          onClick={(e) => {
-            console.log("Search btn click")
-           setSearchSelected(true)
-           setOpen(true)
-          }}
-        >
-          <SearchIcon/>
-        </Fab>
-      </Tooltip>
-      <Tooltip title="Reorder Medicine" style={{ backgroundColor: "red" }} placement="left">
-        <Fab color="primary" aria-label="Reorder Medicine" style={{
-          position: 'fixed',
-          top: '160px',
-          right: '100px'
-         
-        }}
-         onClick={()=>{
-          navigate('/adminReorders')
-         }}
-        >
-          <PointOfSaleIcon/>
-        </Fab>
-      </Tooltip>
-    </div>
-    <ToastContainer/>
+      <ToastContainer />
     </>
   )
 }

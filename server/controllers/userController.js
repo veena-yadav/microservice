@@ -83,11 +83,11 @@ const resetPass = asyncHandler(async (req, res) => {
 })
 
 const changeAddress = asyncHandler(async (req, res) => {
-    const {email,address} = req.params
+    const { email, address } = req.params
     const user = await User.findOne({ email });
 
     const filter = { "email": email }
-    const update1 = { address:address };
+    const update1 = { address: address };
     await User.findOneAndUpdate(filter, update1);
     res.send("address changed...")
 
@@ -100,33 +100,33 @@ const getAddress = asyncHandler(async (req, res) => {
 })
 const generateRandomString = (myLength) => {
     const chars =
-      "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890";
+        "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890";
     const randomArray = Array.from(
-      { length: myLength },
-      (v, k) => chars[Math.floor(Math.random() * chars.length)]
+        { length: myLength },
+        (v, k) => chars[Math.floor(Math.random() * chars.length)]
     );
-  
+
     const randomString = randomArray.join("");
     return randomString;
-  };
+};
 const forgetPass = asyncHandler(async (req, res) => {
     const eid = req.params.email;
- const user = await User.findOne({eid});
- const pass=generateRandomString(10);
+    const user = await User.findOne({ eid });
+    const pass = generateRandomString(10);
 
- const salt = await bcrypt.genSalt(10)
- const hashedPassword = await bcrypt.hash(pass, salt)
- const filter = { "email": eid }
- const update1 = { password: hashedPassword };
- await User.findOneAndUpdate(filter, update1);
+    const salt = await bcrypt.genSalt(10)
+    const hashedPassword = await bcrypt.hash(pass, salt)
+    const filter = { "email": eid }
+    const update1 = { password: hashedPassword };
+    await User.findOneAndUpdate(filter, update1);
 
-console.log(pass)
+    console.log(pass)
 
     const msg = {
         from: "telstrakafkanetworking2@gmail.com",
         to: eid,
         subject: "Reset your account password",
-        html: "<h4>Hello " + eid + "<br/><br/>We have received a password reset request from you <br/><br/>The temporary Password is "+pass+".<br/></h4>"
+        html: "<h4>Hello " + eid + "<br/><br/>We have received a password reset request from you <br/><br/>The temporary Password is " + pass + ".<br/></h4>"
 
     };
     nodemailer.createTransport({
@@ -142,7 +142,7 @@ console.log(pass)
             return console.log("error", err)
         else return console.log("sent")
     })
-res.send("suceessfull")
+    res.send("suceessfull")
 })
 
 const getme = asyncHandler(async (req, res) => {

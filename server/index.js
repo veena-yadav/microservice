@@ -22,7 +22,6 @@ connectDB();
 
 
 app.use('/api/admin', require("./routes/adminRoutes"))
-//app.use('/api/medicine',require("./routes/medicineRoutes"))
 app.use('/api/medicine', require("./routes/routes.productDbAdmin"))
 
 app.use('/api/reorder', require("./routes/reorderRoutes"))
@@ -34,8 +33,6 @@ app.use(errorHandler)
 // Order Route
 app.use('/user', require('./routes/routes.order'));
 
-// reorder medicine
-
 
 //METHOD : GET
 //TEST METHOD TO CHECK IF SERVER RESPONDS
@@ -43,9 +40,10 @@ app.get('/', (req, res) => {
   console.log("hello GET ROUTE")
   res.send("GET ROUTE WORKS")
 })
+
 routes(app)
 
-const criticslroute=require('./routes/criticalhospitalRoutes')
+const criticslroute = require('./routes/criticalhospitalRoutes')
 criticslroute(app)
 
 const PORT = process.env.PORT || 5000;

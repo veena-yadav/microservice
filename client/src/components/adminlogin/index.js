@@ -1,17 +1,17 @@
-import React, { useState , useContext } from "react";
+import React, { useState, useContext } from "react";
 import axios from "axios";
 import "./adminlogin.css";
 import { Link } from 'react-router-dom'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import {useNavigate} from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { UserContext } from "../../contextapi/usercontext";
 const AdminForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const Navigate=useNavigate()
-  
-  const {setUser,setAdmin, setAuth}=useContext(UserContext)
+  const Navigate = useNavigate()
+
+  const { setUser, setAdmin, setAuth } = useContext(UserContext)
   const LoginNow = async (e) => {
     e.preventDefault();
     const newAdmin = {
@@ -27,10 +27,10 @@ const AdminForm = () => {
       setAuth(true);
       setAdmin(true);
     } catch (error) {
-      toast.error(error.response.data.message,{ theme: "colored" })
+      toast.error(error.response.data.message, { theme: "colored" })
       return;
     }
-    toast.success("login success",{ theme: "colored" })
+    toast.success("login success", { theme: "colored" })
     Navigate("/adminviewmedicine")
   }
   return (
@@ -43,13 +43,13 @@ const AdminForm = () => {
               <input
                 type="email"
                 placeholder="EMAIL ADDRESS"
-                data-testid= "usertest"
+                data-testid="usertest"
                 onChange={(e) => setEmail(e.target.value)}
               />
               <input
                 type="password"
                 placeholder="PASSWORD"
-                data-testid= "passwordtest"
+                data-testid="passwordtest"
                 onChange={(e) => setPassword(e.target.value)}
               />
               <div>

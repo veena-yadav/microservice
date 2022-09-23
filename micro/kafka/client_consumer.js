@@ -2,7 +2,7 @@ const { Kafka } = require("kafkajs");
 const axios = require('axios')
 const kafka = new Kafka({
     clientId: "kafkaex",
-    brokers: ['host.docker.internal:9092']
+    brokers: ['localhost:9092']
 })
 
 const consumer1 = kafka.consumer({ groupId: 'mygrp1' })
@@ -16,7 +16,7 @@ module.exports = function () {
             console.log(JSON.parse(message.value))
 
             axios({
-                method: 'post', url: 'http://host.docker.internal:5050/getnotification',
+                method: 'post', url: 'http://localhost:5050/getnotification',
                 data: JSON.parse(message.value)
             }).then((e) => {
                 console.log(e.data)

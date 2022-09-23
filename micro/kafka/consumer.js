@@ -2,7 +2,7 @@ const { Kafka } = require("kafkajs");
 const axios = require('axios')
 const kafka = new Kafka({
     clientId: "kafkaex",
-    brokers: ['host.docker.internal:9092']
+    brokers: ['localhost:9092']
 })
 
 const consumer = kafka.consumer({ groupId: 'mygrp' })
@@ -13,11 +13,9 @@ consumer.subscribe({ topic: 'reorder', fromBeginning: true })
 module.exports = function () {
     consumer.run({
         eachMessage: async ({ topic, partition, message }) => {
-            console.log(JSON.parse(message.value))
-
-
+            // console.log(JSON.parse(message.value))
             axios({
-                method: 'post', url: 'http://host.docker.internal:5050/getnotification',
+                method: 'post', url: 'http://localhost:5050/getnotification',
                 data: JSON.parse(message.value)
             }).then((e) => {
                 console.log(e.data)

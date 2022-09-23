@@ -3,7 +3,7 @@ const nodemailer = require("nodemailer");
 
 const kafka = new Kafka({
   clientId: "kafkaex",
-  brokers: ["host.docker.internal:9092"],
+  brokers: ["localhost:9092"],
 });
 
 const producer = kafka.producer();

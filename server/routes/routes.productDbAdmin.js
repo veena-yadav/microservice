@@ -6,7 +6,7 @@ const { protect } = require("../middleware/authMiddleware")
 
 const medicineDbController = require('../controllers/controller.productDbAdmin');
 //change status
-router.post("/status/:email",medicineDbController.changestatus)
+router.post("/status/:email", medicineDbController.changestatus)
 //get all medicines
 router.get("/view", medicineDbController.getMedicine)
 //router.get("/filter", medicineDbController.filterByName)
@@ -25,6 +25,6 @@ router.patch('/updateMedicine/:id', medicineDbController.updateById);
 
 //delete and update from medicine and reorder collection
 router.delete('/delete/:itemName', medicineDbController.deleteMedicine);
-router.patch('/update/:itemName',medicineDbController.updateMedicine)
+router.patch('/update/:itemName', medicineDbController.updateMedicine)
 
 module.exports = router;

@@ -40,9 +40,7 @@ const userCritical = {
     checkIfCritical: expressAsyncHandler(async (request, response) => {
 
         let queryUserDb = {
-
             "email": { $regex: request.params.email }
-
         };
 
         const userExist = await userDb.findOne(queryUserDb);
@@ -50,27 +48,16 @@ const userCritical = {
         let flagFound = false;
 
         if (userExist && userExist.criticalMedicines.length > 0) {
-
             for (let i = 0; i < userExist.criticalMedicines.length; i++) {
-
                 if (userExist.criticalMedicines[i] === request.params.itemName) {
-
                     flagFound = true;
-
                     response.json(1);
-
                 }
-
             }
-
             if (!flagFound)
-
                 response.json(0);
-
         }
-
         else response.json(0);
-
     })
 }
 module.exports = { userCritical };

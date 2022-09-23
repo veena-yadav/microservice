@@ -40,8 +40,6 @@ const loginadmin = asyncHandler(async (req, res) => {
     const admins = await Admin.findOne({ email })
 
     if (admins && (await bcrypt.compare(password, admins.password))) {
-        //sessionStorage.setItem("JWT",generateToken(admins.id))
-        // console.log(res.sendsessionStorage.getItem('JWToken'))  
 
         res.cookie("JWT", generateToken(admins.id),
             {

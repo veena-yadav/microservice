@@ -1,8 +1,8 @@
 var express = require('express')
 const consumer = require('./kafka/consumer')
-const consumer1=require("./kafka/client_consumer")
+const consumer1 = require("./kafka/client_consumer")
 var app = express()
-const cors=require('cors')
+const cors = require('cors')
 app.use(cors())
 app.use(express.json())
 

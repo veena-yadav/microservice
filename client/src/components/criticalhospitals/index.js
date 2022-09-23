@@ -1,7 +1,7 @@
-import React, { useState,useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import './criticalhospitals.css'
 import axios from 'axios'
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import Modal from '@mui/material/Modal';
 import TextField from '@mui/material/TextField';
 import DeliveryDiningIcon from '@mui/icons-material/DeliveryDining';
@@ -23,8 +23,8 @@ const style = {
 };
 
 const CriticalHospitals = () => {
-  const [hospitals,sethospitals]=useState([])
-  const [loading , setLoading]=useState(false);
+  const [hospitals, sethospitals] = useState([])
+  const [loading, setLoading] = useState(false);
   const [open, setOpen] = React.useState(false);
   const [selectedMedicine, setSelectedMedicine] = useState('')
   const [selectedHospitalName, setSelectedHospitalName] = useState('')
@@ -40,22 +40,22 @@ const CriticalHospitals = () => {
     getHospitals()
   }, [])
 
-  const getHospitals=async()=>{
+  const getHospitals = async () => {
     setLoading(true)
     try {
-      const data= await axios.get('http://localhost:5000/gethospitals')
+      const data = await axios.get('http://localhost:5000/gethospitals')
       sethospitals(data.data)
     } catch (error) {
-      console.log("error is "+error)
+      console.log("error is " + error)
     }
     setLoading(false)
   }
 
   const AddHospital = async () => {
     const newHospitalObj = {
-      medicineName:selectedMedicine,
-      quantity:selectedQuantity,
-      hospitalName:selectedHospitalName
+      medicineName: selectedMedicine,
+      quantity: selectedQuantity,
+      hospitalName: selectedHospitalName
     }
 
     try {
@@ -72,7 +72,7 @@ const CriticalHospitals = () => {
   return (
     <div>
 
-    <Modal
+      <Modal
         open={open}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
@@ -113,62 +113,62 @@ const CriticalHospitals = () => {
             >{operation}</Button>
           </center>
         </Box>
-       
+
       </Modal>
 
-    <div>
+      <div>
         <div className='wrapper'>
-            <Link to="/criticalhospitals/criticalreorder"><button className='buttonc'>Reorder summary</button></Link>
+          <Link to="/criticalhospitals/criticalreorder"><button className='buttonc'>Reorder summary</button></Link>
         </div>
-    <div className='medicineTableDiv'>
-    <table className='medicineTable'>
-    <thead>
-      <tr>
-        <th> Hospital Name </th>
-        <th> Phone</th>
-        <th> Email</th>
-        <th> Address</th>
-        <th> Admin</th>
-        <th>Distance(km)</th>
-        <th>Click to order</th>
-      </tr>
-    </thead>
-    <tbody>
-      {hospitals.map((med)=>{
-        return(
-          <tr key={Math.random()}>
-          <th> {med.hospitalName} </th>
-          <td>{med.hospitalPhone} </td>
-          <td> {med.hospitalEmail} </td>
-          <td> {med.hospitalAddress} </td>
-          <td> {med.hospitalAdmin} </td>
-          <td> {med.distance}</td>
-          {/* <td><button style={{width:100}}>Order</button></td> */}
-          <td>
-            <IconButton color="secondary"
-                    style={{
-                      color: "#0064D2"
-                    }}
+        <div className='medicineTableDiv'>
+          <table className='medicineTable'>
+            <thead>
+              <tr>
+                <th> Hospital Name </th>
+                <th> Phone</th>
+                <th> Email</th>
+                <th> Address</th>
+                <th> Admin</th>
+                <th>Distance(km)</th>
+                <th>Click to order</th>
+              </tr>
+            </thead>
+            <tbody>
+              {hospitals.map((med) => {
+                return (
+                  <tr key={Math.random()}>
+                    <th> {med.hospitalName} </th>
+                    <td>{med.hospitalPhone} </td>
+                    <td> {med.hospitalEmail} </td>
+                    <td> {med.hospitalAddress} </td>
+                    <td> {med.hospitalAdmin} </td>
+                    <td> {med.distance}</td>
+                    {/* <td><button style={{width:100}}>Order</button></td> */}
+                    <td>
+                      <IconButton color="secondary"
+                        style={{
+                          color: "#0064D2"
+                        }}
 
-                    aria-label="edit item"
-                    onClick={(e) => {
-                      setOpen(true)
-                      setSelectedHospitalName(med.hospitalName)
-                      setOperation("order")
-                    }}>
-              <DeliveryDiningIcon/>
-            </IconButton>
-          </td>
-        </tr>
-        )
-      })}
-     
-    </tbody>
-  </table>
-  </div>
-  </div>
+                        aria-label="edit item"
+                        onClick={(e) => {
+                          setOpen(true)
+                          setSelectedHospitalName(med.hospitalName)
+                          setOperation("order")
+                        }}>
+                        <DeliveryDiningIcon />
+                      </IconButton>
+                    </td>
+                  </tr>
+                )
+              })}
 
-  </div>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
   )
 }
 

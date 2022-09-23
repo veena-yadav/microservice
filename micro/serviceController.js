@@ -7,14 +7,14 @@ const producer1 = require("./kafka/client_pro")
 
 //const api=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzMDYxNDVlMjdlZDVjZjU1ZGViMWQ3MCIsImlhdCI6MTY2MTM1NTI2OSwiZXhwIjoxNjYzOTQ3MjY5fQ.MytWjGcCopbFmgpQxCEvGF1BIr-uja3wVonl_xghfUw
 
-const url = "http://host.docker.internal:5000/api/medicine/view";
+const url = "http://localhost:5000/api/medicine/view";
 
-const loginurl = "http://host.docker.internal:5000/api/admin/login";
-const url2 = "http://host.docker.internal:5000/user/placeOrder";
-const url3 = "http://host.docker.internal:5000/api/reorder";
-const reorderurl = "http://host.docker.internal:5000/api/admin/reordermedicine";
-const updateMedicineurl = "http://host.docker.internal:5000/api/medicine/update/";
-const moveurl = "http://host.docker.internal:5000/user/moveOrderBucket"
+const loginurl = "http://localhost:5000/api/admin/login";
+const url2 = "http://localhost:5000/user/placeOrder";
+const url3 = "http://localhost:5000/api/reorder";
+const reorderurl = "http://localhost:5000/api/admin/reordermedicine";
+const updateMedicineurl = "http://localhost:5000/api/medicine/update/";
+const moveurl = "http://localhost:5000/user/moveOrderBucket"
 
 
 var MedicinDetails = {

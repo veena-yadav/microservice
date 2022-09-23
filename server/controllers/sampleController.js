@@ -19,7 +19,7 @@ const controller = {
     addSample: asyncHandler(async (req, res) => {
         const item = await Item.create({
             itemName: req.body.itemName,
-            price: req.body.price
+            price: req.body.priceF
         })
 
         res.status(200).json(item)

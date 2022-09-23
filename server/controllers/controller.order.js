@@ -132,12 +132,9 @@ const operationsOnOrders = {
             totalAmount = totalAmount.toFixed(2);
             wrappedArray.push(totalAmount);
             wrappedArray.push(notPaidOrders);
-            // console.log("undefined testing")
-            // console.log(wrappedArray[0])
-            // console.log(wrappedArray[1])
             response.json(wrappedArray);
         }
-        else response.json([0,[]]);
+        else response.json([0, []]);
     }),
 
     fetchOrdersPaid: expressAsyncHandler(async (request, response) => {
@@ -355,7 +352,6 @@ const drivers = {
     addToOrderBucket_UserDB: expressAsyncHandler(async (order, email) => {
         let queryUserDb = {
             "email": { $regex: email }
-            // "order_bucket.itemName": { $regex: order.itemName }
         };
         for (let iter = 0; iter < order.length; iter++) {
             order[i].status = "Not Paid";
